@@ -1,6 +1,7 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+require("dotenv").config();
 const db = require("../models");
 const validateRegisterInput = require("../validation/register");
 
@@ -52,6 +53,27 @@ module.exports = {
             db.Token.create({ _userId: dbUser._id, token: tokenDecimal })
               .then((dbToken) => {
                 //email the token here.
+                //create reusable transport object using the default SMTP transport
+                async () => {
+                  let transporter = nodemailer.createTransport({
+                    host: "localhost",
+                    port: 587,
+                    secure: false,
+                    auth: {
+                      user: "",
+                      pass: "",
+                    },
+                  });
+                  const trialEmail = "example.com";
+                  //send mail with defined transport object
+                  let info = await transporter.sendMail({
+                    from: `"Dupe Fadina " <${trialEmail}>`, //sender address
+                    to: `${dbUser.email}`, //list of receivers
+                    subject: "Hello",
+                    text: `Please enter this code to confirm and receive your sample: ${dbToken.token}`,
+                    html: `<b>Please enter this code to confirm and receive your sample: ${dbToken.token}</b>`,
+                  });
+                };
               })
               .catch((err) => res.status(422).json(err));
 
