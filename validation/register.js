@@ -1,12 +1,34 @@
-/* validator package validates only strings, so we need this helper
-We could have used lodash's isEmpty, but we want to minimize the 
-packages we install. */
+const validator = require("validator");
+const isEmpty = require("./is-empty");
 
-//helper checks whether an object or string is empty
-const isEmpty = (value) =>
-  value === undefined ||
-  value === null ||
-  (typeof value === "object" && Object.keys(value).length === 0) ||
-  (typeof value === "string" && value.trim().length === 0);
+module.exports = function validateRegisterInput(data) {
+  let errors = {};
 
-module.exports = isEmpty;
+  data.name = !isEmpty(data.name) ? data.name : "";
+  data.email = !isEmpty(data.email) ? data.email : "";
+  data.address = !isEmpty(data.address) ? data.address : "";
+
+  if (validator.isLength(data.name, { min: 2, max: 30 })) {
+    errors.name = "Name must be between 2 and 30 characters";
+  }
+  if (validator.isEmpty(data.name)) {
+    errors.name = "Name field is required";
+  }
+
+  if (!validator.isEmail(data.email)) {
+    errors.email = "Email entered is invalid";
+  }
+
+  if (validator.isEmpty(data.email)) {
+    errors.email = "Email field is required";
+  }
+
+  if (validator.isEmpty(data.address)) {
+    errors.address = "Address field is required";
+  }
+
+  return {
+    errors,
+    isValid: isEmpty(errors),
+  };
+};

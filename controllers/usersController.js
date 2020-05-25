@@ -1,6 +1,8 @@
 const express = require("express");
+const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const db = require("../models");
+const validateRegisterInput = require("../validation/register");
 
 module.exports = {
   findAll: (req, res) => {
@@ -15,25 +17,47 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
-  create: (req, res) => {
-    db.User.create(req.body)
-      .then((dbUser) => {
-        res.json(dbModel);
-        //Todo:
-        //1) Generate token; create token
-        //2) Create and store token in db
-        //3) email token to user.
-        //4) Consider verification later.
+  createUser: (req, res) => {
+    //Todo:
+    //1) Generate token; create token
+    //2) Create and store token in db
+    //3) email token to user.
+    //4) Consider verification later.
 
-        //create and store token in db
-        const tokenDecimal = parseInt(
-          crypto.randomBytes(3).toString("hex"),
-          16
-        );
-        db.Token.create({
-          _userId: dbUser._id,
-          token: crypto.randomBytes(3).toString,
-        });
+    const { errors, isValid } = validateRegisterInput(req.body);
+    if (!isValid) {
+      res.status(400).json(errors);
+    }
+
+    const { name, email, address } = req.body;
+    //check whether this account exist in database
+    db.User.findOne({ email })
+      .then((dbUser) => {
+        console.log(dbUser); //remove this later...
+        if (dbUser) {
+          errors.email = "This email account already exist.";
+          res.json({ errors: errors.email });
+        }
+        //add new account
+        db.User.create({ name, email, address })
+          .then((dbUser) => {
+            //do I generate, store and email token here??? YES!!!
+
+            //create and store token in db
+            const tokenDecimal = parseInt(
+              crypto.randomBytes(3).toString("hex"),
+              16
+            );
+
+            db.Token.create({ _userId: dbUser._id, token: tokenDecimal })
+              .then((dbToken) => {
+                //email the token here.
+              })
+              .catch((err) => res.status(422).json(err));
+
+            res.json({ Success: true, msg: "Account successfully created" });
+          })
+          .catch((err) => res.status(422).json(err));
       })
       .catch((err) => res.status(422).json(err));
   },
