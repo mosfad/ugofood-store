@@ -5,9 +5,12 @@ const productSchema = Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  reviews: { type: [Number] },
+  url: { type: String, required: true, default: "" },
+  reviews: [Number],
 });
 
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;
+
+//consider adding comments, ratings and associating them with a _user.id(maybe under `reviews`?)

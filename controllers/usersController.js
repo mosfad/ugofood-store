@@ -84,13 +84,39 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
+  verifyUser: (req, res) => {
+    db.Token.findOne(req.body)
+      .then((dbToken) => {
+        const { token } = req.body;
+        //If tokens match, then verify the user.
+        if (token === dbToken.token) {
+          //update the user's `isVerified` and `requestedProducts`(http://localhost:3001/qprod=.....)
+          const productId = req.query.qprod;
+          db.User.findOneAndUpdate(
+            { _id: req.params.id },
+            { isVerified: true, $push: { requestedProducts: productId } }
+          ).then((dbUser) => {
+            console.log(dbUser);
+            //delete the token from db since user has been verified
+            db.Token.findOneAndDelete({ token })
+              .then((dbToken) => console(dbToken))
+              .catch((err) => res.status(422).json(err));
+          });
+          res.json({ Success: true, msg: "Email was successfully verified" });
+        } else {
+          res.json({ Failure: true, msg: "Email was not verified" });
+        }
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
   update: (req, res) => {
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
 
-  delete: (req, res) => {
+  deleteUser: (req, res) => {
     db.User.findOneAndDelete({ _id: req.params.id })
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json);
