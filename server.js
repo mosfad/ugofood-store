@@ -14,10 +14,19 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // API routes
-//app.use(routes)
+app.use(routes);
 
 // Connect to the Mongo DB
-//mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/ugofoodstore")
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost/ugofoodstore",
+  { useNewUrlParser: true }
+);
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+  console.log("We are connected to the database!");
+});
 
 app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);

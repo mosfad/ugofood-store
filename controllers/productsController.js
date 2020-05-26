@@ -7,25 +7,25 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
-  findOne: (req, res) => {
+  findProduct: (req, res) => {
     db.Product.findOne({ _id: req.params.id })
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
 
-  create: (req, res) => {
+  createProduct: (req, res) => {
     db.Product.create(req.body)
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
 
-  update: (req, res) => {
+  updateProduct: (req, res) => {
     db.Product.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
 
-  delete: (req, res) => {
+  deleteProduct: (req, res) => {
     db.Product.findOneAndDelete({ _id: req.params.id })
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));

@@ -52,28 +52,51 @@ module.exports = {
 
             db.Token.create({ _userId: dbUser._id, token: tokenDecimal })
               .then((dbToken) => {
+                console.log(dbToken);
                 //email the token here.
                 //create reusable transport object using the default SMTP transport
-                async () => {
-                  let transporter = nodemailer.createTransport({
-                    host: "localhost",
-                    port: 587,
-                    secure: false,
-                    auth: {
-                      user: "",
-                      pass: "",
-                    },
-                  });
-                  const trialEmail = "example.com";
-                  //send mail with defined transport object
-                  let info = await transporter.sendMail({
-                    from: `"Dupe Fadina " <${trialEmail}>`, //sender address
+
+                let transporter = nodemailer.createTransport({
+                  service: "gmail",
+                  port: 587,
+                  secure: false,
+                  auth: {
+                    user: process.env.ADMIN_EMAIL,
+                    pass: process.env.ADMIN_PASS,
+                  },
+                  tls: {
+                    rejectUnauthorized: false,
+                  },
+                });
+
+                // verify connection configuration
+                transporter.verify(function (error, success) {
+                  if (error) {
+                    console.log(error);
+                  } else {
+                    console.log("Server is ready to take our messages");
+                  }
+                });
+
+                //const trialEmail = "example.com";
+                //send mail with defined transport object
+                let info = transporter.sendMail(
+                  {
+                    from: `"Dupe Fadina " <${process.env.ADMIN_EMAIL}>`, //sender address
                     to: `${dbUser.email}`, //list of receivers
                     subject: "Hello",
                     text: `Please enter this code to confirm and receive your sample: ${dbToken.token}`,
                     html: `<b>Please enter this code to confirm and receive your sample: ${dbToken.token}</b>`,
-                  });
-                };
+                  },
+                  (err, info) => {
+                    if (err) {
+                      console.log("Mail was unsuccessfully sent");
+                      return console.log(err);
+                    } else {
+                      return console.log(info);
+                    }
+                  }
+                );
               })
               .catch((err) => res.status(422).json(err));
 

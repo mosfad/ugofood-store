@@ -1,16 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../../controllers");
+const productsController = require("../../controllers/productsController");
 
 //matches with "/api/products"
 router
-  .get("/", controller.productsController.findAll)
-  .post("/", controller.productsController.createProduct);
+  .route("/")
+  .get(productsController.findAll)
+  .post(productsController.createProduct);
 
 //matches with "/api/producuts/:id"
 router
-  .get("/:id", controller.productsController.findProduct)
-  .post("/:id", controller.productsController.updateProduct)
-  .delete("/:id", controller.productsController.deleteProduct);
+  .route("/:id")
+  .get(productsController.findProduct)
+  .patch(productsController.updateProduct)
+  .delete(productsController.deleteProduct);
 
 module.exports = router;
