@@ -1,9 +1,12 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
+const keys = require("../config/keys");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 require("dotenv").config();
 const db = require("../models");
 const validateRegisterInput = require("../validation/register");
+const validateLoginInput = require("../validation/login");
 
 module.exports = {
   findAll: (req, res) => {
@@ -16,6 +19,87 @@ module.exports = {
     db.User.findOne({ _id: req.params.id })
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
+  },
+
+  //logs in user
+  LoginUser: (req, res) => {
+    const { email, password } = req.body;
+    const { errors, isValid } = validateLoginInput(req.body);
+    //validate user
+    if (!isValid) {
+      return res.status(400).json({ errors, isValid });
+    }
+
+    db.User.findOne({ email })
+      .then((dbUser) => {
+        if (!dbUser) {
+          errors.email = "User not found";
+          return res.json({ email: errors.email });
+        }
+        //check password
+        bcrypt.compare(password, dbUser.password).then((isMatch) => {
+          if (isMatch) {
+            //User matches,....
+            const payload = {
+              id: dbUser._id,
+              email: dbUser.email,
+            };
+            jwt.sign(
+              payload,
+              keys.secretOrKey,
+              { expiresIn: "1h" },
+              (err, token) => {
+                res.json({ success: true, token: "Berarer " + token });
+              }
+            );
+          } else {
+            errors.password = "Password is incorrect";
+            return res.json({ password: errors.password });
+          }
+        });
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //registers users.
+  RegisterUser: (req, res) => {
+    const { errors, isValid } = validateRegisterInput(req.body);
+    //validate user inputs
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+    const { name, email, password, address } = req.body;
+
+    //check whether email is already in the database.
+    db.User.findOne({ email })
+      .then((dbUser) => {
+        if (dbUser) {
+          //email exists, so send appropriate message
+          errors.email = "Email already exists";
+          return res.json({ email: errors.email });
+        }
+
+        //save the new user
+        const newUser = new db.User({ name, email, password, address });
+        //hash the password
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) console.log(err);
+            newUser.password = hash;
+            //save new user with hashed password
+            newUser
+              .save()
+              .then((user) => {
+                res.json({
+                  Success: true,
+                  msg: "Account successfully created",
+                });
+              })
+              .catch((err) => console.log(err));
+          });
+        });
+      })
+      .catch((err) => res.status(422).send("mongoose error finding one email"));
   },
 
   createUser: (req, res) => {
@@ -131,6 +215,42 @@ module.exports = {
         }
       })
       .catch((err) => res.status(422).json(err));
+  },
+
+  //request sample
+  requestSample: (req, res) => {
+    //
+    if (!req.user) {
+      return res.json({ failure: "User not logged in" });
+    }
+    db.User.findOneAndUpdate(
+      { _id: req.user._id },
+      { $push: { samplesRequested: req.body } },
+      { new: true }
+    )
+      .then((dbUser) => {
+        //update `isOverLimit` if user has maxed out sample requests.
+        if (dbUser.samplesRequested.length > 11) {
+          db.User.findOneAndUpdate({ _id: dbUser._id }, { isOverLimit: true })
+            .then((dbUser) =>
+              res.json({
+                Success: "Update was successful, but sample limit reached",
+              })
+            )
+            .catch((err) => res.status(422).json(err));
+        }
+        res.json({ Success: "Update was successful" });
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //Get authorized user's info
+  getUserInfo: (req, res) => {
+    res.json({
+      id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+    });
   },
 
   update: (req, res) => {
