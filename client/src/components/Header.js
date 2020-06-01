@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import "../style.css";
 
 class Header extends Component {
   //replace login tab with logout if user is signed in.
@@ -7,7 +8,7 @@ class Header extends Component {
 
   handleClick = () => {
     this.setState({
-      homeStatus: "active teal",
+      homeStatus: "active white",
       signupStatus: "",
       logStatus: "",
     });
@@ -16,7 +17,7 @@ class Header extends Component {
   handleSignup = () => {
     this.setState({
       homeStatus: "",
-      signupStatus: "active teal",
+      signupStatus: "active white",
       logStatus: "",
     });
   };
@@ -25,17 +26,17 @@ class Header extends Component {
     this.setState({
       homeStatus: "",
       signupStatus: "",
-      logStatus: "active teal",
+      logStatus: "active white",
     });
   };
 
   render() {
     let userStatus = "Login";
     return (
-      <div className="ui secondary pointing menu">
+      <div className="ui secondary pointing menu header-home">
         <Link
           to="/"
-          className={`item ${this.state.homeStatus}`}
+          className={`item a-header ${this.state.homeStatus}`}
           onClick={this.handleClick}
         >
           Home
@@ -43,14 +44,14 @@ class Header extends Component {
         <div className="right menu">
           <Link
             to="/Signup"
-            className={`item ${this.state.signupStatus}`}
+            className={`item a-header ${this.state.signupStatus}`}
             onClick={this.handleSignup}
           >
             Signup
           </Link>
           <Link
             to="/"
-            className={`item ${this.state.logStatus}`}
+            className={`item a-header ${this.state.logStatus}`}
             onClick={this.handleLogStatus}
           >
             {userStatus}

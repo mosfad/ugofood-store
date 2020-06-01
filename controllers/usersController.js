@@ -66,7 +66,8 @@ module.exports = {
   getUserInfo: (req, res) => {
     res.json({
       id: req.user._id,
-      name: req.user.name,
+      firstNname: req.user.firstName,
+      lastName: req.user.lastName,
       email: req.user.email,
       isAdmin: req.user.isAdmin,
     });
@@ -85,7 +86,7 @@ module.exports = {
     if (!isValid) {
       return res.status(400).json(errors);
     }
-    const { name, email, password, address, token } = req.body;
+    const { firstName, lastName, email, password, address, token } = req.body;
 
     //check whether email is already in the database.
     db.User.findOne({ email })
@@ -100,14 +101,21 @@ module.exports = {
         let newUser;
         if (token && (token === keys.adminCode || token === keys.ownerCode)) {
           newUser = new db.User({
-            name,
+            firstName,
+            lastName,
             email,
             password,
             address,
             isAdmin: true,
           });
         } else {
-          newUser = new db.User({ name, email, password, address });
+          newUser = new db.User({
+            firstName,
+            lastName,
+            email,
+            password,
+            address,
+          });
         }
 
         //hash the password

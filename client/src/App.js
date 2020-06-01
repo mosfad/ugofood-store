@@ -9,7 +9,7 @@ import Home from "./pages/Home";
 class App extends Component {
   render() {
     return (
-      <div className="ui container">
+      <div>
         <Router history={history}>
           <div>
             <Header />

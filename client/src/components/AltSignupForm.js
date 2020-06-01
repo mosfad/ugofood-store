@@ -17,14 +17,7 @@ class AltSignupForm extends Component {
   render() {
     return (
       <div>
-        <div className="ui attached message">
-          <div className="header">Welcome to our site!</div>
-          <p>Fill out the form below to sign-up for a new account</p>
-        </div>
-        <form
-          className="ui form attached fluid segment"
-          onSubmit={this.handleSubmit}
-        >
+        <form className="ui form " onSubmit={this.handleSubmit}>
           <div className="two fields">
             <div className="field">
               <label>First Name</label>
@@ -72,9 +65,10 @@ class AltSignupForm extends Component {
       <label for="terms">I agree to the terms and conditions</label>
     </div> */}
           </div>
-          <div className="ui blue submit button">Submit</div>
+          <div className="ui fluid submit button">Submit</div>
         </form>
-        <div className="ui bottom attached warning message">
+        <br />
+        <div className="warn-message">
           <i className="icon help"></i>
           Already signed up? <a href="#">Login here</a> instead.
         </div>

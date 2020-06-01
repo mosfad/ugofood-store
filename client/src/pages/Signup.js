@@ -1,14 +1,18 @@
 import React, { Component } from "react";
-import SignupForm from "../components/SignupForm";
+import Agreement from "../components/Agreement";
 import AltSignupForm from "../components/AltSignupForm";
+import "../style.css";
+import WelcomeMessage from "../components/WecomeMessage";
 
 class Signup extends Component {
   render() {
     return (
-      <div>
-        <div>Create a new Account and enjoy free samples!</div>
+      <div className="ui container sign-up">
+        <WelcomeMessage />
 
         <AltSignupForm />
+        <br />
+        <Agreement />
       </div>
     );
   }
