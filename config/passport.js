@@ -15,7 +15,6 @@ module.exports = (passport) => {
         .then((dbUser) => {
           if (dbUser) {
             console.log("The user exists!");
-            console.log(dbUser);
             return done(null, dbUser);
           } else {
             return done(null, false);

@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const passport = require("passport");
+const path = require("path");
 //require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 const routes = require("./routes");
@@ -13,9 +15,19 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+require("./config/passport")(passport);
 
 // API routes
 app.use(routes);
+
+// View routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 // Connect to the Mongo DB
 mongoose.connect(db, { useNewUrlParser: true });

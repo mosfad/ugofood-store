@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
@@ -22,7 +23,7 @@ module.exports = {
   },
 
   //logs in user
-  LoginUser: (req, res) => {
+  loginUser: (req, res) => {
     const { email, password } = req.body;
     const { errors, isValid } = validateLoginInput(req.body);
     //validate user
@@ -49,7 +50,7 @@ module.exports = {
               keys.secretOrKey,
               { expiresIn: "1h" },
               (err, token) => {
-                res.json({ success: true, token: "Berarer " + token });
+                res.json({ success: true, token: "Bearer " + token });
               }
             );
           } else {
@@ -61,14 +62,30 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
+  //get authorized user's info
+  getUserInfo: (req, res) => {
+    res.json({
+      id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+      isAdmin: req.user.isAdmin,
+    });
+  },
+
+  //logs out user
+  logoutUser: (req, res) => {
+    req.logout();
+    res.redirect("/");
+  },
+
   //registers users.
-  RegisterUser: (req, res) => {
+  registerUser: (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     //validate user inputs
     if (!isValid) {
       return res.status(400).json(errors);
     }
-    const { name, email, password, address } = req.body;
+    const { name, email, password, address, token } = req.body;
 
     //check whether email is already in the database.
     db.User.findOne({ email })
@@ -80,7 +97,19 @@ module.exports = {
         }
 
         //save the new user
-        const newUser = new db.User({ name, email, password, address });
+        let newUser;
+        if (token && (token === keys.adminCode || token === keys.ownerCode)) {
+          newUser = new db.User({
+            name,
+            email,
+            password,
+            address,
+            isAdmin: true,
+          });
+        } else {
+          newUser = new db.User({ name, email, password, address });
+        }
+
         //hash the password
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -242,15 +271,6 @@ module.exports = {
         res.json({ Success: "Update was successful" });
       })
       .catch((err) => res.status(422).json(err));
-  },
-
-  //Get authorized user's info
-  getUserInfo: (req, res) => {
-    res.json({
-      id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-    });
   },
 
   update: (req, res) => {
