@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class SignupForm extends Component {
   state = { firstName: "", lastName: "", email: "", address: "" };
@@ -12,16 +13,17 @@ class SignupForm extends Component {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
+
   render() {
     return (
-      <div className="ui inverted segment">
-        <form className="ui inverted form" onSubmit={this.handleSubmit}>
+      <div>
+        <form className="ui form " onSubmit={this.handleSubmit}>
           <div className="two fields">
             <div className="field">
               <label>First Name</label>
               <input
-                placeholder="First Name"
                 name="firstName"
+                placeholder="First Name"
                 type="text"
                 onChange={this.handleChange}
               />
@@ -29,39 +31,47 @@ class SignupForm extends Component {
             <div className="field">
               <label>Last Name</label>
               <input
-                placeholder="Last Name"
                 name="lastName"
+                placeholder="Last Name"
                 type="text"
                 onChange={this.handleChange}
               />
             </div>
           </div>
           <div className="field">
-            <label>E-mail</label>
+            <label>Email</label>
             <input
-              type="email"
               name="email"
               placeholder="email"
+              type="email"
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="field">
+            <label>Password</label>
+            <input
+              name="password"
+              type="password"
               onChange={this.handleChange}
             />
           </div>
           <div className="field">
             <label>Address</label>
-            <input
-              type="text"
-              name="address"
-              placeholder="address"
-              onChange={this.handleChange}
-            />
+            <input name="address" type="text" onChange={this.handleChange} />
           </div>
-          {/* <div className="inline field">
-                  <div className="ui checkbox">
-                    <input type="checkbox" tabindex="0" className="hidden" />
-                    <label>I agree to the terms and conditions</label>
-                  </div>
-                </div> */}
-          <div className="ui submit button">Submit</div>
+          <div className="inline field">
+            {/* <div className="ui checkbox">
+      <input type="checkbox" id="terms"/>
+      <label for="terms">I agree to the terms and conditions</label>
+    </div> */}
+          </div>
+          <div className="ui fluid submit button">Submit</div>
         </form>
+        <br />
+        <div className="warn-message">
+          <i className="icon help"></i>
+          Already signed up? <a href="#">Login here</a> instead.
+        </div>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Agreement from "../components/Agreement";
-import AltSignupForm from "../components/AltSignupForm";
+import SignupForm from "../components/SignupForm";
 import "../style.css";
 import WelcomeMessage from "../components/WecomeMessage";
 
@@ -10,7 +10,7 @@ class Signup extends Component {
       <div className="ui container sign-up">
         <WelcomeMessage />
 
-        <AltSignupForm />
+        <SignupForm />
         <br />
         <Agreement />
       </div>

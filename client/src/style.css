@@ -2,23 +2,34 @@ body {
   /* background-color: lightblue; */
 }
 
-.ui.secondary.pointing.menu.header-home {
+.ui.menu.header-home {
   background-color: red;
   min-height: 70px;
 }
 
-.ui.secondary.pointing.menu a.item.a-header {
-  color: white !important;
-  font-size: 1.3rem;
+.ui.menu a.item.a-header {
+  color: #d5c9c9;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
-a.item.a-header:hover {
-  border-bottom: solid white !important;
+a.item.a-header.active:hover {
+  /* border-bottom: solid white !important; */
+  /* margin-bottom: 1px !important; */
+  /* border: none;
+  color: white !important; */
+  color: white !important;
 }
 
-a.item.a-header.active.white {
-  border-bottom: solid white !important;
+a.item.a-header.active {
+  /* border-bottom: solid white !important; */
+  /* margin-bottom: 1px !important; */
+  /* border: none;*/
+  color: white !important;
+}
+
+a.item.a-header {
+  /* margin-bottom: 1px; */
 }
 
 .register-message {
