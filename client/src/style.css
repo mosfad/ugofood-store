@@ -41,3 +41,17 @@ a.item.a-header {
   font-weight: 600;
   margin-bottom: 20px;
 }
+
+#shoppingcart-header {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.ui.container.right.aligned.shoppingcart-subtotal {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button.ui.button.shoppingcart-button {
+  margin-right: 5%;
+}

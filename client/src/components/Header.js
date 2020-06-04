@@ -4,7 +4,13 @@ import "../style.css";
 
 class Header extends Component {
   //replace login tab with logout if user is signed in.
-  state = { homeStatus: "", signupStatus: "", logStatus: "", shipStatus: "" };
+  state = {
+    homeStatus: "",
+    signupStatus: "",
+    logStatus: "",
+    shipStatus: "",
+    cartStatus: "",
+  };
 
   handleClick = () => {
     this.setState({
@@ -12,6 +18,7 @@ class Header extends Component {
       signupStatus: "",
       logStatus: "",
       shipStatus: "",
+      cartStatus: "",
     });
   };
 
@@ -21,6 +28,7 @@ class Header extends Component {
       signupStatus: "active",
       logStatus: "",
       shipStatus: "",
+      cartStatus: "",
     });
   };
 
@@ -30,6 +38,7 @@ class Header extends Component {
       signupStatus: "",
       logStatus: "active",
       shipStatus: "",
+      cartStatus: "",
     });
   };
 
@@ -39,11 +48,23 @@ class Header extends Component {
       signupStatus: "",
       logStatus: "",
       shipStatus: "active",
+      cartStatus: "",
+    });
+  };
+
+  handleCart = () => {
+    this.setState({
+      homeStatus: "",
+      signupStatus: "",
+      logStatus: "",
+      shipStatus: "",
+      cartStatus: "active",
     });
   };
 
   render() {
     let userStatus = "Login";
+    let id = 1; //should be user's id
     return (
       <div className="ui menu header-home">
         <Link
@@ -74,6 +95,13 @@ class Header extends Component {
             onClick={this.handleShip}
           >
             Samples
+          </Link>
+          <Link
+            to={`/cart/${id}`}
+            className={`item a-header ${this.state.cartStatus}`}
+            onClick={this.handleCart}
+          >
+            Cart
           </Link>
         </div>
       </div>

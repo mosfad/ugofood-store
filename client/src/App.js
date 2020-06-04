@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import ProductRequest from "./pages/ProducRequest";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import ShoppingCart from "./pages/ShoppingCart";
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
               <Route path="/" exact component={Home} />
               <Route path="/signup" exact component={Signup} />
               <Route path="/product/request" exact component={ProductRequest} />
+              <Route path="/cart/:id" exact component={ShoppingCart} />
             </Switch>
           </div>
         </Router>

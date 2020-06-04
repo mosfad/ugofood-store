@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Agreement from "../components/Agreement";
-import WelcomeMessage from "../components/WecomeMessage";
+import WelcomeMessage from "../components/WelcomeMessage";
 import ShipForm from "../components/ShipForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";

@@ -7,4 +7,6 @@ module.exports = {
   ownerSecret: process.env.OWNER_SECRET_EMAIL,
   adminEmail: process.env.EMAIL,
   adminSecret: process.env.SECRET_EMAIL,
+  stripePublish: process.env.STRIPE_PUBLISHABLE_KEY,
+  stripeSecret: process.env.STRIPE_SECRET_KEY,
 };
