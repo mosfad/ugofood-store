@@ -1,0 +1,20 @@
+.product-detail {
+  margin: 0, auto;
+}
+
+.productdetail-img {
+  margin: 0, auto;
+}
+
+.ui.grid > .centered.row {
+  text-align: center !important;
+}
+
+.productdetail-img {
+  justify-self: center !important;
+}
+
+div.extra.product-btn {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}

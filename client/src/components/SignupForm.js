@@ -17,7 +17,7 @@ class SignupForm extends Component {
   render() {
     return (
       <div>
-        <form className="ui form " onSubmit={this.handleSubmit}>
+        <form className="ui large form" onSubmit={this.handleSubmit}>
           <div className="two fields">
             <div className="field">
               <label>First Name</label>

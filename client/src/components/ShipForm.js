@@ -3,19 +3,20 @@ import React, { Component } from "react";
 class ShipForm extends Component {
   render() {
     return (
-      <form class="ui form">
-        <h4 class="ui dividing header">Shipping Information</h4>
-        <div class="field">
+      <form className="ui large form">
+        <h2>Checkout Order</h2>
+        <div className="ui divider"></div>
+        <div className="field">
           <label>Name</label>
-          <div class="two fields">
-            <div class="field">
+          <div className="two fields">
+            <div className="field">
               <input
                 type="text"
                 name="shipping[first-name]"
                 placeholder="First Name"
               />
             </div>
-            <div class="field">
+            <div className="field">
               <input
                 type="text"
                 name="shipping[last-name]"
@@ -24,17 +25,17 @@ class ShipForm extends Component {
             </div>
           </div>
         </div>
-        <div class="field">
+        <div className="field">
           <label>Billing Address</label>
-          <div class="fields">
-            <div class="twelve wide field">
+          <div className="fields">
+            <div className="twelve wide field">
               <input
                 type="text"
                 name="shipping[address]"
                 placeholder="Street Address"
               />
             </div>
-            <div class="four wide field">
+            <div className="four wide field">
               <input
                 type="text"
                 name="shipping[address-2]"
@@ -43,10 +44,10 @@ class ShipForm extends Component {
             </div>
           </div>
         </div>
-        <div class="two fields">
-          <div class="field">
+        <div className="two fields">
+          <div className="field">
             <label>State</label>
-            <select class="ui fluid dropdown">
+            <select className="ui fluid dropdown">
               <option value="">State</option>
               <option value="AL">Alabama</option>
               <option value="AK">Alaska</option>
@@ -101,96 +102,96 @@ class ShipForm extends Component {
               <option value="WY">Wyoming</option>
             </select>
           </div>
-          <div class="field">
+          <div className="field">
             <label>Country</label>
-            <div class="ui fluid search selection dropdown">
+            <div className="ui fluid search selection dropdown">
               <input type="hidden" name="country" />
-              <i class="dropdown icon"></i>
-              <div class="default text">Select Country</div>
-              <div class="menu">
-                <div class="item" data-value="af">
-                  <i class="af flag"></i>Afghanistan
+              <i className="dropdown icon"></i>
+              <div className="default text">Select Country</div>
+              <div className="menu">
+                <div className="item" data-value="af">
+                  <i className="af flag"></i>Afghanistan
                 </div>
-                <div class="item" data-value="ax">
-                  <i class="ax flag"></i>Aland Islands
+                <div className="item" data-value="ax">
+                  <i className="ax flag"></i>Aland Islands
                 </div>
-                <div class="item" data-value="al">
-                  <i class="al flag"></i>Albania
+                <div className="item" data-value="al">
+                  <i className="al flag"></i>Albania
                 </div>
-                <div class="item" data-value="dz">
-                  <i class="dz flag"></i>Algeria
+                <div className="item" data-value="dz">
+                  <i className="dz flag"></i>Algeria
                 </div>
-                <div class="item" data-value="as">
-                  <i class="as flag"></i>American Samoa
+                <div className="item" data-value="as">
+                  <i className="as flag"></i>American Samoa
                 </div>
-                <div class="item" data-value="ad">
-                  <i class="ad flag"></i>Andorra
+                <div className="item" data-value="ad">
+                  <i className="ad flag"></i>Andorra
                 </div>
-                <div class="item" data-value="ao">
-                  <i class="ao flag"></i>Angola
+                <div className="item" data-value="ao">
+                  <i className="ao flag"></i>Angola
                 </div>
-                <div class="item" data-value="ai">
-                  <i class="ai flag"></i>Anguilla
+                <div className="item" data-value="ai">
+                  <i className="ai flag"></i>Anguilla
                 </div>
-                <div class="item" data-value="ag">
-                  <i class="ag flag"></i>Antigua
+                <div className="item" data-value="ag">
+                  <i className="ag flag"></i>Antigua
                 </div>
-                <div class="item" data-value="ar">
-                  <i class="ar flag"></i>Argentina
+                <div className="item" data-value="ar">
+                  <i className="ar flag"></i>Argentina
                 </div>
-                <div class="item" data-value="am">
-                  <i class="am flag"></i>Armenia
+                <div className="item" data-value="am">
+                  <i className="am flag"></i>Armenia
                 </div>
-                <div class="item" data-value="aw">
-                  <i class="aw flag"></i>Aruba
+                <div className="item" data-value="aw">
+                  <i className="aw flag"></i>Aruba
                 </div>
-                <div class="item" data-value="au">
-                  <i class="au flag"></i>Australia
+                <div className="item" data-value="au">
+                  <i className="au flag"></i>Australia
                 </div>
-                <div class="item" data-value="at">
-                  <i class="at flag"></i>Austria
+                <div className="item" data-value="at">
+                  <i className="at flag"></i>Austria
                 </div>
-                <div class="item" data-value="az">
-                  <i class="az flag"></i>Azerbaijan
+                <div className="item" data-value="az">
+                  <i className="az flag"></i>Azerbaijan
                 </div>
-                <div class="item" data-value="bs">
-                  <i class="bs flag"></i>Bahamas
+                <div className="item" data-value="bs">
+                  <i className="bs flag"></i>Bahamas
                 </div>
-                <div class="item" data-value="bh">
-                  <i class="bh flag"></i>Bahrain
+                <div className="item" data-value="bh">
+                  <i className="bh flag"></i>Bahrain
                 </div>
-                <div class="item" data-value="bd">
-                  <i class="bd flag"></i>Bangladesh
+                <div className="item" data-value="bd">
+                  <i className="bd flag"></i>Bangladesh
                 </div>
-                <div class="item" data-value="bb">
-                  <i class="bb flag"></i>Barbados
+                <div className="item" data-value="bb">
+                  <i className="bb flag"></i>Barbados
                 </div>
-                <div class="item" data-value="by">
-                  <i class="by flag"></i>Belarus
+                <div className="item" data-value="by">
+                  <i className="by flag"></i>Belarus
                 </div>
-                <div class="item" data-value="be">
-                  <i class="be flag"></i>Belgium
+                <div className="item" data-value="be">
+                  <i className="be flag"></i>Belgium
                 </div>
-                <div class="item" data-value="bz">
-                  <i class="bz flag"></i>Belize
+                <div className="item" data-value="bz">
+                  <i className="bz flag"></i>Belize
                 </div>
-                <div class="item" data-value="bj">
-                  <i class="bj flag"></i>Benin
+                <div className="item" data-value="bj">
+                  <i className="bj flag"></i>Benin
                 </div>
-                <div class="item" data-value="bm">
-                  <i class="bm flag"></i>Bermuda
+                <div className="item" data-value="bm">
+                  <i className="bm flag"></i>Bermuda
                 </div>
-                <div class="item" data-value="bt">
-                  <i class="bt flag"></i>Bhutan
+                <div className="item" data-value="bt">
+                  <i className="bt flag"></i>Bhutan
                 </div>
-                <div class="item" data-value="bo">
-                  <i class="bo flag"></i>Bolivia
+                <div className="item" data-value="bo">
+                  <i className="bo flag"></i>Bolivia
                 </div>
-                <div class="item" data-value="ba">
-                  <i class="ba flag"></i>Bosnia
+                <div className="item" data-value="ba">
+                  <i className="ba flag"></i>Bosnia
                 </div>
-                <div class="item" data-value="bw">
-                  <i class="bw flag"></i>Botswana
+                <div className="item" data-value="bw">
+                  <i className="bw flag"></i>Botswana
                 </div>
                 <div class="item" data-value="bv">
                   <i class="bv flag"></i>Bouvet Island
