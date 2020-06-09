@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import LoginModal from "./LoginModal";
+import ModalContainer from "./ModalContainer";
+import RandomModal from "./RandomModal";
 import "../style.css";
 
 class Header extends Component {
@@ -68,7 +71,7 @@ class Header extends Component {
     return (
       <div className="ui menu header-home">
         <Link
-          to="/"
+          to=""
           className={`${this.state.homeStatus} item a-header`}
           onClick={this.handleClick}
         >
@@ -82,13 +85,30 @@ class Header extends Component {
           >
             Signup
           </Link>
+
+          {/* <LoginModal /> */}
           <Link
+            to=""
+            className={`item a-header ${this.state.logStatus}`}
+            onClick={this.handleLogStatus}
+          >
+            <ModalContainer />
+          </Link>
+          {/* <Link
+            to=""
+            className={`item a-header ${this.state.logStatus}`}
+            onClick={this.handleLogStatus}
+          >
+            <RandomModal />
+          </Link> */}
+
+          {/* <Link
             to="/"
             className={`item a-header ${this.state.logStatus}`}
             onClick={this.handleLogStatus}
           >
             {userStatus}
-          </Link>
+          </Link> */}
           <Link
             to="/product/request"
             className={`item a-header ${this.state.shipStatus}`}

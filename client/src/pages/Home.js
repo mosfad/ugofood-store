@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Products from "../components/ProductDetail";
+import LoginModal from "../components/LoginModal";
 
 class Home extends Component {
   render() {

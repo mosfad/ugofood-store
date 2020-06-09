@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const signIn = (formData) => {
+export const logIn = (formData) => {
   return axios.post("/api/users/login", formData);
 };
 
-export const signUp = (formData) => {
+export const register = (formData) => {
   return axios.post("api/users/register", formData);
 };
 

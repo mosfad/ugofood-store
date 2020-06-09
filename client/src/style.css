@@ -13,6 +13,14 @@ body {
   font-weight: 600;
 }
 
+#modal-btn-text {
+  color: #d5c9c9;
+  /*font-size: 1.2rem;
+  font-weight: 600; */
+  /* margin: auto; */
+  /* padding: 15.6px 19.2px; */
+}
+
 a.item.a-header.active:hover {
   /* border-bottom: solid white !important; */
   /* margin-bottom: 1px !important; */
@@ -54,4 +62,8 @@ a.item.a-header {
 
 button.ui.button.shoppingcart-button {
   margin-right: 5%;
+}
+
+.ui.container.sign-up {
+  width: 50%;
 }
