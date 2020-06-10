@@ -5,13 +5,13 @@ export const logIn = (formData) => {
 };
 
 export const register = (formData) => {
-  return axios.post("api/users/register", formData);
+  return axios.post("/api/users/register", formData);
 };
 
 export const getAuthUser = (authToken) => {
   return axios({
     method: "get",
-    url: "api/users/current",
+    url: "/api/users/current",
     headers: {
       Authorization: authToken,
     },

@@ -1,6 +1,7 @@
 export const SIGN_UP = "SIGN_UP";
 export const SIGN_OUT = "SIGN_OUT";
-export const SIGN_IN = "LOG_IN";
+export const SIGN_IN = "SIGN_IN";
+export const AUTO_SIGN_IN = "AUTO_SIGN_IN";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const FETCH_USER = "FETCH_USER";
