@@ -6,9 +6,10 @@ import {
   OPEN_MODAL,
   CLOSE_MODAL,
   FETCH_USER,
+  UNFETCH_USER,
 } from "./types";
-import history from "../history";
-import { logIn, register, getAuthUser } from "../utils/API";
+import history from "../utils/history";
+import { logIn, register, getAuthUser, logOut } from "../utils/API";
 
 // export const signIn = (formValues = {}, token = "") => {
 //   if (token !== "") {
@@ -29,17 +30,20 @@ export const signIn = (formValues) => async (dispatch) => {
 
   dispatch({ type: SIGN_IN, payload: response.data });
 
-  //history.push("/");
+  history.push("/");
 };
 
 export const autoSignIn = (token) => {
   return { type: AUTO_SIGN_IN, payload: token };
 };
 
-export const signOut = () => {
-  return {
-    type: SIGN_OUT,
-  };
+export const signOut = () => async (dispatch) => {
+  await logOut();
+
+  dispatch({ type: SIGN_OUT });
+  //Remove token from localStorage to avoid user fetching.
+  localStorage.setItem("userToken", "");
+  history.push("/");
 };
 
 export const signUp = (formValues) => async (dispatch) => {
@@ -54,6 +58,9 @@ export const fetchUser = (authToken) => async (dispatch) => {
   //history.push("/");
 };
 
+export const unfetchUser = () => {
+  return { type: UNFETCH_USER };
+};
 export const openModal = () => {
   return { type: OPEN_MODAL };
 };

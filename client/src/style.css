@@ -2,16 +2,16 @@ body {
   /* background-color: lightblue; */
 }
 
-.ui.menu.header-home {
+/* .ui.menu.header-home {
   background-color: red;
   min-height: 70px;
-}
+} */
 
-.ui.menu a.item.a-header {
+/* .ui.menu a.item.a-header {
   color: #d5c9c9;
   font-size: 1.2rem;
   font-weight: 600;
-}
+} */
 
 #modal-btn-text {
   color: #d5c9c9;
@@ -26,14 +26,14 @@ a.item.a-header.active:hover {
   /* margin-bottom: 1px !important; */
   /* border: none;
   color: white !important; */
-  color: white !important;
+  /*color: white !important;-----*/
 }
 
 a.item.a-header.active {
   /* border-bottom: solid white !important; */
   /* margin-bottom: 1px !important; */
   /* border: none;*/
-  color: white !important;
+  /*color: white !important;-------*/
 }
 
 a.item.a-header {

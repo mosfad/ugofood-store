@@ -13,14 +13,19 @@ class Home extends Component {
       if (token) {
         console.log(token);
         console.log(this.props);
-        await this.props.fetchUser(token);
-        console.log(this.props.user);
-        //if user was successfully fetched from server, auto-sign the user.
-        if (
-          Object.keys(this.props.user).length === 1 &&
-          !this.props.isSignedIn
-        ) {
-          this.props.autoSignIn(token);
+        try {
+          await this.props.fetchUser(token);
+          console.log(this.props.user);
+          //if user was successfully fetched from server, auto-sign the user.
+          if (
+            Object.keys(this.props.user).length === 1 &&
+            !this.props.isSignedIn
+          ) {
+            this.props.autoSignIn(token);
+          }
+        } catch (err) {
+          console.log(err);
+          console.log("User must manually sign in, since token is invalid");
         }
       }
     })();
@@ -39,15 +44,16 @@ class Home extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log(prevProps);
-    // console.log(this.props);
-    // if (this.props.isSignedIn && !prevProps.isSignedIn) {
-    //   const token = localStorage.getItem("userToken");
-    //   if (token) {
-    //     console.log(token);
-    //     this.props.fetchUser(token);
-    //   }
-    // }
+    console.log(prevProps);
+    console.log(this.props);
+    //user manually signed in, so fetch the user.
+    if (this.props.isSignedIn && !prevProps.isSignedIn) {
+      //const token = localStorage.getItem("userToken");
+      if (this.props.token) {
+        console.log(this.props.token);
+        this.props.fetchUser(this.props.token);
+      }
+    }
   }
 
   render() {

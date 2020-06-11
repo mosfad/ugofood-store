@@ -17,3 +17,7 @@ export const getAuthUser = (authToken) => {
     },
   });
 };
+
+export const logOut = () => {
+  return axios.get("/api/users/logout");
+};

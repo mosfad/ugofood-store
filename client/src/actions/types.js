@@ -5,6 +5,7 @@ export const AUTO_SIGN_IN = "AUTO_SIGN_IN";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const FETCH_USER = "FETCH_USER";
+export const UNFETCH_USER = "UNFETCH_USER";
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_PRODUCT = "FETCH_PRODUCT";
 export const ADD_TOCART = "ADD_TOCART";

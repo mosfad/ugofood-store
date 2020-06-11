@@ -1,158 +1,172 @@
 import React, { Component } from "react";
+import { Menu, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import LoginModal from "./LoginModal";
+import { connect } from "react-redux";
+import { signOut } from "../actions";
 import ModalContainer from "./ModalContainer";
-import RandomModal from "./RandomModal";
-import "../style.css";
+import LogoutContainer from "./LogoutContainer";
 
 class Header extends Component {
-  //replace login tab with logout if user is signed in.
-  state = {
-    homeStatus: "",
-    signupStatus: "",
-    logStatus: "",
-    shipStatus: "",
-    cartStatus: "",
-  };
+  state = { activeItem: "home" };
 
-  handleClick = () => {
-    this.setState({
-      homeStatus: "active",
-      signupStatus: "",
-      logStatus: "",
-      shipStatus: "",
-      cartStatus: "",
-    });
-  };
-
-  handleSignup = () => {
-    this.setState({
-      homeStatus: "",
-      signupStatus: "active",
-      logStatus: "",
-      shipStatus: "",
-      cartStatus: "",
-    });
-  };
-
-  handleLogStatus = () => {
-    this.setState({
-      homeStatus: "",
-      signupStatus: "",
-      logStatus: "active",
-      shipStatus: "",
-      cartStatus: "",
-    });
-  };
-
-  handleShip = () => {
-    this.setState({
-      homeStatus: "",
-      signupStatus: "",
-      logStatus: "",
-      shipStatus: "active",
-      cartStatus: "",
-    });
-  };
-
-  handleCart = () => {
-    this.setState({
-      homeStatus: "",
-      signupStatus: "",
-      logStatus: "",
-      shipStatus: "",
-      cartStatus: "active",
-    });
-  };
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
-    let userStatus = "Login";
-    let id = 1; //should be user's id
+    const { activeItem } = this.state;
+    let id = this.props.userId || 1;
+
     return (
-      <div className="ui menu header-home">
-        <Link
-          to=""
-          className={`${this.state.homeStatus} item a-header`}
-          onClick={this.handleClick}
-        >
-          Home
-        </Link>
-        <div className="right menu">
-          <Link
-            to="/signup"
-            className={`item a-header ${this.state.signupStatus}`}
-            onClick={this.handleSignup}
-          >
-            Signup
-          </Link>
-
-          {/* <LoginModal /> */}
-          <Link
-            to=""
-            className={`item a-header ${this.state.logStatus}`}
-            onClick={this.handleLogStatus}
-          >
-            <ModalContainer />
-          </Link>
-          {/* <Link
-            to=""
-            className={`item a-header ${this.state.logStatus}`}
-            onClick={this.handleLogStatus}
-          >
-            <RandomModal />
-          </Link> */}
-
-          {/* <Link
+      <Segment inverted>
+        <Menu inverted pointing secondary>
+          <Menu.Item
+            as={Link}
             to="/"
-            className={`item a-header ${this.state.logStatus}`}
-            onClick={this.handleLogStatus}
-          >
-            {userStatus}
-          </Link> */}
-          <Link
-            to="/product/request"
-            className={`item a-header ${this.state.shipStatus}`}
-            onClick={this.handleShip}
-          >
-            Samples
-          </Link>
-          <Link
-            to={`/cart/${id}`}
-            className={`item a-header ${this.state.cartStatus}`}
-            onClick={this.handleCart}
-          >
-            Cart
-          </Link>
-        </div>
-      </div>
+            name="home"
+            active={activeItem === "home"}
+            onClick={this.handleItemClick}
+          />
+          <Menu.Menu position="right">
+            <Menu.Item
+              as={Link}
+              to="/"
+              name="logout"
+              active={activeItem === "logout"}
+              onClick={this.handleItemClick}
+            >
+              <LogoutContainer />
+            </Menu.Item>
+
+            <Menu.Item
+              name="login"
+              active={activeItem === "login"}
+              onClick={this.handleItemClick}
+            >
+              <ModalContainer />
+            </Menu.Item>
+
+            <Menu.Item
+              as={Link}
+              to="/signup"
+              name="signup"
+              active={activeItem === "signup"}
+              onClick={this.handleItemClick}
+            />
+            <Menu.Item
+              as={Link}
+              to="/ordersample"
+              name="ordersample"
+              active={activeItem === "ordersample"}
+              onClick={this.handleItemClick}
+            >
+              Order Sample
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
+              to={`/cart/${id}`}
+              name="cart"
+              active={activeItem === "cart"}
+              onClick={this.handleItemClick}
+            />
+          </Menu.Menu>
+        </Menu>
+      </Segment>
     );
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    isSignedIn: state.auth.isSignedIn,
+    userId: Object.keys(state.user)[0],
+  };
+};
+
+export default connect(mapStateToProps, { signOut })(Header);
+
+// import React, { Component } from "react";
+// import { Link } from "react-router-dom";
+// import { connect } from "react-redux";
+// import { signOut } from "../actions";
+// import ModalContainer from "./ModalContainer";
+
+// import "../style.css";
 
 // class Header extends Component {
+//   state = { activeItem: "home" };
+
+//   handleItemClick = (e) => {
+//     const { name } = e.target;
+//     console.log(name);
+//     this.setState({ activeItem: name });
+//   };
+
 //   render() {
-//     let userStatus = "Log in";
+//     const { activeItem } = this.state;
+//     let userStatus = "Login";
+//     let id = 1; //should be user's id
 //     return (
-//       <div className="ui menu">
-//         <a className="item">Browse</a>
-//         <Link to="/" className="item">
+//       <div className="ui menu header-home">
+//         <Link
+//           to=""
+//           name="home"
+//           active={activeItem === "home"}
+//           className="item a-header"
+//           onClick={this.handleItemClick}
+//         >
 //           Home
 //         </Link>
 //         <div className="right menu">
-//           <Link to="/signup" className="item" onClick={this.handleSignup}>
-//             Sign Up
+//           <Link
+//             to="/signup"
+//             name="signup"
+//             active={activeItem === "signup"}
+//             className="item a-header"
+//             onClick={this.handleItemClick}
+//           >
+//             Signup
 //           </Link>
-//           <Link to="/" className="item" onClick={this.handleClick}>
-//             Login
+
+//           {/* <LoginModal /> */}
+//           <Link
+//             to=""
+//             name="login"
+//             className="item a-header"
+//             onClick={this.handleItemClick}
+//           >
+//             <ModalContainer />
 //           </Link>
+//           {/* <Link
+//             to=""
+//             className={`item a-header ${this.state.logStatus}`}
+//             onClick={this.handleLogStatus}
+//           >
+//             <RandomModal />
+//           </Link> */}
+
+//           {/* <Link
+//             to="/"
+//             className={`item a-header ${this.state.logStatus}`}
+//             onClick={this.handleLogStatus}
+//           >
+//             {userStatus}
+//           </Link> */}
 //           <Link
 //             to="/product/request"
-//             className="item"
-//             onClick={this.handleShip}
+//             name="productrequest"
+//             active={activeItem === "productrequest"}
+//             className="item a-header"
+//             onClick={this.handleItemClick}
 //           >
-//             Get Samples
+//             Samples
+//           </Link>
+//           <Link
+//             to={`/cart/${id}`}
+//             name="cart"
+//             active={activeItem === "cart"}
+//             className="item a-header"
+//             onClick={this.handleItemClick}
+//           >
+//             Cart
 //           </Link>
 //         </div>
 //       </div>
@@ -160,4 +174,10 @@ export default Header;
 //   }
 // }
 
-//export default Header;
+// const mapStateToProps = (state) => {
+//   return {
+//     isSignedIn: state.auth.isSignedIn,
+//   };
+// };
+
+// export default connect(mapStateToProps, { signOut })(Header);
