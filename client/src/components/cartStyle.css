@@ -1,0 +1,21 @@
+/* .cart-price {
+  margin-left: 40% !important;
+} */
+.product-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+a.product-name,
+div.product-price {
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+.delete-product {
+  color: #e90a0a;
+}
+
+.delete-product:hover {
+  color: #d19f9f;
+}
