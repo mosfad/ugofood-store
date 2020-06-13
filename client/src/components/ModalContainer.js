@@ -4,6 +4,8 @@ import { Button, Header, Image, Modal } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { withFormik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import reducers from "../reducers";
+import { createstore } from "redux";
 
 import { signIn, openModal, closeModal } from "../actions";
 
@@ -13,13 +15,25 @@ import "../style.css";
 
 class ModalContainer extends Component {
   //not sure if componentDidUpdate is causing app to auto sign in???
+  //_isMounted = false;
+
+  componentDidMount() {
+    //this._isMounted = true;
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.token && prevProps.token !== this.props.token) {
+    //WHERE DO I SET THE LOCALSTORAGE FOR AUTHORIZATION BEARER??????
+    console.log(`I am in update lifecycle ${prevProps.token}`);
+    console.log(`I am in update lifecycle ${this.props.token}`);
+    if (this.props.modalOpen && this.props.token !== prevProps.token) {
       console.log("Token from server is " + this.props.token);
       localStorage.setItem("userToken", this.props.token);
     }
   }
 
+  componentWillUnmount() {
+    //this._isMounted = false;
+  }
   render() {
     const {
       values,
@@ -31,6 +45,7 @@ class ModalContainer extends Component {
       handleSubmit,
       handleReset,
       isSubmitting,
+      resetForm,
       openModal,
       closeModal,
       modalOpen,
@@ -49,7 +64,7 @@ class ModalContainer extends Component {
           </Link>
         }
         open={modalOpen} //boolean
-        // onClose={this.handleClose}
+        onClose={closeModal} //boolean: closes modal when clicked?
       >
         <Modal.Header>User Login</Modal.Header>
         <Modal.Content>
@@ -115,13 +130,14 @@ const formikEnhancer = withFormik({
     password: "",
   }),
 
-  handleSubmit: (values, { props, setSubmitting }) => {
-    const submit = async () => {
+  handleSubmit: (values, { props, setSubmitting, resetForm }) => {
+    (async () => {
       await props.signIn(values);
       setSubmitting(false);
+      resetForm({});
       props.closeModal();
-    };
-    submit();
+    })();
+
     //props.signIn(payload);
     // const payload = {
     //   ...values,
@@ -130,7 +146,7 @@ const formikEnhancer = withFormik({
     // setTimeout(() => {
     //   alert(JSON.stringify(payload, null, 2));
     //   setSubmitting(false);
-    // }, 1000);
+    // }, 000);
   },
 
   displayName: "ModalContainer",

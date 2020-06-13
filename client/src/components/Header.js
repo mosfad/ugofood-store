@@ -7,9 +7,25 @@ import ModalContainer from "./ModalContainer";
 import LogoutContainer from "./LogoutContainer";
 
 class Header extends Component {
-  state = { activeItem: "home" };
+  state = { activeItem: "home", setModal: false };
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  handleItemClick = (e, { name }) =>
+    this.setState(
+      {
+        activeItem: name,
+      },
+      () => {
+        if (this.state.activeItem === "login") {
+          //??HOW TO MAKE login respond to parent
+          console.log("Login button was clicked!!!");
+          this.setState({ setModal: true }, () => {
+            console.log(`setModal is now ${this.state.setModal}`);
+          });
+        }
+      }
+    );
+
+  // renderLoginModal = () => <ModalContainer />;
 
   render() {
     const { activeItem } = this.state;
@@ -43,7 +59,6 @@ class Header extends Component {
             >
               <ModalContainer />
             </Menu.Item>
-
             <Menu.Item
               as={Link}
               to="/signup"
@@ -81,7 +96,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { signOut })(Header);
+export default connect(mapStateToProps, {
+  signOut,
+})(Header);
 
 // import React, { Component } from "react";
 // import { Link } from "react-router-dom";

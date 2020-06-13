@@ -47,13 +47,18 @@ class Home extends Component {
     console.log(prevProps);
     console.log(this.props);
     //user manually signed in, so fetch the user.
-    if (this.props.isSignedIn && !prevProps.isSignedIn) {
+    if (
+      this.props.isSignedIn &&
+      !prevProps.isSignedIn &&
+      Object.keys(this.props.user).length === 0
+    ) {
       //const token = localStorage.getItem("userToken");
       if (this.props.token) {
         console.log(this.props.token);
         this.props.fetchUser(this.props.token);
       }
     }
+    //user manually signed off, so remove user.
   }
 
   render() {

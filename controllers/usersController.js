@@ -66,7 +66,7 @@ module.exports = {
   getUserInfo: (req, res) => {
     res.json({
       id: req.user._id,
-      firstNname: req.user.firstName,
+      firstName: req.user.firstName,
       lastName: req.user.lastName,
       email: req.user.email,
       isAdmin: req.user.isAdmin,

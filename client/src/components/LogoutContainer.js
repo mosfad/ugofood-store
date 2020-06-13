@@ -3,10 +3,12 @@ import { connect } from "react-redux";
 import { signOut, unfetchUser } from "../actions";
 
 class LogoutContainer extends Component {
-  componentDidMount() {
-    console.log("what's going on with logout????");
-    this.props.signOut();
-  }
+  // This life cycle is unnecessary because it will automatically
+  // sign user out!!!
+  //   componentDidMount() {
+  //     console.log("what's going on with logout????");
+  //      this.props.signOut();
+  //   }
   handleClick = () => {
     console.log("what's going on with logout????");
     (async () => {
