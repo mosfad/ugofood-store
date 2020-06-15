@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchUser, autoSignIn } from "../actions";
 import Products from "../components/ProductDetail";
+import ProductList from "../components/ProductList";
 import LoginModal from "../components/LoginModal";
+import WelcomeMessage from "../components/WelcomeMessage";
 import { object } from "yup";
 
 class Home extends Component {
@@ -54,6 +56,8 @@ class Home extends Component {
     ) {
       //const token = localStorage.getItem("userToken");
       if (this.props.token) {
+        //UPDATE TOKEN SINCE LOGINMODAL IS CAUSING UPDATE WARNINGS.
+        localStorage.setItem("userToken", this.props.token);
         console.log(this.props.token);
         this.props.fetchUser(this.props.token);
       }
@@ -68,8 +72,9 @@ class Home extends Component {
 
     return (
       <div className="ui container">
-        <h1>Homepage</h1>
-        <Products />
+        <WelcomeMessage />
+        {/* <Products /> */}
+        <ProductList />
       </div>
     );
   }

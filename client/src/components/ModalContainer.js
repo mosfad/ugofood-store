@@ -15,24 +15,26 @@ import "../style.css";
 
 class ModalContainer extends Component {
   //not sure if componentDidUpdate is causing app to auto sign in???
-  //_isMounted = false;
+  _isMounted = false;
 
   componentDidMount() {
-    //this._isMounted = true;
+    this._isMounted = true;
   }
 
   componentDidUpdate(prevProps, prevState) {
     //WHERE DO I SET THE LOCALSTORAGE FOR AUTHORIZATION BEARER??????
-    console.log(`I am in update lifecycle ${prevProps.token}`);
-    console.log(`I am in update lifecycle ${this.props.token}`);
-    if (this.props.modalOpen && this.props.token !== prevProps.token) {
-      console.log("Token from server is " + this.props.token);
-      localStorage.setItem("userToken", this.props.token);
+    if (this._isMounted) {
+      console.log(`I am in update lifecycle ${prevProps.token}`);
+      console.log(`I am in update lifecycle ${this.props.token}`);
+      if (this.props.modalOpen && this.props.token !== prevProps.token) {
+        console.log("Token from server is " + this.props.token);
+        localStorage.setItem("userToken", this.props.token);
+      }
     }
   }
 
   componentWillUnmount() {
-    //this._isMounted = false;
+    this._isMounted = false;
   }
   render() {
     const {

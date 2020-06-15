@@ -27,50 +27,29 @@ class ProductDetail extends Component {
     //
   };
   render() {
+    if (!this.props.product) {
+      return <div></div>;
+    }
+    const { name, image, description, ratings } = this.props.product;
     return (
-      <div className="ui internally celled grid product-detail">
-        <div className="centered row">
-          <div className="five wide column">
-            <img
-              className="productdetail-img"
-              src="https://picsum.photos/500/500?grayscale"
-            />
-            <h3>Jollof Rice</h3>
-            <div className="content">
-              <div className="description">pppppppppppppppppp</div>
-              {/* <div className="extra">Reviews</div> */}
+      <React.Fragment>
+        <img className="productdetail-img" src={image} />
+        <h3>{name}</h3>
+        <div className="content">
+          <div className="description product">{description}</div>
+          {/* <div className="extra">Reviews</div> */}
 
-              <div className="extra product-btn">
-                <button className="ui button teal">Get Sample</button>
-                <button className="ui button">Feedback</button>
-              </div>
+          <div className="extra product-btn">
+            <button className="ui button teal">Get Sample</button>
+            <button className="ui button">Feedback</button>
+          </div>
 
-              <div className="extra">
-                Ratings: &nbsp;
-                <Rating rating={4} maxRating={5} />
-              </div>
-            </div>
-            <div class="ui star rating" data-rating="3"></div>
-          </div>
-          <div className="five wide column">
-            <img src="https://picsum.photos/200/200?grayscale" />
-          </div>
-          <div className="five wide column">
-            <img src="https://picsum.photos/200/200?grayscale" />
+          <div className="extra ratings">
+            Ratings: &nbsp;
+            <Rating rating={ratings} maxRating={5} />
           </div>
         </div>
-        <div className="centered row">
-          <div className="five wide column">
-            <img src="https://picsum.photos/200/200?grayscale" />
-          </div>
-          <div className="five wide column">
-            <img src="https://picsum.photos/200/200?grayscale" />
-          </div>
-          <div className="five wide column">
-            <img src="https://picsum.photos/200/200?grayscale" />
-          </div>
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

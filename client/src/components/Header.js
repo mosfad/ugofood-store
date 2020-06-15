@@ -29,6 +29,7 @@ class Header extends Component {
 
   render() {
     const { activeItem } = this.state;
+    const { isSignedIn } = this.props;
     let id = this.props.userId || 1;
 
     return (
@@ -42,23 +43,27 @@ class Header extends Component {
             onClick={this.handleItemClick}
           />
           <Menu.Menu position="right">
-            <Menu.Item
-              as={Link}
-              to="/"
-              name="logout"
-              active={activeItem === "logout"}
-              onClick={this.handleItemClick}
-            >
-              <LogoutContainer />
-            </Menu.Item>
+            {isSignedIn && (
+              <Menu.Item
+                as={Link}
+                to="/"
+                name="logout"
+                active={activeItem === "logout"}
+                onClick={this.handleItemClick}
+              >
+                <LogoutContainer />
+              </Menu.Item>
+            )}
 
-            <Menu.Item
-              name="login"
-              active={activeItem === "login"}
-              onClick={this.handleItemClick}
-            >
-              <ModalContainer />
-            </Menu.Item>
+            {!isSignedIn && (
+              <Menu.Item
+                name="login"
+                active={activeItem === "login"}
+                onClick={this.handleItemClick}
+              >
+                <ModalContainer />
+              </Menu.Item>
+            )}
             <Menu.Item
               as={Link}
               to="/signup"

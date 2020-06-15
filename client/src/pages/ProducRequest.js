@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Agreement from "../components/Agreement";
-import WelcomeMessage from "../components/WelcomeMessage";
+import SignupMessage from "../components/SignupMessage";
 import ShipForm from "../components/ShipForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -17,7 +17,7 @@ const promise = loadStripe("pk_test_ETCveDpi7VkZLFOGMONDOmA500jB2Ad4nO");
 const ProductRequest = () => {
   return (
     <div className="ui container sign-up">
-      <WelcomeMessage />
+      <SignupMessage />
       <ShipForm />
 
       <Elements stripe={promise}>
