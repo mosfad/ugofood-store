@@ -164,7 +164,7 @@ const formikEnhancer = withFormik({
 })(ModalContainer);
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state);
+  //console.log(state);
   return {
     isSignedIn: state.auth.isSignedIn,
     token: state.auth.userToken,

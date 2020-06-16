@@ -18,6 +18,9 @@ const userSchema = new Schema({
       review: { type: String },
     },
     {
+      headline: { type: String },
+    },
+    {
       ratings: { type: Number },
     },
   ],

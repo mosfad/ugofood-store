@@ -18,6 +18,10 @@ export const getAuthUser = (authToken) => {
   });
 };
 
+export const getProducts = () => {
+  return axios.get("/api/products");
+};
+
 export const logOut = () => {
   return axios.get("/api/users/logout");
 };

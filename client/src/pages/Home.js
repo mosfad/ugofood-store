@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser, autoSignIn } from "../actions";
+import { fetchUser, fetchProducts, autoSignIn } from "../actions";
 import Products from "../components/ProductDetail";
 import ProductList from "../components/ProductList";
 import LoginModal from "../components/LoginModal";
@@ -11,7 +11,7 @@ class Home extends Component {
   componentDidMount() {
     (async () => {
       const token = localStorage.getItem("userToken");
-
+      await this.props.fetchProducts();
       if (token) {
         console.log(token);
         console.log(this.props);
@@ -69,23 +69,32 @@ class Home extends Component {
     if (Object.keys(this.props.user).length !== 0) {
       console.log(this.props.user);
     }
-
+    if (Object.keys(this.props.products).length === 0) {
+      return <div></div>;
+    }
+    console.log(this.props);
     return (
       <div className="ui container">
         <WelcomeMessage />
         {/* <Products /> */}
-        <ProductList />
+        <ProductList products={this.props.products} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     isSignedIn: state.auth.isSignedIn,
     token: state.auth.userToken,
     user: state.user,
+    products: state.product,
   };
 };
 
-export default connect(mapStateToProps, { fetchUser, autoSignIn })(Home);
+export default connect(mapStateToProps, {
+  fetchUser,
+  fetchProducts,
+  autoSignIn,
+})(Home);

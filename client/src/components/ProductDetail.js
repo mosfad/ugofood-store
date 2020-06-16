@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Rating } from "semantic-ui-react";
+import { connect } from "react-redux";
 import "./productStyles.css";
 class ProductDetail extends Component {
   // trialInfo = [{
@@ -30,18 +31,25 @@ class ProductDetail extends Component {
     if (!this.props.product) {
       return <div></div>;
     }
-    const { name, image, description, ratings } = this.props.product;
+    const { name, url, description, ratings } = this.props.product;
     return (
       <React.Fragment>
-        <img className="productdetail-img" src={image} />
+        <img className="productdetail-img" src={url} />
         <h3>{name}</h3>
         <div className="content">
           <div className="description product">{description}</div>
           {/* <div className="extra">Reviews</div> */}
 
           <div className="extra product-btn">
-            <button className="ui button teal">Get Sample</button>
-            <button className="ui button">Feedback</button>
+            <button
+              className="ui button teal"
+              onClick={this.handleSampeRequest}
+            >
+              Get Sample
+            </button>
+            <button className="ui button" onClick={this.handleFeedbackRequest}>
+              Feedback
+            </button>
           </div>
 
           <div className="extra ratings">
@@ -54,4 +62,9 @@ class ProductDetail extends Component {
   }
 }
 
-export default ProductDetail;
+const mapStateToProps = (state, ownProps) => {
+  // Get sign-in status, and the id of the product requested(ownProps??)
+  return { isSignedIn: state.auth.isSignedIn };
+};
+
+export default connect(mapStateToProps, null)(ProductDetail);

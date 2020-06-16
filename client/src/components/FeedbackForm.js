@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import reducers from "../reducers";
 import { createstore } from "redux";
 import history from "../utils/history";
-import {} from "../actions";
+import { addProductReview } from "../actions";
 
 class FeedbackForm extends component {
   render() {
@@ -24,9 +24,9 @@ class FeedbackForm extends component {
       isSubmitting,
       resetForm,
     } = this.props;
-    //console.log(this.props);
+    console.log(this.props);
     return (
-      <form class="ui form">
+      <form class="ui form" onSubmit={handleSubmit}>
         <div className="field">
           Overall Ratings: &nbsp;
           <Rating rating={ratings} maxRating={5} />
@@ -41,17 +41,23 @@ class FeedbackForm extends component {
             onBlur={handleBlur}
             onChange={handleChange}
           />
+          {touched.email && errors.headline ? (
+            <div className="ui pointing red basic label">{errors.headline}</div>
+          ) : null}
         </div>
         <div className="field">
-          <label htmlFor="text">Add your review</label>
+          <label htmlFor="review">Add your review</label>
           <textarea
             placeholder="Tell us what you liked and how we can improve? When are you likely to use this product?"
             style={{ minHeight: "100px" }}
             rows="3"
           ></textarea>
+          {touched.email && errors.review ? (
+            <div className="ui pointing red basic label">{errors.review}</div>
+          ) : null}
         </div>
 
-        <button className="ui button" type="submit" onClick={handleSubmit}>
+        <button className="ui button" type="submit">
           Submit
         </button>
       </form>
@@ -61,15 +67,14 @@ class FeedbackForm extends component {
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
-    email: Yup.string().email("Email is invalid").required("Email is required"),
-    password: Yup.string()
-      .min(8, "Password must contain at least 8 characters")
-      .required("Password is required"),
+    headline: Yup.string().required("Please provide a headline. Thanks!"),
+    review: Yup.string().required("Please give a review. Thanks!"),
   }),
 
   mapPropsToValues: (props) => ({
-    email: "",
-    password: "",
+    headline: "",
+    review: "",
+    ratings: 0,
   }),
 
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
@@ -96,12 +101,8 @@ const formikEnhancer = withFormik({
 const mapStateToProps = (state, ownProps) => {
   console.log(state);
   return {
-    isSignedIn: state.auth.isSignedIn,
-    token: state.auth.userToken,
-    modalOpen: state.modal.modalOpen,
+    review: state.user.review,
   };
 };
 
-export default connect(mapStateToProps, { signIn, openModal, closeModal })(
-  formikEnhancer
-);
+export default connect(mapStateToProps, { addProductReview })(formikEnhancer);

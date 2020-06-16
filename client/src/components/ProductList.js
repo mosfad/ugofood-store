@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Rating } from "semantic-ui-react";
+import { connect } from "react-redux";
 import ProductDetail from "./ProductDetail";
+import { fetchProducts } from "../actions";
 import "./productStyles.css";
 
 class ProductList extends Component {
@@ -44,9 +46,14 @@ class ProductList extends Component {
       },
     ],
   };
+  //   componentDidMount() {
+  //     this.props.fetchProducts();
+  //     console.log(this.props);
+  //   }
 
-  renderListOne = () => {
-    return this.state.products
+  renderListOne = (products) => {
+    console.log(products);
+    return products
       .filter((product, index) => index < 3)
       .map((product, index) => {
         console.log(product);
@@ -62,8 +69,9 @@ class ProductList extends Component {
       });
   };
 
-  renderListTwo = () => {
-    return this.state.products
+  renderListTwo = (products) => {
+    console.log(products);
+    return products
       .filter((product, index) => index > 2 && index < 6)
       .map((product, index) => {
         console.log(product);
@@ -80,13 +88,27 @@ class ProductList extends Component {
   };
 
   render() {
+    if (!this.props.products) {
+      return <div></div>;
+    }
+    // const { storeProducts } = this.props.products;
     return (
       <div className="ui internally celled grid product-detail">
-        <div className="centered row">{this.renderListOne()}</div>
-        <div className="centered row">{this.renderListTwo()}</div>
+        <div className="centered row">
+          {this.renderListOne(this.props.products.storeProducts)}
+        </div>
+        <div className="centered row">
+          {this.renderListTwo(this.props.products.storeProducts)}
+        </div>
       </div>
     );
   }
 }
+
+// const mapStateToProps = (state) => {
+//   console.log(state);
+//   return { products: state.products };
+// };
+// export default connect(mapStateToProps, { fetchProducts })(ProductList);
 
 export default ProductList;

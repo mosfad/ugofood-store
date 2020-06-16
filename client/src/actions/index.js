@@ -7,9 +7,17 @@ import {
   CLOSE_MODAL,
   FETCH_USER,
   UNFETCH_USER,
+  FETCH_PRODUCTS,
+  ADD_PRODUCT_REVIEW,
 } from "./types";
 import history from "../utils/history";
-import { logIn, register, getAuthUser, logOut } from "../utils/API";
+import {
+  logIn,
+  register,
+  getAuthUser,
+  logOut,
+  getProducts,
+} from "../utils/API";
 
 // export const signIn = (formValues = {}, token = "") => {
 //   if (token !== "") {
@@ -68,3 +76,19 @@ export const openModal = () => {
 export const closeModal = () => {
   return { type: CLOSE_MODAL };
 };
+
+export const fetchProducts = () => async (dispatch) => {
+  const response = await getProducts();
+  console.log(response);
+  dispatch({ type: FETCH_PRODUCTS, payload: response.data });
+};
+
+// export const addProductReview = (formValues) => async (dispatch) => {
+//   //post product review to the user's db
+//   const response = await reviewProduct(formValues);
+//   dispatch({ type: ADD_PRODUCT_REVIEW, payload: response.data });
+// };
+
+// export const getProductReviews = () => {
+//   //get product reviews from user's db
+// };
