@@ -3,11 +3,28 @@ import { Menu, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { signOut } from "../actions";
-import ModalContainer from "./ModalContainer";
+import LoginModal from "./LoginModal";
 import LogoutContainer from "./LogoutContainer";
 
 class Header extends Component {
   state = { activeItem: "home", setModal: false };
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log(prevProps)
+  //   console.log(this.props)
+  //   console.log(prevState)
+  //   console.log(this.state)
+  // }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log("I am in header update cycle");
+  //   if (
+  //     window.location.pathname === "/" &&
+  //     this.state.activeItem === "signup"
+  //   ) {
+  //     this.setState({ activeItem: "home" });
+  //   }
+  // }
 
   handleItemClick = (e, { name }) =>
     this.setState(
@@ -15,22 +32,25 @@ class Header extends Component {
         activeItem: name,
       },
       () => {
-        if (this.state.activeItem === "login") {
-          //??HOW TO MAKE login respond to parent
-          console.log("Login button was clicked!!!");
-          this.setState({ setModal: true }, () => {
-            console.log(`setModal is now ${this.state.setModal}`);
-          });
+        if (
+          this.state.activeItem === "signup" &&
+          window.location.pathname === "/"
+        ) {
+          console.log("I am in the unwanted sigup condition");
+          this.setState({ activeItem: "home" });
+          // console.log("Login button was clicked!!!");
+          // this.setState({ setModal: true }, () => {
+          //   console.log(`setModal is now ${this.state.setModal}`);
+          //});
         }
       }
     );
-
-  // renderLoginModal = () => <ModalContainer />;
 
   render() {
     const { activeItem } = this.state;
     const { isSignedIn } = this.props;
     let id = this.props.userId || 1;
+    console.log(window.location.pathname);
 
     return (
       <Segment inverted>
@@ -39,7 +59,7 @@ class Header extends Component {
             as={Link}
             to="/"
             name="home"
-            active={activeItem === "home"}
+            active={activeItem === "home" && window.location.pathname === "/"}
             onClick={this.handleItemClick}
           />
           <Menu.Menu position="right">
@@ -58,17 +78,22 @@ class Header extends Component {
             {!isSignedIn && (
               <Menu.Item
                 name="login"
-                active={activeItem === "login"}
+                active={
+                  activeItem === "login" && window.location.pathname === "/"
+                }
                 onClick={this.handleItemClick}
               >
-                <ModalContainer />
+                <LoginModal />
               </Menu.Item>
             )}
             <Menu.Item
               as={Link}
               to="/signup"
               name="signup"
-              active={activeItem === "signup"}
+              active={
+                activeItem === "signup" ||
+                window.location.pathname === "/signup"
+              }
               onClick={this.handleItemClick}
             />
             <Menu.Item
@@ -94,7 +119,8 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  console.log(ownProps);
   return {
     isSignedIn: state.auth.isSignedIn,
     userId: Object.keys(state.user)[0],

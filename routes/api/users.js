@@ -39,6 +39,16 @@ router.route("/logout").get(usersController.logoutUser);
 // @access Public
 router.route("/remove/:id").delete(usersController.deleteUser);
 
+// @route  Post api/users/addreview/:productid
+// @desc   Add review from signed-in user.
+// @access Public
+router.route("/addreview/:productid").post(usersController.addReview);
+
+// @route  Get api/users/addreview/:productid
+// @desc   Sample request from signed-in user.
+// @access Public
+router.route("/requestproduct/:productid").get(usersController.requestSample);
+
 //matches with "/api/users"
 //router.route("/").get(usersController.findAll).post(usersController.createUser);
 

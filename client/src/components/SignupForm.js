@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { register } from "../utils/API";
+import LoginModal from "./LoginModal";
 import "./forms.css";
 class SignupForm extends Component {
   render() {
@@ -182,7 +183,9 @@ class SignupForm extends Component {
         <br />
         <div className="warn-message">
           <i className="icon help"></i>
-          Already signed up? <a href="#">Login here</a> instead.
+          Already signed up? &nbsp;
+          <LoginModal style={{ color: "#4183c4" }} />
+          &nbsp; instead.
         </div>
       </div>
     );

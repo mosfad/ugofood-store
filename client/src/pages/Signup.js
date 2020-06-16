@@ -5,6 +5,9 @@ import "../style.css";
 import SignupMessage from "../components/SignupMessage";
 
 class Signup extends Component {
+  componentDidMount() {
+    console.log(this.props.match);
+  }
   render() {
     return (
       <div className="ui container sign-up">

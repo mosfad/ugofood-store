@@ -21,6 +21,10 @@ body {
   /* padding: 15.6px 19.2px; */
 }
 
+#modal-btn-text:first-child:hover {
+  color: #ffffff;
+}
+
 a.item.a-header.active:hover {
   /* border-bottom: solid white !important; */
   /* margin-bottom: 1px !important; */
@@ -66,4 +70,12 @@ button.ui.button.shoppingcart-button {
 
 .ui.container.sign-up {
   width: 50%;
+}
+
+/* div.warn-message.signup-link {
+  text-align: center !important;
+} */
+
+.ui.modal > .actions {
+  text-align: left;
 }

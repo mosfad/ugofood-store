@@ -267,16 +267,37 @@ module.exports = {
     )
       .then((dbUser) => {
         //update `isOverLimit` if user has maxed out sample requests.
-        if (dbUser.samplesRequested.length > 11) {
-          db.User.findOneAndUpdate({ _id: dbUser._id }, { isOverLimit: true })
-            .then((dbUser) =>
-              res.json({
-                Success: "Update was successful, but sample limit reached",
-              })
-            )
-            .catch((err) => res.status(422).json(err));
-        }
+        // if (dbUser.samplesRequested.length > 11) {
+        //   db.User.findOneAndUpdate({ _id: dbUser._id }, { isOverLimit: true })
+        //     .then((dbUser) =>
+        //       res.json({
+        //         Success: "Update was successful, but sample limit reached",
+        //       })
+        //     )
+        //     .catch((err) => res.status(422).json(err));
+        // }
         res.json({ Success: "Update was successful" });
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //add reviews from users who have tried the samples.
+  addReview: (req, res) => {
+    if (!req.user) {
+      return res.json({ failure: "User not logged in" });
+    }
+    db.User.findOneAndUpdate(
+      { _id: req.user._id, "sampleRequested.productId": req.params.id },
+      {
+        $set: {
+          "sampleRequested.$.review": req.body.review,
+          "sampleRequested.$.ratings": req.body.ratings,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        res.json(dbUser);
       })
       .catch((err) => res.status(422).json(err));
   },

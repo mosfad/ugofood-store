@@ -12,13 +12,24 @@ const userSchema = new Schema({
   requestedProducts: [{ type: Schema.Types.ObjectId, ref: "Product" }],
   samplesRequested: [
     {
-      id: { type: Schema.Types.ObjectId, ref: "Product" },
+      productId: { type: Schema.Types.ObjectId, ref: "Product" },
     },
     {
       review: { type: String },
     },
     {
       ratings: { type: Number },
+    },
+  ],
+  cart: [
+    {
+      productId: { type: Schema.Types.ObjectId, ref: "Product" },
+    },
+    {
+      quantity: { type: Number },
+    },
+    {
+      status: { type: String, default: "Clear" },
     },
   ],
   isAdmin: { type: Boolean, default: false },

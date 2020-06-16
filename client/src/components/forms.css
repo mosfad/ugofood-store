@@ -4,3 +4,7 @@
 #reset-btn {
   margin-left: 30px;
 }
+
+#modal-btn-text:nth-child(2) {
+  color: #4183c4;
+}
