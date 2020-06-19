@@ -68,8 +68,13 @@ button.ui.button.shoppingcart-button {
   margin-right: 5%;
 }
 
-.ui.container.sign-up {
-  width: 50%;
+div.ui.container.sign-up,
+div.ui.container.feedback {
+  width: 50% !important;
+}
+
+div.ui.container.feedbackmessage {
+  margin-bottom: 5rem;
 }
 
 /* div.warn-message.signup-link {

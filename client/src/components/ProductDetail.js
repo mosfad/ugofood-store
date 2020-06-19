@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Rating } from "semantic-ui-react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import "./productStyles.css";
 class ProductDetail extends Component {
   // trialInfo = [{
@@ -27,11 +28,25 @@ class ProductDetail extends Component {
   handleFeedbackRequest = () => {
     //
   };
+
+  handleClick = (e) => {
+    //
+    e.preventDefault();
+    const { value, name } = e.target;
+    if (!this.props.isSignedIn && name === "feedback") {
+      alert("Please sign-in or sign-up to give a review. Thanks!");
+    } else if (!this.props.isSignedIn && name === "ordersample") {
+      alert("Please sign-in or sign-up to order a sample.");
+    }
+  };
+
   render() {
     if (!this.props.product) {
       return <div></div>;
     }
-    const { name, url, description, ratings } = this.props.product;
+    const { name, url, description, ratings, _id } = this.props.product;
+    const feedbackUrl = this.props.isSignedIn ? `/feedback/${_id}` : "/";
+    const getSampleUrl = this.props.isSignedIn ? `/ordersample/${_id}` : "/";
     return (
       <React.Fragment>
         <img className="productdetail-img" src={url} />
@@ -41,15 +56,24 @@ class ProductDetail extends Component {
           {/* <div className="extra">Reviews</div> */}
 
           <div className="extra product-btn">
-            <button
+            <Link
+              to={getSampleUrl}
+              name="ordersample"
+              productid={_id}
+              onClick={this.handleClick}
               className="ui button teal"
-              onClick={this.handleSampeRequest}
             >
               Get Sample
-            </button>
-            <button className="ui button" onClick={this.handleFeedbackRequest}>
+            </Link>
+            <Link
+              to={feedbackUrl}
+              name="feedback"
+              productid={_id}
+              onClick={this.handleClick}
+              className="ui button"
+            >
               Feedback
-            </button>
+            </Link>
           </div>
 
           <div className="extra ratings">

@@ -287,9 +287,11 @@ module.exports = {
       return res.json({ failure: "User not logged in" });
     }
     db.User.findOneAndUpdate(
-      { _id: req.user._id, "sampleRequested.productId": req.params.id },
+      { _id: req.user._id },
       {
         $set: {
+          "sampleRequested.$.productId": req.params.id,
+          "sampleRequested.$.headline": req.body.headline,
           "sampleRequested.$.review": req.body.review,
           "sampleRequested.$.ratings": req.body.ratings,
         },

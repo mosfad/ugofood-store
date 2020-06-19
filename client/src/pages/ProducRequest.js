@@ -17,7 +17,6 @@ const promise = loadStripe("pk_test_ETCveDpi7VkZLFOGMONDOmA500jB2Ad4nO");
 const ProductRequest = () => {
   return (
     <div className="ui container sign-up">
-      <SignupMessage />
       <ShipForm />
 
       <Elements stripe={promise}>

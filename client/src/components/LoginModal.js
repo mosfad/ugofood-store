@@ -36,6 +36,7 @@ class ModalContainer extends Component {
 
   componentWillUnmount() {
     this._isMounted = false;
+    this.props.closeModal();
   }
   render() {
     const {

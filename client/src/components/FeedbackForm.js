@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import { Ratings } from "semantic-ui-react";
+import { Rating } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import { withFormik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import reducers from "../reducers";
-import { createstore } from "redux";
-import history from "../utils/history";
+//import reducers from "../reducers";
+//import { createstore } from "redux";
+//import history from "../utils/history";
 import { addProductReview } from "../actions";
+import "./forms.css";
 
-class FeedbackForm extends component {
+class FeedbackForm extends Component {
   render() {
     const {
       values,
@@ -21,18 +22,31 @@ class FeedbackForm extends component {
       handleBlur,
       handleSubmit,
       handleReset,
+      handleClick,
       isSubmitting,
       resetForm,
+      setFieldValue,
     } = this.props;
     console.log(this.props);
+    console.log(window.location.pathname.slice(10));
     return (
-      <form class="ui form" onSubmit={handleSubmit}>
-        <div className="field">
-          Overall Ratings: &nbsp;
-          <Rating rating={ratings} maxRating={5} />
+      <form className="ui form feedback" onSubmit={handleSubmit}>
+        <div className="field feedback" name="rating">
+          <span className="feedback-ratings-header">Overall Ratings:</span>{" "}
+          &nbsp;
+          <Rating
+            name="rating"
+            onRate={(e, { rating }) => {
+              setFieldValue("rating", rating);
+            }}
+            rating={values.rating}
+            maxRating={5}
+          />
         </div>
-        <div className="field">
-          <label htmlFor="headline">Add a headline of review</label>
+        <div className="field feedback">
+          <label htmlFor="headline">
+            <h4>Add a headline of review</h4>
+          </label>
           <input
             type="text"
             name="headline"
@@ -41,18 +55,24 @@ class FeedbackForm extends component {
             onBlur={handleBlur}
             onChange={handleChange}
           />
-          {touched.email && errors.headline ? (
+          {touched.headline && errors.headline ? (
             <div className="ui pointing red basic label">{errors.headline}</div>
           ) : null}
         </div>
-        <div className="field">
-          <label htmlFor="review">Add your review</label>
+        <div className="field feedback">
+          <label htmlFor="review">
+            <h4>Add your review</h4>
+          </label>
           <textarea
+            name="review"
             placeholder="Tell us what you liked and how we can improve? When are you likely to use this product?"
             style={{ minHeight: "100px" }}
             rows="3"
+            value={values.review}
+            onBlur={handleBlur}
+            onChange={handleChange}
           ></textarea>
-          {touched.email && errors.review ? (
+          {touched.review && errors.review ? (
             <div className="ui pointing red basic label">{errors.review}</div>
           ) : null}
         </div>
@@ -72,27 +92,16 @@ const formikEnhancer = withFormik({
   }),
 
   mapPropsToValues: (props) => ({
+    id: window.location.pathname.slice(10),
     headline: "",
     review: "",
-    ratings: 0,
+    rating: 0,
   }),
 
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
-    (async () => {
-      await props.signIn(values);
-      setSubmitting(false);
-      resetForm({});
-    })();
-
-    //props.signIn(payload);
-    // const payload = {
-    //   ...values,
-    // };
-
-    // setTimeout(() => {
-    //   alert(JSON.stringify(payload, null, 2));
-    //   setSubmitting(false);
-    // }, 000);
+    props.addProductReview(props.id, values);
+    setSubmitting(false);
+    resetForm();
   },
 
   displayName: "FeedbackForm",

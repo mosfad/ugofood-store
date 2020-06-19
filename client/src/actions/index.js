@@ -17,6 +17,7 @@ import {
   getAuthUser,
   logOut,
   getProducts,
+  reviewProduct,
 } from "../utils/API";
 
 // export const signIn = (formValues = {}, token = "") => {
@@ -83,11 +84,11 @@ export const fetchProducts = () => async (dispatch) => {
   dispatch({ type: FETCH_PRODUCTS, payload: response.data });
 };
 
-// export const addProductReview = (formValues) => async (dispatch) => {
-//   //post product review to the user's db
-//   const response = await reviewProduct(formValues);
-//   dispatch({ type: ADD_PRODUCT_REVIEW, payload: response.data });
-// };
+export const addProductReview = (id, formValues) => async (dispatch) => {
+  //post product review to the user's db
+  const response = await reviewProduct(id, formValues);
+  dispatch({ type: ADD_PRODUCT_REVIEW, payload: response.data });
+};
 
 // export const getProductReviews = () => {
 //   //get product reviews from user's db

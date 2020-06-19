@@ -22,6 +22,10 @@ export const getProducts = () => {
   return axios.get("/api/products");
 };
 
+export const reviewProduct = (id, formData) => {
+  return axios.post(`/api/products/${id}`, formData);
+};
+
 export const logOut = () => {
   return axios.get("/api/users/logout");
 };

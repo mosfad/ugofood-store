@@ -8,3 +8,12 @@
 #modal-btn-text:nth-child(2) {
   color: #4183c4;
 }
+
+span.feedback-ratings-header {
+  font-size: 1.07142857rem;
+  font-weight: 700;
+}
+
+div.field.feedback {
+  margin: 0 0 2rem 0 !important;
+}

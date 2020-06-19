@@ -98,7 +98,7 @@ class Header extends Component {
             />
             <Menu.Item
               as={Link}
-              to="/ordersample"
+              to="/ordersample/3"
               name="ordersample"
               active={activeItem === "ordersample"}
               onClick={this.handleItemClick}
