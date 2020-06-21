@@ -8,7 +8,11 @@ import {
   FETCH_USER,
   UNFETCH_USER,
   FETCH_PRODUCTS,
+  FETCH_CART,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
   ADD_PRODUCT_REVIEW,
+  UPDATE_CART_ITEM_QTY,
 } from "./types";
 import history from "../utils/history";
 import {
@@ -18,6 +22,10 @@ import {
   logOut,
   getProducts,
   reviewProduct,
+  getCartItems,
+  incrementCart,
+  decrementCart,
+  updateCartItem,
 } from "../utils/API";
 
 // export const signIn = (formValues = {}, token = "") => {
@@ -80,16 +88,39 @@ export const closeModal = () => {
 
 export const fetchProducts = () => async (dispatch) => {
   const response = await getProducts();
-  console.log(response);
   dispatch({ type: FETCH_PRODUCTS, payload: response.data });
 };
 
-export const addProductReview = (id, formValues) => async (dispatch) => {
-  //post product review to the user's db
-  const response = await reviewProduct(id, formValues);
+export const addProductReview = (productId, formValues) => async (dispatch) => {
+  // post product review to the user's db
+  const response = await reviewProduct(productId, formValues);
   dispatch({ type: ADD_PRODUCT_REVIEW, payload: response.data });
 };
 
+export const fetchCart = (userId) => async (dispatch) => {
+  // display the items in the cart from db.
+  const response = await getCartItems(userId);
+  dispatch({ type: FETCH_CART, payload: response.data });
+};
+
+export const addToCart = (userId, formValues) => async (dispatch) => {
+  // add product to cart(in db) from the homepage
+  const response = await incrementCart(userId, formValues);
+  dispatch({ type: ADD_TO_CART, payload: response.data });
+};
+
+export const updateCartQty = (userId, formValues) => async (dispatch) => {
+  // update cart item quantity in db from shopppingcart page.
+  const response = await updateCartItem(userId, formValues);
+  dispatch({ type: UPDATE_CART_ITEM_QTY, payload: response.data });
+};
+
+export const removeFromCart = (userId, itemId) => async (dispatch) => {
+  //remove product from cart(in db) from the shoppingcart page
+  console.log(itemId);
+  const response = await decrementCart(userId, itemId);
+  dispatch({ type: REMOVE_FROM_CART, payload: response.data });
+};
 // export const getProductReviews = () => {
 //   //get product reviews from user's db
 // };

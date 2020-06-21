@@ -289,11 +289,90 @@ module.exports = {
     db.User.findOneAndUpdate(
       { _id: req.user._id },
       {
-        $set: {
+        $push: {
           "sampleRequested.$.productId": req.params.id,
           "sampleRequested.$.headline": req.body.headline,
           "sampleRequested.$.review": req.body.review,
           "sampleRequested.$.ratings": req.body.ratings,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        res.json(dbUser);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //get cart info
+  getCartInfo: (req, res) => {
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    db.User.findOne({ _id: req.params.userid })
+      .populate("cart.productId")
+      .then((dbModel) => {
+        res.json(dbModel.cart);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //add item to the cart
+  incrementCart: (req, res) => {
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    console.log(req.params.userid);
+    const newEntry = {
+      productId: req.body.id,
+      // name: req.body.name,
+      // description: req.body.description,
+      // url: req.body.url,
+      quantity: req.body.quantity,
+      status: req.body.status,
+    };
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $push: {
+          cart: newEntry,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        res.json(dbUser.cart);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //remove item from the cart(including multiple entries)
+  decrementCart: (req, res) => {
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $pull: {
+          cart: { productId: req.params.itemid },
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        res.json(dbUser);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //update cart item(e.g quantity)
+  updateCartItem: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid, "cart.productId": req.body.id },
+      {
+        $set: {
+          "cart.$.quantity": req.body.quantity,
         },
       },
       { new: true }
@@ -316,3 +395,18 @@ module.exports = {
       .catch((err) => res.status(422).json);
   },
 };
+
+// $push: {
+//   "cart.$.productId": req.body.id,
+//   "cart.$.name": req.body.name,
+//   "cart.$.description": req.body.description,
+//   "cart.$.url": req.body.url,
+//   "cart.$.quantity": req.body.quantity,
+//   "cart.$.status": req.body.status,
+// }
+
+// $pull: {
+//   "cart.$.productId": req.body.id,
+//   "cart.$.quantity": req.body.quantity,
+//   "cart.$.status": req.body.status,
+// },

@@ -13,26 +13,20 @@ const userSchema = new Schema({
   samplesRequested: [
     {
       productId: { type: Schema.Types.ObjectId, ref: "Product" },
-    },
-    {
       review: { type: String },
-    },
-    {
       headline: { type: String },
-    },
-    {
       ratings: { type: Number },
     },
   ],
   cart: [
     {
+      _id: false,
       productId: { type: Schema.Types.ObjectId, ref: "Product" },
-    },
-    {
+      // name: { type: String },
+      // description: { type: String },
+      // url: { type: String },
       quantity: { type: Number },
-    },
-    {
-      status: { type: String, default: "Clear" },
+      status: { type: String },
     },
   ],
   isAdmin: { type: Boolean, default: false },

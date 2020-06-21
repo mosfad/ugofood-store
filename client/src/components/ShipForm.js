@@ -1,11 +1,14 @@
 import React, { Component } from "react";
+import { Message } from "semantic-ui-react";
 
 class ShipForm extends Component {
   render() {
     return (
       <form className="ui large form">
-        <h2>Checkout Order</h2>
-        <div className="ui divider"></div>
+        <div className="field">
+          <label>Total Cost</label>
+          <Message>$10.00</Message>
+        </div>
         <div className="field">
           <label>Name</label>
           <div className="two fields">

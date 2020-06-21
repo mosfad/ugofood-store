@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Rating } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { addToCart } from "../actions";
 import "./productStyles.css";
 class ProductDetail extends Component {
   // trialInfo = [{
@@ -30,13 +31,23 @@ class ProductDetail extends Component {
   };
 
   handleClick = (e) => {
-    //
-    e.preventDefault();
+    //e.preventDefault() is preventing Link from executing normal
+    //behavior.
+    //e.preventDefault();
     const { value, name } = e.target;
     if (!this.props.isSignedIn && name === "feedback") {
       alert("Please sign-in or sign-up to give a review. Thanks!");
-    } else if (!this.props.isSignedIn && name === "ordersample") {
+    } else if (!this.props.isSignedIn && name === "add-to-cart") {
       alert("Please sign-in or sign-up to order a sample.");
+    } else if (this.props.isSignedIn && name === "add-to-cart") {
+      //add to sample to authd user's cart.
+      const productValues = {
+        id: this.props.product._id,
+        quantity: 1,
+        status: "active",
+      };
+      const userId = Object.keys(this.props.userId)[0];
+      this.props.addToCart(userId, productValues);
     }
   };
 
@@ -46,7 +57,7 @@ class ProductDetail extends Component {
     }
     const { name, url, description, ratings, _id } = this.props.product;
     const feedbackUrl = this.props.isSignedIn ? `/feedback/${_id}` : "/";
-    const getSampleUrl = this.props.isSignedIn ? `/ordersample/${_id}` : "/";
+    const cartUrl = this.props.isSignedIn ? `/cart/${_id}` : "/";
     return (
       <React.Fragment>
         <img className="productdetail-img" src={url} />
@@ -57,8 +68,8 @@ class ProductDetail extends Component {
 
           <div className="extra product-btn">
             <Link
-              to={getSampleUrl}
-              name="ordersample"
+              to={cartUrl}
+              name="add-to-cart"
               productid={_id}
               onClick={this.handleClick}
               className="ui button teal"
@@ -88,7 +99,10 @@ class ProductDetail extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   // Get sign-in status, and the id of the product requested(ownProps??)
-  return { isSignedIn: state.auth.isSignedIn };
+  return {
+    isSignedIn: state.auth.isSignedIn,
+    userId: state.user,
+  };
 };
 
-export default connect(mapStateToProps, null)(ProductDetail);
+export default connect(mapStateToProps, { addToCart })(ProductDetail);

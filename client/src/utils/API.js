@@ -22,10 +22,25 @@ export const getProducts = () => {
   return axios.get("/api/products");
 };
 
-export const reviewProduct = (id, formData) => {
-  return axios.post(`/api/products/${id}`, formData);
+export const reviewProduct = (productId, formData) => {
+  return axios.post(`/api/products/${productId}`, formData);
 };
 
+export const getCartItems = (userId) => {
+  return axios.get(`/api/users/cart/${userId}`);
+};
+
+export const incrementCart = (userId, formData) => {
+  return axios.post(`/api/users/cart/${userId}`, formData);
+};
+
+export const decrementCart = (userId, itemId) => {
+  return axios.delete(`/api/users/cart/${userId}/${itemId}`, itemId);
+};
+
+export const updateCartItem = (userId, cartData) => {
+  return axios.post(`/api/users/cart/update/${userId}`, cartData);
+};
 export const logOut = () => {
   return axios.get("/api/users/logout");
 };
