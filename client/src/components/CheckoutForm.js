@@ -15,6 +15,7 @@ const CheckoutForm = () => {
   useEffect(() => {
     (async () => {
       const response = await axios.post("/api/payment_intents", {
+        //calculate payment in the server. Only get cart items.
         items: [{ id: "jollof rice" }],
       });
       console.log(response);

@@ -322,7 +322,7 @@ module.exports = {
     // if (!req.user) {
     //   return res.json({ failure: "User not logged in" });
     // }
-    console.log(req.params.userid);
+    //console.log(req.params.userid);
     const newEntry = {
       productId: req.body.id,
       // name: req.body.name,
@@ -340,8 +340,13 @@ module.exports = {
       },
       { new: true }
     )
+      .populate("cart.productId")
       .then((dbUser) => {
-        res.json(dbUser.cart);
+        //filter array to return succesfully added item
+        const cartItem = dbUser.cart.filter(
+          (item, index) => item.productId._id.toString() === req.body.id
+        );
+        res.json(cartItem);
       })
       .catch((err) => res.status(422).json(err));
   },
@@ -357,11 +362,17 @@ module.exports = {
         $pull: {
           cart: { productId: req.params.itemid },
         },
-      },
-      { new: true }
+      }
     )
+      .populate("cart.productId")
       .then((dbUser) => {
-        res.json(dbUser);
+        //console.log(dbUser);
+        //filter array to return succesfully deleted item
+        const cartItem = dbUser.cart.filter(
+          (item, index) => item.productId._id.toString() === req.params.itemid
+        );
+        //console.log(cartItem);
+        res.json(cartItem);
       })
       .catch((err) => res.status(422).json(err));
   },
@@ -377,8 +388,15 @@ module.exports = {
       },
       { new: true }
     )
+      .populate("cart.productId")
       .then((dbUser) => {
-        res.json(dbUser);
+        //console.log(dbUser);
+        //filter array to return succesfully updated item
+        const cartItem = dbUser.cart.filter(
+          (item, index) => item.productId._id.toString() === req.body.id
+        );
+        //console.log(cartItem);
+        res.json(cartItem);
       })
       .catch((err) => res.status(422).json(err));
   },

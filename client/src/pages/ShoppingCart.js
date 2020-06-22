@@ -7,6 +7,7 @@ import {
   fetchCart,
   fetchUser,
   autoSignIn,
+  resetCartQtyStatus,
 } from "../actions";
 import CartList from "../components/CartList";
 import "../style.css";
@@ -22,6 +23,22 @@ class ShoppingCart extends Component {
         this.props.fetchCart(this.props.userId[0]);
       }
     })();
+  }
+
+  componentDidUpdate(prevProps) {
+    //fetch cart when updates are made to items in the cart.
+    if (
+      prevProps.cart.items.length !== this.props.cart.items.length ||
+      (this.props.cart.qtyUpdated &&
+        prevProps.cart.qtyUpdated !== this.props.cart.qtyUpdated)
+    )
+      (async () => {
+        await this.props.fetchCart(this.props.userId[0]);
+        //reset quantity updater flag after successful update and fetch
+        if (this.props.cart.qtyUpdated) {
+          this.props.resetCartQtyStatus();
+        }
+      })();
   }
 
   authenticateUser = async () => {
@@ -41,6 +58,16 @@ class ShoppingCart extends Component {
         console.log("User must manually sign in");
       }
     }
+  };
+
+  getOrderTotal = () => {
+    //Sum displayed for user's benefit; actual tally is done in server.
+    let sum = 0;
+    for (let eachItem of this.props.cart.items) {
+      sum += eachItem.productId.price * eachItem.quantity;
+    }
+    console.log(sum);
+    return sum;
   };
 
   onChangeCartQty = (user, payload) => {
@@ -79,10 +106,14 @@ class ShoppingCart extends Component {
         />
         <div className="ui container divider"></div>
         <div className="ui container right aligned shoppingcart-subtotal">
-          <button className="ui button shoppingcart-button">
+          <Link
+            to={`/ordersample/${this.props.userId[0]}`}
+            className="ui button shoppingcart-button"
+          >
             Proceed to checkout
-          </button>
-          Subtotal(2 items):&nbsp;&nbsp; $22.00
+          </Link>
+          Subtotal({this.props.cart.items.length} items):&nbsp;&nbsp;{" "}
+          {this.getOrderTotal()}
         </div>
       </div>
     );
@@ -102,4 +133,5 @@ export default connect(mapStateToProps, {
   fetchCart,
   fetchUser,
   autoSignIn,
+  resetCartQtyStatus,
 })(ShoppingCart);

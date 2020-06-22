@@ -35,7 +35,7 @@ export const incrementCart = (userId, formData) => {
 };
 
 export const decrementCart = (userId, itemId) => {
-  return axios.delete(`/api/users/cart/${userId}/${itemId}`, itemId);
+  return axios.delete(`/api/users/cart/${userId}/${itemId}`);
 };
 
 export const updateCartItem = (userId, cartData) => {

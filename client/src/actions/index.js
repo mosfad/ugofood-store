@@ -13,6 +13,7 @@ import {
   REMOVE_FROM_CART,
   ADD_PRODUCT_REVIEW,
   UPDATE_CART_ITEM_QTY,
+  RESET_CART_QTY_STATUS,
 } from "./types";
 import history from "../utils/history";
 import {
@@ -115,6 +116,9 @@ export const updateCartQty = (userId, formValues) => async (dispatch) => {
   dispatch({ type: UPDATE_CART_ITEM_QTY, payload: response.data });
 };
 
+export const resetCartQtyStatus = () => {
+  return { type: RESET_CART_QTY_STATUS };
+};
 export const removeFromCart = (userId, itemId) => async (dispatch) => {
   //remove product from cart(in db) from the shoppingcart page
   console.log(itemId);

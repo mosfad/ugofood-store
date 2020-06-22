@@ -17,7 +17,7 @@ class CartDetails extends Component {
     console.log(this.props);
     const productData = { id: this.props.item.productId._id, quantity: value };
     await this.props.onChangeCartQty(this.props.userId, productData);
-    window.location.reload(false);
+    //window.location.reload(false);
   };
 
   handleClick = async (event) => {
@@ -27,7 +27,7 @@ class CartDetails extends Component {
       this.props.userId,
       this.props.item.productId._id
     );
-    window.location.reload(false);
+    //window.location.reload(false);
   };
 
   render() {
@@ -41,7 +41,7 @@ class CartDetails extends Component {
           <div className="product-container">
             <a className="product-name">{this.props.item.productId.name}</a>
             <div className="product-price">
-              {this.props.item.productId.price}
+              {this.props.item.productId.price * this.props.item.quantity}
             </div>
           </div>
 
