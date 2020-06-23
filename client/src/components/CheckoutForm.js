@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
 
-const CheckoutForm = () => {
+const CheckoutForm = (props) => {
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState("");
@@ -14,14 +14,22 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     (async () => {
+      console.log(props);
       const response = await axios.post("/api/payment_intents", {
         //calculate payment in the server. Only get cart items.
-        items: [{ id: "jollof rice" }],
+        // items: props.orderItems,
+        items: props.orderItems.map((item, index) => {
+          return {
+            id: item.productId._id,
+            name: item.productId.name,
+            quantity: item.quantity,
+          };
+        }),
       });
       console.log(response);
       setClientSecret(response.data.clientSecret);
     })();
-  }, []);
+  }, [props.orderItems.length]);
 
   const cardElementOptions = {
     style: {

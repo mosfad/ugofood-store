@@ -96,7 +96,7 @@ class Header extends Component {
               }
               onClick={this.handleItemClick}
             />
-            <Menu.Item
+            {/* <Menu.Item
               as={Link}
               to="/ordersample/3"
               name="ordersample"
@@ -104,7 +104,7 @@ class Header extends Component {
               onClick={this.handleItemClick}
             >
               Order Sample
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item
               as={Link}
               to={`/cart/${id}`}

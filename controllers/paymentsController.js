@@ -23,10 +23,12 @@ module.exports = {
   },*/
   PaymentIntent: async (req, res) => {
     const { items } = req.body;
+    const amount = await calculateOrderAmount(items);
+    console.log("Payment amount is " + amount);
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
       //error here!!!! How to call `calculateOrderAmount` inside `PaymentIntent`?????????????? CURRENT ERROR.
-      amount: calculateOrderAmount(items),
+      amount: amount,
       currency: "usd",
     });
     res.send({

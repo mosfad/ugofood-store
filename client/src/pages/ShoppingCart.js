@@ -107,7 +107,7 @@ class ShoppingCart extends Component {
         <div className="ui container divider"></div>
         <div className="ui container right aligned shoppingcart-subtotal">
           <Link
-            to={`/ordersample/${this.props.userId[0]}`}
+            to={`/checkoutorder/${this.props.userId[0]}`}
             className="ui button shoppingcart-button"
           >
             Proceed to checkout

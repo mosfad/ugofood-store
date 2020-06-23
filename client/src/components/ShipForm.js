@@ -7,7 +7,7 @@ class ShipForm extends Component {
       <form className="ui large form">
         <div className="field">
           <label>Total Cost</label>
-          <Message>$10.00</Message>
+          <Message>{this.props.total}</Message>
         </div>
         <div className="field">
           <label>Name</label>
