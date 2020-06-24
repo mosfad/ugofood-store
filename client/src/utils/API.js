@@ -41,6 +41,19 @@ export const decrementCart = (userId, itemId) => {
 export const updateCartItem = (userId, cartData) => {
   return axios.post(`/api/users/cart/update/${userId}`, cartData);
 };
+
+export const getOrders = (userId) => {
+  return axios.get(`/api/users/order/${userId}`);
+};
+
+export const addNewOrder = (userId) => {
+  return axios.post(`/api/users/order/${userId}`);
+};
+
+export const updateOrder = (userId) => {
+  return axios.post(`/api/users/order/update/${userId}`);
+};
+
 export const logOut = () => {
   return axios.get("/api/users/logout");
 };

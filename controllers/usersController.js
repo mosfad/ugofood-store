@@ -8,6 +8,7 @@ require("dotenv").config();
 const db = require("../models");
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
+const { RSA_NO_PADDING } = require("constants");
 
 module.exports = {
   findAll: (req, res) => {
@@ -254,7 +255,7 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
-  //request sample
+  //request sample??????????????????????????????????????????
   requestSample: (req, res) => {
     //
     if (!req.user) {
@@ -281,7 +282,7 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
-  //add reviews from users who have tried the samples.
+  //add reviews from users who have tried the samples.??????????????????
   addReview: (req, res) => {
     if (!req.user) {
       return res.json({ failure: "User not logged in" });
@@ -400,6 +401,77 @@ module.exports = {
       })
       .catch((err) => res.status(422).json(err));
   },
+
+  //get customer's orders.
+  getOrders: (req, res) => {
+    db.User.findOne({ _id: req.params.userid })
+      .then((dbUser) => res.json(dbUser.orders))
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //add new order the customer's `orders` list.
+  addNewOrder: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $push: {
+          orders: req.body,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        //filter array to return succesfully added item
+        const orderItem = dbUser.orders.filter(
+          (item, index) => item.product.name === req.body.name
+        );
+        res.json(orderItem);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //update status and completion date of an order.
+  updateOrder: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid, "orders._id": req.body.id },
+      {
+        $set: {
+          "orders.$.status": req.body.status,
+          "orders.$.completedOrderAt": req.body.completedOrderAt,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        //filter array to return succesfully updated item
+        // const orderItem = dbUser.orders.filter(
+        //   (item, index) => item._id.toString() === req.body.id
+        // );
+        //Todo: Empty cart on completed order.
+        db.User.findOneAndUpdate(
+          { _id: req.params.userid },
+          {
+            $set: {
+              cart: [],
+            },
+          },
+          { new: true }
+        ).then((dbLatest) => {
+          //filter array to update status
+          //clear cart for completed order
+          const orderItem = dbLatest.orders.filter(
+            (item) => item._id.toString() === req.body.id
+          );
+          res.json(orderItem);
+        });
+        //console.log(orderItem);
+        //res.json(orderItem);
+      })
+      .catch((err) => res.status(422).json());
+  },
+
+  //empty cart on completed order???
+  emptyCart: (req, res) => {},
 
   update: (req, res) => {
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body)

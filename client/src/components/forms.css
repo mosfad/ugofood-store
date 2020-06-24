@@ -17,3 +17,7 @@ span.feedback-ratings-header {
 div.field.feedback {
   margin: 0 0 2rem 0 !important;
 }
+
+#ship-form {
+  margin-bottom: 2.5rem;
+}

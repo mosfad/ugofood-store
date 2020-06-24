@@ -1,10 +1,50 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Message } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { withFormik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import "./forms.css";
 
 class ShipForm extends Component {
+  handleUserInput = (e) => {
+    //console.log(this.props);
+    //const category = e.target.value;
+    //console.log(category);
+    this.props.handleChange(e);
+    //console.log(category);
+    //console.log(this.props.values);
+    //let touchedFields = false;
+    const { touched, errors, dirty, isValid } = this.props;
+    // if (
+    //   touched.firstName &&
+    //   touched.lastName &&
+    //   touched.address &&
+    //   touched.state &&
+    //   touched.zipCode
+    // ) {
+    //   touchedFields = true;
+    // }
+
+    if (isValid && dirty) {
+      console.log(this.props);
+    }
+  };
   render() {
+    const {
+      values,
+      touched,
+      errors,
+      dirty,
+      handleBlur,
+      handleSubmit,
+      handleReset,
+      isSubmitting,
+      resetForm,
+    } = this.props;
+    //console.log(this.props);
     return (
-      <form className="ui large form">
+      <form className="ui large form" id="ship-form">
         <div className="field">
           <label>Total Cost</label>
           <Message>{this.props.total}</Message>
@@ -15,16 +55,32 @@ class ShipForm extends Component {
             <div className="field">
               <input
                 type="text"
-                name="shipping[first-name]"
+                name="firstName"
                 placeholder="First Name"
+                value={values.firstName}
+                onBlur={handleBlur}
+                onChange={this.handleUserInput}
               />
+              {touched.firstName && errors.firstName ? (
+                <div className="ui pointing red basic label">
+                  {errors.firstName}
+                </div>
+              ) : null}
             </div>
             <div className="field">
               <input
                 type="text"
-                name="shipping[last-name]"
+                name="lastName"
                 placeholder="Last Name"
+                value={values.lastName}
+                onBlur={handleBlur}
+                onChange={this.handleUserInput}
               />
+              {touched.lastName && errors.lastName ? (
+                <div className="ui pointing red basic label">
+                  {errors.lastName}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -34,15 +90,26 @@ class ShipForm extends Component {
             <div className="twelve wide field">
               <input
                 type="text"
-                name="shipping[address]"
+                name="address"
                 placeholder="Street Address"
+                value={values.address}
+                onBlur={handleBlur}
+                onChange={this.handleUserInput}
               />
+              {touched.address && errors.address ? (
+                <div className="ui pointing red basic label">
+                  {errors.address}
+                </div>
+              ) : null}
             </div>
             <div className="four wide field">
               <input
                 type="text"
-                name="shipping[address-2]"
+                name="address2"
                 placeholder="Apt #"
+                value={values.address2}
+                onBlur={handleBlur}
+                onChange={this.handleUserInput}
               />
             </div>
           </div>
@@ -50,7 +117,13 @@ class ShipForm extends Component {
         <div className="two fields">
           <div className="field">
             <label>State</label>
-            <select className="ui fluid dropdown">
+            <select
+              className="ui fluid dropdown"
+              name="state"
+              value={values.state}
+              onBlur={handleBlur}
+              onChange={this.handleUserInput}
+            >
               <option value="">State</option>
               <option value="AL">Alabama</option>
               <option value="AK">Alaska</option>
@@ -104,160 +177,70 @@ class ShipForm extends Component {
               <option value="WI">Wisconsin</option>
               <option value="WY">Wyoming</option>
             </select>
+            {touched.state && errors.state ? (
+              <div className="ui pointing red basic label">{errors.state}</div>
+            ) : null}
           </div>
-          <div className="disabled field">
-            <label>Country</label>
-            <input
-              placeholder="United States"
-              type="text"
-              disabled=""
-              tabindex="-1"
-            />
-          </div>
-        </div>
-        {/* <h4 class="ui dividing header">Billing Information</h4>
-        <div class="field">
-          <label>Card Type</label>
-          <div class="ui selection dropdown">
-            <input type="hidden" name="card[type]" />
-            <div class="default text">Type</div>
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <div class="item" data-value="visa">
-                <i class="visa icon"></i>
-                Visa
-              </div>
-              <div class="item" data-value="amex">
-                <i class="amex icon"></i>
-                American Express
-              </div>
-              <div class="item" data-value="discover">
-                <i class="discover icon"></i>
-                Discover
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="fields">
-          <div class="seven wide field">
-            <label>Card Number</label>
+          <div className="field">
+            <label>Zip Code</label>
             <input
               type="text"
-              name="card[number]"
-              maxlength="16"
-              placeholder="Card #"
+              name="zipCode"
+              placeholder="Zip Code"
+              value={values.zipCode}
+              onBlur={handleBlur}
+              onChange={this.handleUserInput}
             />
-          </div>
-          <div class="three wide field">
-            <label>CVC</label>
-            <input
-              type="text"
-              name="card[cvc]"
-              maxlength="3"
-              placeholder="CVC"
-            />
-          </div>
-          <div class="six wide field">
-            <label>Expiration</label>
-            <div class="two fields">
-              <div class="field">
-                <select
-                  class="ui fluid search dropdown"
-                  name="card[expire-month]"
-                >
-                  <option value="">Month</option>
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
-                  <option value="6">June</option>
-                  <option value="7">July</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
-                </select>
+            {touched.zipCode && errors.zipCode ? (
+              <div className="ui pointing red basic label">
+                {errors.zipCode}
               </div>
-              <div class="field">
-                <input
-                  type="text"
-                  name="card[expire-year]"
-                  maxlength="4"
-                  placeholder="Year"
-                />
-              </div>
-            </div>
+            ) : null}
           </div>
         </div>
-        <h4 class="ui dividing header">Receipt</h4>
-        <div class="field">
-          <label>Send Receipt To:</label>
-          <div class="ui fluid multiple search selection dropdown">
-            <input type="hidden" name="receipt" />
-            <i class="dropdown icon"></i>
-            <div class="default text">Saved Contacts</div>
-            <div class="menu">
-              <div class="item" data-value="jenny" data-text="Jenny">
-                <img
-                  class="ui mini avatar image"
-                  src="/images/avatar/small/jenny.jpg"
-                />
-                Jenny Hess
-              </div>
-              <div class="item" data-value="elliot" data-text="Elliot">
-                <img
-                  class="ui mini avatar image"
-                  src="/images/avatar/small/elliot.jpg"
-                />
-                Elliot Fu
-              </div>
-              <div class="item" data-value="stevie" data-text="Stevie">
-                <img
-                  class="ui mini avatar image"
-                  src="/images/avatar/small/stevie.jpg"
-                />
-                Stevie Feliciano
-              </div>
-              <div class="item" data-value="christian" data-text="Christian">
-                <img
-                  class="ui mini avatar image"
-                  src="/images/avatar/small/christian.jpg"
-                />
-                Christian
-              </div>
-              <div class="item" data-value="matt" data-text="Matt">
-                <img
-                  class="ui mini avatar image"
-                  src="/images/avatar/small/matt.jpg"
-                />
-                Matt
-              </div>
-              <div class="item" data-value="justen" data-text="Justen">
-                <img
-                  class="ui mini avatar image"
-                  src="/images/avatar/small/justen.jpg"
-                />
-                Justen Kitsune
-              </div>
-            </div>
-          </div>
+        <div className="disabled field">
+          <label>Country</label>
+
+          <input
+            placeholder="United States"
+            type="text"
+            disabled=""
+            value="United States"
+            tabIndex="-1"
+          />
         </div>
-        <div class="ui segment">
-          <div class="field">
-            <div class="ui toggle checkbox">
-              <input type="checkbox" name="gift" tabindex="0" class="hidden" />
-              <label>Do not include a receipt in the package</label>
-            </div>
-          </div>
-        </div>
-        <div class="ui button" tabindex="0">
-          Submit Order
-        </div> */}
       </form>
     );
   }
 }
 
-export default ShipForm;
+const formikEnhancer = withFormik({
+  validationSchema: Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    address: Yup.string().required("Address is required"),
+    //address2: Yup.string().required("Address 2 is required"),
+    state: Yup.string().required("State is required"),
+    zipCode: Yup.string()
+      .min(4, "Zip code is invalid")
+      .required("Zip code is required"),
+  }),
+
+  mapPropsToValues: (props) => ({
+    firstName: "",
+    lastName: "",
+    address: "",
+    address2: "",
+    state: "",
+    zipCode: "",
+    country: "United States",
+  }),
+
+  handleSubmit: (values, { props, setSubmitting, resetForm }) => {},
+
+  displayName: "ShipForm",
+})(ShipForm);
+
+const mapStateToProps = (state, ownProps) => {};
+
+export default formikEnhancer;

@@ -14,6 +14,9 @@ import {
   ADD_PRODUCT_REVIEW,
   UPDATE_CART_ITEM_QTY,
   RESET_CART_QTY_STATUS,
+  FETCH_ORDERS,
+  ADD_ORDER,
+  UPDATE_ORDER,
 } from "./types";
 import history from "../utils/history";
 import {
@@ -27,6 +30,9 @@ import {
   incrementCart,
   decrementCart,
   updateCartItem,
+  getOrders,
+  addNewOrder,
+  updateOrder,
 } from "../utils/API";
 
 // export const signIn = (formValues = {}, token = "") => {
@@ -119,11 +125,30 @@ export const updateCartQty = (userId, formValues) => async (dispatch) => {
 export const resetCartQtyStatus = () => {
   return { type: RESET_CART_QTY_STATUS };
 };
+
 export const removeFromCart = (userId, itemId) => async (dispatch) => {
-  //remove product from cart(in db) from the shoppingcart page
+  // remove product from cart(in db) from the shoppingcart page
   console.log(itemId);
   const response = await decrementCart(userId, itemId);
   dispatch({ type: REMOVE_FROM_CART, payload: response.data });
+};
+
+export const fetchOrders = (userId) => async (dispatch) => {
+  // get customer's orders
+  const response = await getOrders(userId);
+  dispatch({ type: FETCH_ORDERS, payload: response.data });
+};
+
+export const updateOrderStatus = (userId) => async (dispatch) => {
+  // update completed order
+  const response = await updateOrder(userId);
+  dispatch({ type: UPDATE_ORDER, payload: response.data });
+};
+
+export const addOrder = (userId) => async (dispatch) => {
+  // add a new order
+  const response = await addNewOrder(userId);
+  dispatch({ type: ADD_ORDER, payload: response.data });
 };
 // export const getProductReviews = () => {
 //   //get product reviews from user's db

@@ -69,6 +69,21 @@ router.route("/cart/:userid/:itemid").delete(usersController.decrementCart);
 // @access Public
 router.route("/cart/update/:userid").post(usersController.updateCartItem);
 
+// @route  Get api/users/order/:userid
+// @desc   Get orders
+// @access Public
+router.route("/order/:userid").get(usersController.getOrders);
+
+// @route  Post api/users/order/:userid
+// @desc   Add new order
+// @access Public
+router.route("/order/:userid").post(usersController.addNewOrder);
+
+// @route  Post api/users/order/update/:userid
+// @desc   Update order(status, and date) and empty cart
+// @access Public
+router.route("/order/update/:userid").post(usersController.updateOrder);
+
 //matches with "/api/users"
 //router.route("/").get(usersController.findAll).post(usersController.createUser);
 

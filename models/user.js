@@ -29,6 +29,32 @@ const userSchema = new Schema({
       status: { type: String },
     },
   ],
+
+  orders: [
+    {
+      status: { type: String },
+      billingDetails: {
+        firstName: { type: String },
+        lastName: { type: String },
+        address: { type: String },
+        address2: { type: String },
+        state: { type: String },
+        zipCode: { type: String },
+        country: { type: String, default: "United States" },
+      },
+      products: [
+        {
+          name: { type: String },
+          quantity: { type: Number },
+          price: { type: Number },
+        },
+      ],
+      total: { type: Number },
+      createdOrderAt: { type: Date, default: Date.now },
+      completedOrderAt: { type: Date, default: Date.now },
+    },
+  ],
+
   isAdmin: { type: Boolean, default: false },
   createdAt: {
     type: Date,
