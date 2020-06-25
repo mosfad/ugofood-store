@@ -139,15 +139,15 @@ export const fetchOrders = (userId) => async (dispatch) => {
   dispatch({ type: FETCH_ORDERS, payload: response.data });
 };
 
-export const updateOrderStatus = (userId) => async (dispatch) => {
+export const updateOrderStatus = (userId, orderData) => async (dispatch) => {
   // update completed order
-  const response = await updateOrder(userId);
+  const response = await updateOrder(userId, orderData);
   dispatch({ type: UPDATE_ORDER, payload: response.data });
 };
 
-export const addOrder = (userId) => async (dispatch) => {
+export const addOrder = (userId, orderData) => async (dispatch) => {
   // add a new order
-  const response = await addNewOrder(userId);
+  const response = await addNewOrder(userId, orderData);
   dispatch({ type: ADD_ORDER, payload: response.data });
 };
 // export const getProductReviews = () => {

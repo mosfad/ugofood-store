@@ -4,17 +4,28 @@ import { Message } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { withFormik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import PropTypes from "prop-types";
 import "./forms.css";
 
 class ShipForm extends Component {
+  static propTypes = {
+    onAddOrder: PropTypes.func,
+  };
+
   handleUserInput = (e) => {
     //console.log(this.props);
-    //const category = e.target.value;
+    const value = e.target.value;
+    const name = e.target.name;
     //console.log(category);
     this.props.handleChange(e);
     //console.log(category);
     //console.log(this.props.values);
     //let touchedFields = false;
+    //this.props.setFieldValue(e.target.name, e.target.value);
+    if (name === "zipCode") {
+      console.log(value);
+    }
+
     const { touched, errors, dirty, isValid } = this.props;
     // if (
     //   touched.firstName &&
@@ -25,11 +36,43 @@ class ShipForm extends Component {
     // ) {
     //   touchedFields = true;
     // }
-
-    if (isValid && dirty) {
-      console.log(this.props);
-    }
+    setTimeout(() => {
+      if (isValid && dirty) {
+        console.log(this.props);
+        const { values, userId, onAddOrder } = this.props;
+        console.log(values);
+        const orderData = this.buildOrderForm(values);
+        console.log(userId);
+        console.log(orderData);
+        onAddOrder(userId, orderData);
+      }
+    }, 1000);
+    // if (isValid && dirty) {
+    //console.log(this.props);
+    //setTimeout(() => console.log(this.props), 2000);
+    // add new order when customer enters details(don't include card info)
+    //const orderData = {};
+    //this.props.onAddOrder(this.props.userId, orderData);
+    // }
   };
+
+  buildOrderForm = (billingDetails) => {
+    const { orderItems, total } = this.props;
+    const orderData = {
+      status: "in progress",
+      billingDetails,
+      products: orderItems.map((product) => {
+        return {
+          name: product.productId.name,
+          quantity: product.quantity,
+          price: product.productId.price,
+        };
+      }),
+      total,
+    };
+    return orderData;
+  };
+
   render() {
     const {
       values,
@@ -222,7 +265,7 @@ const formikEnhancer = withFormik({
     //address2: Yup.string().required("Address 2 is required"),
     state: Yup.string().required("State is required"),
     zipCode: Yup.string()
-      .min(4, "Zip code is invalid")
+      .min(4, "Zip code is invalid") //`min = 4` was chosen to address async issues in `handleUserInput`
       .required("Zip code is required"),
   }),
 

@@ -3,7 +3,14 @@ import { connect } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../components/CheckoutForm";
-import { fetchUser, fetchCart, autoSignIn } from "../actions";
+import {
+  fetchUser,
+  fetchCart,
+  autoSignIn,
+  fetchOrders,
+  addOrder,
+  updateOrderStatus,
+} from "../actions";
 import ShipForm from "../components/ShipForm";
 import Agreement from "../components/Agreement";
 import SignupMessage from "../components/SignupMessage";
@@ -25,6 +32,8 @@ class CheckoutOrder extends Component {
       if (this.props.isSignedIn && this.props.userId.length > 0) {
         this.props.fetchCart(this.props.userId[0]);
       }
+      //add a new order when customer proceeds to checkout.
+      //this.props.addOrder()
     })();
   }
 
@@ -59,16 +68,33 @@ class CheckoutOrder extends Component {
     return sum;
   };
 
+  onAddOrder = (user, payload) => {
+    this.props.addOrder(user, payload);
+  };
+
+  onUpdateOrder = (user, payload) => {
+    this.props.updateOrderStatus(user, payload);
+  };
+
   render() {
     console.log(this.props.cart.items);
     return (
       <div className="ui container sign-up">
         <h2>Checkout Order</h2>
         <div className="ui divider"></div>
-        <ShipForm total={this.getOrderTotal()} />
+        <ShipForm
+          total={this.getOrderTotal()}
+          orderItems={this.props.cart.items}
+          userId={this.props.userId[0]}
+          onAddOrder={this.props.addOrder}
+        />
 
         <Elements stripe={promise}>
-          <CheckoutForm orderItems={this.props.cart.items} />
+          <CheckoutForm
+            orderItems={this.props.cart.items}
+            userId={this.props.userId[0]}
+            onUpdateOrder={this.props.updateOrderStatus}
+          />
         </Elements>
         <br />
         <Agreement />
@@ -82,8 +108,14 @@ const mapStateToProps = (state) => {
     isSignedIn: state.auth.isSignedIn,
     cart: state.cart,
     userId: Object.keys(state.user),
+    orders: state.orders,
   };
 };
-export default connect(mapStateToProps, { autoSignIn, fetchCart, fetchUser })(
-  CheckoutOrder
-);
+export default connect(mapStateToProps, {
+  autoSignIn,
+  fetchCart,
+  fetchUser,
+  fetchOrders,
+  addOrder,
+  updateOrderStatus,
+})(CheckoutOrder);

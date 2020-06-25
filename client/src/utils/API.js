@@ -46,12 +46,12 @@ export const getOrders = (userId) => {
   return axios.get(`/api/users/order/${userId}`);
 };
 
-export const addNewOrder = (userId) => {
-  return axios.post(`/api/users/order/${userId}`);
+export const addNewOrder = (userId, orderData) => {
+  return axios.post(`/api/users/order/${userId}`, orderData);
 };
 
-export const updateOrder = (userId) => {
-  return axios.post(`/api/users/order/update/${userId}`);
+export const updateOrder = (userId, orderData) => {
+  return axios.post(`/api/users/order/update/${userId}`, orderData);
 };
 
 export const logOut = () => {

@@ -423,7 +423,7 @@ module.exports = {
       .then((dbUser) => {
         //filter array to return succesfully added item
         const orderItem = dbUser.orders.filter(
-          (item, index) => item.product.name === req.body.name
+          (item, index) => item.products.name === req.body.products.name
         );
         res.json(orderItem);
       })
@@ -471,7 +471,19 @@ module.exports = {
   },
 
   //empty cart on completed order???
-  emptyCart: (req, res) => {},
+  emptyOrders: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $set: {
+          orders: [],
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => res.json(dbUser))
+      .catch((err) => console.log(err));
+  },
 
   update: (req, res) => {
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body)

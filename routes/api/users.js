@@ -84,8 +84,11 @@ router.route("/order/:userid").post(usersController.addNewOrder);
 // @access Public
 router.route("/order/update/:userid").post(usersController.updateOrder);
 
-//matches with "/api/users"
-//router.route("/").get(usersController.findAll).post(usersController.createUser);
+//************ ONLY ADMIN SHOULD ACCESS THIS ROUTE*************** */
+// @route  Post api/users/order/clearall/:userid
+// @desc   Empty entire list of order!!!
+// @access Public
+router.route("/order/clearall/:userid").delete(usersController.emptyOrders);
 
 //matches with "/api/users/:id"
 // router
