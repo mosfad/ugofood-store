@@ -88,15 +88,15 @@ class CheckoutOrder extends Component {
         <div className="ui divider"></div>
         <ShipForm
           total={this.getOrderTotal()}
-          orderItems={this.props.cart.items}
+          cartItems={this.props.cart.items}
           userId={this.props.userId[0]}
           onAddOrder={this.props.addOrder}
         />
 
         <Elements stripe={promise}>
           <CheckoutForm
-            orderItems={this.props.cart.items}
-            billingInfo={this.props.order}
+            cartItems={this.props.cart.items}
+            orderInfo={this.props.order}
             userId={this.props.userId[0]}
             onFetchOrder={this.props.onFetchOrder}
             onUpdateOrder={this.props.updateOrderStatus}

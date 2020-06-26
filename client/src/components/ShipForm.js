@@ -57,11 +57,11 @@ class ShipForm extends Component {
   };
 
   buildOrderForm = (billingDetails) => {
-    const { orderItems, total } = this.props;
+    const { cartItems, total } = this.props;
     const orderData = {
       status: "in progress",
       billingDetails,
-      products: orderItems.map((product) => {
+      products: cartItems.map((product) => {
         return {
           name: product.productId.name,
           quantity: product.quantity,

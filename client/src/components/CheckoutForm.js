@@ -18,8 +18,8 @@ const CheckoutForm = (props) => {
       console.log(props);
       const response = await axios.post("/api/payment_intents", {
         //calculate payment in the server. Only get cart items.
-        // items: props.orderItems,
-        items: props.orderItems.map((item, index) => {
+        // items: props.cartItems,
+        items: props.cartItems.map((item, index) => {
           return {
             id: item.productId._id,
             name: item.productId.name,
@@ -30,7 +30,22 @@ const CheckoutForm = (props) => {
       console.log(response);
       setClientSecret(response.data.clientSecret);
     })();
-  }, [props.orderItems.length]);
+  }, [props.cartItems.length]);
+
+  useEffect(() => {
+    (async () => {
+      // update status of completed order.
+      if (succeeded) {
+        const { _id } = props.orderInfo.items[0];
+        const orderData = {
+          id: _id,
+          status: "completed",
+          completedOrderAt: Date.now(),
+        };
+        props.onUpdateOrder(props.userId, orderData);
+      }
+    })();
+  }, [succeeded]);
 
   const cardElementOptions = {
     style: {
@@ -60,7 +75,7 @@ const CheckoutForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(props.billingInfo);
+    console.log(props.orderInfo);
     const {
       firstName,
       lastName,
@@ -70,7 +85,7 @@ const CheckoutForm = (props) => {
       state,
       country,
       zipCode,
-    } = props.billingInfo.items[0].billingDetails;
+    } = props.orderInfo.items[0].billingDetails;
     let countryCode = "";
     if (country === "United States") {
       //`United States` causes an error in stripe.

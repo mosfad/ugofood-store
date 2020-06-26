@@ -24,9 +24,9 @@ export default (state = INITIAL_STATE, action) => {
               ? {
                   ...item,
                   status: action.payload[0].status,
-                  completedOrderAt: Date.now,
+                  completedOrderAt: action.payload[0].completedOrderAt,
                 }
-              : item;
+              : null;
           }),
         ],
       };
