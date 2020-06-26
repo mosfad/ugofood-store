@@ -14,7 +14,7 @@ import {
   ADD_PRODUCT_REVIEW,
   UPDATE_CART_ITEM_QTY,
   RESET_CART_QTY_STATUS,
-  FETCH_ORDERS,
+  FETCH_CURRENT_ORDER,
   ADD_ORDER,
   UPDATE_ORDER,
 } from "./types";
@@ -30,7 +30,7 @@ import {
   incrementCart,
   decrementCart,
   updateCartItem,
-  getOrders,
+  getCurrentOrder,
   addNewOrder,
   updateOrder,
 } from "../utils/API";
@@ -133,10 +133,10 @@ export const removeFromCart = (userId, itemId) => async (dispatch) => {
   dispatch({ type: REMOVE_FROM_CART, payload: response.data });
 };
 
-export const fetchOrders = (userId) => async (dispatch) => {
+export const fetchOrder = (userId) => async (dispatch) => {
   // get customer's orders
-  const response = await getOrders(userId);
-  dispatch({ type: FETCH_ORDERS, payload: response.data });
+  const response = await getCurrentOrder(userId);
+  dispatch({ type: FETCH_CURRENT_ORDER, payload: response.data });
 };
 
 export const updateOrderStatus = (userId, orderData) => async (dispatch) => {

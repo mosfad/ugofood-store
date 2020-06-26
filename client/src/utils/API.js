@@ -42,8 +42,8 @@ export const updateCartItem = (userId, cartData) => {
   return axios.post(`/api/users/cart/update/${userId}`, cartData);
 };
 
-export const getOrders = (userId) => {
-  return axios.get(`/api/users/order/${userId}`);
+export const getCurrentOrder = (userId) => {
+  return axios.get(`/api/users/order/current/${userId}`);
 };
 
 export const addNewOrder = (userId, orderData) => {

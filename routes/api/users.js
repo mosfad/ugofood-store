@@ -74,6 +74,11 @@ router.route("/cart/update/:userid").post(usersController.updateCartItem);
 // @access Public
 router.route("/order/:userid").get(usersController.getOrders);
 
+// @route  Get api/users/order/current/:userid
+// @desc   Get id of current order
+// @access Public
+router.route("/order/current/:userid").get(usersController.getCurrentOrder);
+
 // @route  Post api/users/order/:userid
 // @desc   Add new order
 // @access Public
@@ -83,6 +88,13 @@ router.route("/order/:userid").post(usersController.addNewOrder);
 // @desc   Update order(status, and date) and empty cart
 // @access Public
 router.route("/order/update/:userid").post(usersController.updateOrder);
+
+// @route  Delete api/users/order/current/:userid
+// @desc   Delete current user after reload(and also inside orders list)
+// @access Public
+router
+  .route("/order/current/:userid")
+  .delete(usersController.deleteCurrentOrder);
 
 //************ ONLY ADMIN SHOULD ACCESS THIS ROUTE*************** */
 // @route  Post api/users/order/clearall/:userid

@@ -36,8 +36,10 @@ const userSchema = new Schema({
       billingDetails: {
         firstName: { type: String },
         lastName: { type: String },
+        //phone: {type: String},
         address: { type: String },
         address2: { type: String },
+        city: { type: String },
         state: { type: String },
         zipCode: { type: String },
         country: { type: String, default: "United States" },
@@ -54,6 +56,8 @@ const userSchema = new Schema({
       completedOrderAt: { type: Date, default: Date.now },
     },
   ],
+
+  //currentOrder: { type: Schema.Types.ObjectId },
 
   isAdmin: { type: Boolean, default: false },
   createdAt: {

@@ -157,6 +157,19 @@ class ShipForm extends Component {
             </div>
           </div>
         </div>
+        <div className="field">
+          <input
+            type="text"
+            name="city"
+            placeholder="City Adress"
+            value={values.city}
+            onBlur={handleBlur}
+            onChange={this.handleUserInput}
+          />
+          {touched.city && errors.city ? (
+            <div className="ui pointing red basic label">{errors.city}</div>
+          ) : null}
+        </div>
         <div className="two fields">
           <div className="field">
             <label>State</label>
@@ -245,6 +258,7 @@ class ShipForm extends Component {
           <label>Country</label>
 
           <input
+            readOnly
             placeholder="United States"
             type="text"
             disabled=""
@@ -263,6 +277,7 @@ const formikEnhancer = withFormik({
     lastName: Yup.string().required("Last name is required"),
     address: Yup.string().required("Address is required"),
     //address2: Yup.string().required("Address 2 is required"),
+    city: Yup.string().required("City is required"),
     state: Yup.string().required("State is required"),
     zipCode: Yup.string()
       .min(4, "Zip code is invalid") //`min = 4` was chosen to address async issues in `handleUserInput`
@@ -274,6 +289,7 @@ const formikEnhancer = withFormik({
     lastName: "",
     address: "",
     address2: "",
+    city: "",
     state: "",
     zipCode: "",
     country: "United States",

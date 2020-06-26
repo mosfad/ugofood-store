@@ -409,6 +409,16 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
+  //get current order id
+  getCurrentOrder: (req, res) => {
+    db.User.findOne({ _id: req.params.userid })
+      .then((dbUser) => res.json(dbUser.currentOrder))
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //delete current order
+  deleteCurrentOrder: (req, res) => {},
+
   //add new order the customer's `orders` list.
   addNewOrder: (req, res) => {
     db.User.findOneAndUpdate(
@@ -421,11 +431,25 @@ module.exports = {
       { new: true }
     )
       .then((dbUser) => {
-        //filter array to return succesfully added item
-        const orderItem = dbUser.orders.filter(
+        //filter array to return succesfully added item ???????????
+        //Todo: should use _id here!!!!
+        //      and update currentOrder
+        //LAST ORDER IN THE ARRAY === CURRENT ORDER!!!
+        /*const orderItem = dbUser.orders.filter(
           (item, index) => item.products.name === req.body.products.name
-        );
-        res.json(orderItem);
+        );*/
+        const ordersLength = dbUser.orders.length - 1;
+        const newOrder = dbUser.orders[ordersLength];
+        db.User.findOneAndUpdate(
+          { _id: req.params.userid },
+          {
+            currentOrder: newOrder._id,
+          },
+          { new: true }
+        ).then((dbCurrent) => {
+          //console.log(dbCurrent)
+          res.json([newOrder]);
+        });
       })
       .catch((err) => res.status(422).json(err));
   },
@@ -454,6 +478,7 @@ module.exports = {
             $set: {
               cart: [],
             },
+            currentOrder: null,
           },
           { new: true }
         ).then((dbLatest) => {

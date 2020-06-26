@@ -12,12 +12,20 @@ module.exports = {
     const amount = await calculateOrderAmount(items);
     console.log("Payment amount is " + amount);
     // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,
-      currency: "usd",
-    });
+    const paymentIntent = await stripe.paymentIntents
+      .create({
+        amount: amount,
+        currency: "usd",
+      })
+      .catch((err) => res.status(422).json(err));
     res.send({
       clientSecret: paymentIntent.client_secret,
     });
+    // .catch((err) => {
+    //   console.log(err);
+    //   payment <= 0
+    //     ? res.json("User hasn't entered positive amount")
+    //     : res.json(err);
+    // });
   },
 };

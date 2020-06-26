@@ -60,17 +60,38 @@ const CheckoutForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(props.billingInfo);
+    const {
+      firstName,
+      lastName,
+      address,
+      address2,
+      city,
+      state,
+      country,
+      zipCode,
+    } = props.billingInfo.items[0].billingDetails;
+    let countryCode = "";
+    if (country === "United States") {
+      //`United States` causes an error in stripe.
+      countryCode = "US";
+    }
     const billingDetails = {
-      name: e.target.name.value,
-      //   email: ev.target.email.value,
-      //   address: {
-      //     city: ev.target.city.value,
-      //     line1: ev.target.address.value,
-      //     state: ev.target.state.value,
-      //     postal_code: ev.target.zip.value,
+      name: `${firstName} ${lastName}`,
+      address: {
+        city,
+        country: countryCode,
+        line1: address,
+        line2: address2 || null,
+        state,
+        postal_code: zipCode,
+      },
+      //   email: "jane.doe@example.com",
+      //   name: "Jane Doe",
+      //   phone: null
     };
 
+    console.log(billingDetails);
     setProcessing(true);
 
     const cardElement = elements.getElement(CardElement);
@@ -137,6 +158,7 @@ const CheckoutForm = (props) => {
 
 CheckoutForm.propTypes = {
   onUpdateOrder: PropTypes.func,
+  onFetchOrder: PropTypes.func,
 };
 
 export default CheckoutForm;

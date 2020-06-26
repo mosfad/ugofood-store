@@ -7,7 +7,7 @@ import {
   fetchUser,
   fetchCart,
   autoSignIn,
-  fetchOrders,
+  fetchOrder,
   addOrder,
   updateOrderStatus,
 } from "../actions";
@@ -76,6 +76,10 @@ class CheckoutOrder extends Component {
     this.props.updateOrderStatus(user, payload);
   };
 
+  onFetchOrder = (user) => {
+    this.props.fetchOrder(user);
+  };
+
   render() {
     console.log(this.props.cart.items);
     return (
@@ -92,7 +96,9 @@ class CheckoutOrder extends Component {
         <Elements stripe={promise}>
           <CheckoutForm
             orderItems={this.props.cart.items}
+            billingInfo={this.props.order}
             userId={this.props.userId[0]}
+            onFetchOrder={this.props.onFetchOrder}
             onUpdateOrder={this.props.updateOrderStatus}
           />
         </Elements>
@@ -108,14 +114,14 @@ const mapStateToProps = (state) => {
     isSignedIn: state.auth.isSignedIn,
     cart: state.cart,
     userId: Object.keys(state.user),
-    orders: state.orders,
+    order: state.order,
   };
 };
 export default connect(mapStateToProps, {
   autoSignIn,
   fetchCart,
   fetchUser,
-  fetchOrders,
+  fetchOrder,
   addOrder,
   updateOrderStatus,
 })(CheckoutOrder);
