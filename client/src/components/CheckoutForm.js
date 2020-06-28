@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
 import PropTypes from "prop-types";
+import history from "../utils/history";
 
 const CheckoutForm = (props) => {
   const [succeeded, setSucceeded] = useState(false);
@@ -9,6 +10,7 @@ const CheckoutForm = (props) => {
   const [processing, setProcessing] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState("");
+  const [cardDetails, setCardDetails] = useState("");
 
   const stripe = useStripe();
   const elements = useElements();
@@ -41,8 +43,11 @@ const CheckoutForm = (props) => {
           id: _id,
           status: "completed",
           completedOrderAt: Date.now(),
+          cardDetails,
         };
-        props.onUpdateOrder(props.userId, orderData);
+        await props.onUpdateOrder(props.userId, orderData);
+        // success modal should be activated here!
+        history.push(`/successorder/${props.userId}`);
       }
     })();
   }, [succeeded]);
@@ -132,6 +137,8 @@ const CheckoutForm = (props) => {
     } else {
       setError(null);
       setProcessing(false);
+      const { brand, last4 } = paymentMethodReq.paymentMethod.card;
+      setCardDetails(`${brand.toUpperCase()}***${last4}`);
       setSucceeded(true);
     }
   };
@@ -158,15 +165,16 @@ const CheckoutForm = (props) => {
           {error}
         </div>
       )}
+
       {/*Show a success message upon completion */}
-      <p className={succeeded ? "result-message" : "result-message hidden"}>
+      {/* <p className={succeeded ? "result-message" : "result-message hidden"}>
         Payment succeeded, see the result in your
         <a href={`https://dashboard.stripe.com/test/paments`}>
           {""}
           Stripe dashboard.
         </a>{" "}
         Refresh the page to pay again.
-      </p>
+      </p> */}
     </form>
   );
 };

@@ -47,13 +47,16 @@ const userSchema = new Schema({
       products: [
         {
           name: { type: String },
+          description: { type: String },
+          url: { type: String },
           quantity: { type: Number },
           price: { type: Number },
         },
       ],
       total: { type: Number },
       createdOrderAt: { type: Date, default: Date.now },
-      completedOrderAt: { type: Date, default: Date.now },
+      completedOrderAt: { type: Date },
+      cardDetails: { type: String },
     },
   ],
 

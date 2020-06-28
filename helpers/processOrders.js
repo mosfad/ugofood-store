@@ -30,6 +30,6 @@ module.exports = {
     //})
     //.catch((err) => console.log(err));
 
-    return sum;
+    return sum * 100;
   },
 };

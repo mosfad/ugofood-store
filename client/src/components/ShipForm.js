@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Message } from "semantic-ui-react";
+import { Message, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { withFormik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -12,48 +12,63 @@ class ShipForm extends Component {
     onAddOrder: PropTypes.func,
   };
 
-  handleUserInput = (e) => {
-    //console.log(this.props);
-    const value = e.target.value;
-    const name = e.target.name;
-    //console.log(category);
-    this.props.handleChange(e);
-    //console.log(category);
-    //console.log(this.props.values);
-    //let touchedFields = false;
-    //this.props.setFieldValue(e.target.name, e.target.value);
-    if (name === "zipCode") {
-      console.log(value);
-    }
+  state = {};
 
-    const { touched, errors, dirty, isValid } = this.props;
-    // if (
-    //   touched.firstName &&
-    //   touched.lastName &&
-    //   touched.address &&
-    //   touched.state &&
-    //   touched.zipCode
-    // ) {
-    //   touchedFields = true;
-    // }
-    setTimeout(() => {
-      if (isValid && dirty) {
-        console.log(this.props);
-        const { values, userId, onAddOrder } = this.props;
-        console.log(values);
-        const orderData = this.buildOrderForm(values);
-        console.log(userId);
-        console.log(orderData);
-        onAddOrder(userId, orderData);
-      }
-    }, 1000);
-    // if (isValid && dirty) {
-    //console.log(this.props);
-    //setTimeout(() => console.log(this.props), 2000);
-    // add new order when customer enters details(don't include card info)
-    //const orderData = {};
-    //this.props.onAddOrder(this.props.userId, orderData);
-    // }
+  // handleUserInput = (e) => {
+  //   //console.log(this.props);
+  //   const value = e.target.value;
+  //   const name = e.target.name;
+  //   //console.log(category);
+  //   this.props.handleChange(e);
+  //   //console.log(category);
+  //   //console.log(this.props.values);
+  //   //let touchedFields = false;
+  //   //this.props.setFieldValue(e.target.name, e.target.value);
+  //   if (name === "zipCode") {
+  //     console.log(value);
+  //   }
+
+  //   const { touched, errors, dirty, isValid } = this.props;
+  //   // if (
+  //   //   touched.firstName &&
+  //   //   touched.lastName &&
+  //   //   touched.address &&
+  //   //   touched.state &&
+  //   //   touched.zipCode
+  //   // ) {
+  //   //   touchedFields = true;
+  //   // }
+  //   setTimeout(() => {
+  //     if (isValid && dirty) {
+  //       console.log(this.props);
+  //       const { values, userId, onAddOrder } = this.props;
+  //       console.log(values);
+  //       const orderData = this.buildOrderForm(values);
+  //       console.log(userId);
+  //       console.log(orderData);
+  //       onAddOrder(userId, orderData);
+  //     }
+  //   }, 1000);
+  //   // if (isValid && dirty) {
+  //   //console.log(this.props);
+  //   //setTimeout(() => console.log(this.props), 2000);
+  //   // add new order when customer enters details(don't include card info)
+  //   //const orderData = {};
+  //   //this.props.onAddOrder(this.props.userId, orderData);
+  //   // }
+  // };
+
+  handleOnclick = (e) => {
+    //prevents default behavior of submitting form...
+    e.preventDefault();
+    //confirm billing details
+    this.setState((prevState) => ({ active: !prevState.active }));
+    const { values, userId, onAddOrder } = this.props;
+    // console.log(values);
+    const orderData = this.buildOrderForm(values);
+    // console.log(userId);
+    // console.log(orderData);
+    onAddOrder(userId, orderData);
   };
 
   buildOrderForm = (billingDetails) => {
@@ -64,6 +79,8 @@ class ShipForm extends Component {
       products: cartItems.map((product) => {
         return {
           name: product.productId.name,
+          description: product.productId.description,
+          url: product.productId.url,
           quantity: product.quantity,
           price: product.productId.price,
         };
@@ -81,16 +98,18 @@ class ShipForm extends Component {
       dirty,
       handleBlur,
       handleSubmit,
+      handleChange,
       handleReset,
       isSubmitting,
       resetForm,
     } = this.props;
     //console.log(this.props);
+    const { active } = this.state;
     return (
       <form className="ui large form" id="ship-form">
         <div className="field">
           <label>Total Cost</label>
-          <Message>{this.props.total}</Message>
+          <Message>{`$${this.props.total}`}</Message>
         </div>
         <div className="field">
           <label>Name</label>
@@ -102,7 +121,8 @@ class ShipForm extends Component {
                 placeholder="First Name"
                 value={values.firstName}
                 onBlur={handleBlur}
-                onChange={this.handleUserInput}
+                // onChange={this.handleUserInput}
+                onChange={handleChange}
               />
               {touched.firstName && errors.firstName ? (
                 <div className="ui pointing red basic label">
@@ -117,7 +137,8 @@ class ShipForm extends Component {
                 placeholder="Last Name"
                 value={values.lastName}
                 onBlur={handleBlur}
-                onChange={this.handleUserInput}
+                onChange={handleChange}
+                // onChange={this.handleUserInput}
               />
               {touched.lastName && errors.lastName ? (
                 <div className="ui pointing red basic label">
@@ -137,7 +158,8 @@ class ShipForm extends Component {
                 placeholder="Street Address"
                 value={values.address}
                 onBlur={handleBlur}
-                onChange={this.handleUserInput}
+                onChange={handleChange}
+                // onChange={this.handleUserInput}
               />
               {touched.address && errors.address ? (
                 <div className="ui pointing red basic label">
@@ -152,7 +174,8 @@ class ShipForm extends Component {
                 placeholder="Apt #"
                 value={values.address2}
                 onBlur={handleBlur}
-                onChange={this.handleUserInput}
+                onChange={handleChange}
+                // onChange={this.handleUserInput}
               />
             </div>
           </div>
@@ -164,7 +187,8 @@ class ShipForm extends Component {
             placeholder="City Adress"
             value={values.city}
             onBlur={handleBlur}
-            onChange={this.handleUserInput}
+            onChange={handleChange}
+            // onChange={this.handleUserInput}
           />
           {touched.city && errors.city ? (
             <div className="ui pointing red basic label">{errors.city}</div>
@@ -178,7 +202,8 @@ class ShipForm extends Component {
               name="state"
               value={values.state}
               onBlur={handleBlur}
-              onChange={this.handleUserInput}
+              onChange={handleChange}
+              // onChange={this.handleUserInput}
             >
               <option value="">State</option>
               <option value="AL">Alabama</option>
@@ -245,7 +270,8 @@ class ShipForm extends Component {
               placeholder="Zip Code"
               value={values.zipCode}
               onBlur={handleBlur}
-              onChange={this.handleUserInput}
+              onChange={handleChange}
+              // onChange={this.handleUserInput}
             />
             {touched.zipCode && errors.zipCode ? (
               <div className="ui pointing red basic label">
@@ -266,6 +292,9 @@ class ShipForm extends Component {
             tabIndex="-1"
           />
         </div>
+        <Button toggle active={active} onClick={this.handleOnclick}>
+          Confirm Address {active ? <i className="check icon"></i> : ""}
+        </Button>
       </form>
     );
   }
@@ -295,7 +324,13 @@ const formikEnhancer = withFormik({
     country: "United States",
   }),
 
-  handleSubmit: (values, { props, setSubmitting, resetForm }) => {},
+  //handleSubmit: (values, { props, setSubmitting, resetForm }) => {},
+
+  // handleSubmit: (values, { props, setSubmitting, resetForm }) => {
+  //   props.addProductReview(props.id, values);
+  //   setSubmitting(false);
+  //   resetForm();
+  // },
 
   displayName: "ShipForm",
 })(ShipForm);

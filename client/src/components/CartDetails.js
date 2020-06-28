@@ -22,7 +22,7 @@ class CartDetails extends Component {
 
   handleClick = async (event) => {
     const productData = { id: this.props.item.productId._id };
-    console.log(window.location.href);
+    //console.log(window.location.href);
     await this.props.onDeleteCartItem(
       this.props.userId,
       this.props.item.productId._id

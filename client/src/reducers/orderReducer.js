@@ -9,13 +9,13 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_CURRENT_ORDER:
-      return { ...state, currentOrder: action.payload }; //add current order here!!!
+      return { ...state, currentOrder: action.payload }; //May not be needed.
     case ADD_ORDER:
       return {
         ...state,
         items: [...state.items, ...action.payload],
       };
-    case UPDATE_ORDER: //cancel this! Order is added after it's successful***
+    case UPDATE_ORDER: //Order is added after it's successful***
       return {
         ...state,
         items: [
@@ -25,6 +25,7 @@ export default (state = INITIAL_STATE, action) => {
                   ...item,
                   status: action.payload[0].status,
                   completedOrderAt: action.payload[0].completedOrderAt,
+                  cardDetails: action.payload[0].cardDetails,
                 }
               : null;
           }),

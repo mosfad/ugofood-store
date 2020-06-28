@@ -454,7 +454,7 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
-  //update status and completion date of an order.
+  //update status, card details and completion date of an order.
   updateOrder: (req, res) => {
     db.User.findOneAndUpdate(
       { _id: req.params.userid, "orders._id": req.body.id },
@@ -462,6 +462,7 @@ module.exports = {
         $set: {
           "orders.$.status": req.body.status,
           "orders.$.completedOrderAt": req.body.completedOrderAt,
+          "orders.$.cardDetails": req.body.cardDetails,
         },
       },
       { new: true }

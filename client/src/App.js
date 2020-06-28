@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import ShoppingCart from "./pages/ShoppingCart";
 import Feedback from "./pages/Feedback";
+import SuccessfulOrder from "./pages/SuccessfulOrder";
 
 class App extends Component {
   render() {
@@ -22,6 +23,11 @@ class App extends Component {
                 path="/checkoutorder/:id"
                 exact
                 component={CheckoutOrder}
+              />
+              <Route
+                path="/successorder/:id"
+                exact
+                component={SuccessfulOrder}
               />
               <Route path="/cart/:id" exact component={ShoppingCart} />
               <Route path="/feedback/:productid" exact component={Feedback} />
