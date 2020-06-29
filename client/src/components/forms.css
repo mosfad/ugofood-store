@@ -21,3 +21,8 @@ div.field.feedback {
 #ship-form {
   margin-bottom: 2.5rem;
 }
+/* @media screen and (max-width: 680px) {
+  .form-container {
+    width: 100% !important;
+  }
+} */

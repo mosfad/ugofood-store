@@ -71,9 +71,9 @@ div.ui.successorder-total {
   text-align: right;
 }
 
-div.divider.divider-total {
+/* div.divider.divider-total {
   float: right;
-}
+} */
 
 a.ui.button.shoppingcart-button {
   margin-right: 3rem;
@@ -101,13 +101,22 @@ div.thirteen.wide.column.value-success {
   font-size: 18px;
 }
 
+/* #name-category,
+#payment-category {
+  background-color: #bad3e9;
+}
+
+#name-value,
+#payment-value {
+  background-color: #dbdee1;
+} */
 .ui.modal > .actions {
   text-align: left;
 }
 div.ui.segment.order-message {
   background-color: #f8fff8;
   color: #014301;
-  height: 100px;
+  height: 125px;
 }
 p.order-header {
   font-size: 22px;
@@ -121,4 +130,10 @@ p.order-subheader {
 i.clipboard.check.icon.order {
   font-size: xx-large;
   float: right;
+}
+
+@media screen and (max-width: 680px) {
+  div.ui.container.sign-up {
+    width: 95% !important;
+  }
 }

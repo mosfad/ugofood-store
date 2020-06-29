@@ -77,7 +77,12 @@ class SuccessfulOrder extends Component {
           </p>
         </div>
         <br />
-        <h2>Order Summary</h2>
+        <h2 class="ui header">
+          <div class="content">
+            <i class="clipboard list icon"></i>
+            Order Summary
+          </div>
+        </h2>
         <div class="ui divider"></div>
         <div className="order-summary">
           <ItemList userId={userId} itemInfo={products} />
@@ -89,28 +94,67 @@ class SuccessfulOrder extends Component {
         </div>
 
         <br />
-        <h2>Billing Details</h2>
+        <h2 class="ui header">
+          <div class="content">
+            <i class="money bill alternate icon"></i>
+            Billing Details
+          </div>
+        </h2>
         <div className="ui divider"></div>
         <div className="billing-section">
           <div className="ui grid">
-            <div className="three wide column category-success">Name:</div>
-            <div className="thirteen wide column value-success">{`${billingDetails.firstName} ${billingDetails.lastName}`}</div>
-            <div className="three wide column category-success">Address:</div>
-            <div className="thirteen wide column value-success">{`${billingDetails.address} ${billingDetails.address2}, ${billingDetails.city}, ${billingDetails.state}-${billingDetails.zipCode}`}</div>
-            <div className="three wide column category-success">
+            <div
+              className="three wide column category-success"
+              id="name-category"
+            >
+              Name:
+            </div>
+            <div
+              className="thirteen wide column value-success"
+              id="name-value"
+            >{`${billingDetails.firstName} ${billingDetails.lastName}`}</div>
+            <div
+              className="three wide column category-success"
+              id="address-category"
+            >
+              Address:
+            </div>
+            <div
+              className="thirteen wide column value-success"
+              id="address-value"
+            >{`${billingDetails.address} ${billingDetails.address2}, ${billingDetails.city}, ${billingDetails.state}-${billingDetails.zipCode}`}</div>
+            <div
+              className="three wide column category-success"
+              id="payment-category"
+            >
               Payment Method:
             </div>
-            <div className="thirteen wide column value-success">
+            <div
+              className="thirteen wide column value-success"
+              id="payment-value"
+            >
               {cardDetails}
             </div>
-            <div className="three wide column category-success">
+            <div
+              className="three wide column category-success"
+              id="delivery-category"
+            >
               Delivery Date:
             </div>
-            <div className="thirteen wide column value-success">
+            <div
+              className="thirteen wide column value-success"
+              id="delivery-value"
+            >
               {this.calculateDeliveryDate()}
             </div>
           </div>
         </div>
+        <div className="ui divider"></div>
+        <br />
+        <Link to="/" className="ui labeled icon button teal">
+          <i className="home icon"></i>
+          Back to Shopping
+        </Link>
       </div>
     );
   }

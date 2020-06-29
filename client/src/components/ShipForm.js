@@ -196,6 +196,7 @@ class ShipForm extends Component {
           </div>
         </div>
         <div className="field">
+          <label>City</label>
           <input
             type="text"
             name="city"
