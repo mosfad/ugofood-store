@@ -112,7 +112,7 @@ class ShoppingCart extends Component {
           >
             Proceed to checkout
           </Link>
-          Subtotal({this.props.cart.items.length} items):&nbsp;&nbsp;{" "}
+          Subtotal({this.props.cart.items.length} items):&nbsp;&nbsp; $
           {this.getOrderTotal()}
         </div>
       </div>

@@ -7,17 +7,18 @@ const ItemDetails = (props) => {
   const { item, userId } = props;
   return (
     <div className="item">
-      <div className="image">
+      <div className="ui tiny image">
         <img src={item.url} />
       </div>
       <div className="content">
-        <a className="header">{item.name}</a>
-        <div className="product-price">{`$${item.price * item.quantity}`}</div>
-        {/*I am here................................................*/}
-        <div className="description">
+        <div className="item-container">
+          <a className="header item-name">{item.name}</a>
+          <div className="item-price">{`$${item.price * item.quantity}`}</div>
+        </div>
+        <div className="description item-description">
           <p>{item.description}</p>
         </div>
-        <div className="extra">
+        <div className="extra item-qty">
           <p>{`Qty: ${item.quantity}`}</p>
         </div>
       </div>

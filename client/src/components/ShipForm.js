@@ -71,6 +71,21 @@ class ShipForm extends Component {
     onAddOrder(userId, orderData);
   };
 
+  handleReset = async (e) => {
+    e.preventDefault();
+    const {
+      values,
+      resetForm,
+      onDeleteOrder,
+      userId,
+      orderInfo: { items },
+    } = this.props;
+    //const { _id } = items[0];
+    const orderId = items[0]._id;
+    this.setState({ active: false });
+    await onDeleteOrder(userId, orderId);
+    setTimeout(() => resetForm({ values: "" }), 1500);
+  };
   buildOrderForm = (billingDetails) => {
     const { cartItems, total } = this.props;
     const orderData = {
@@ -293,7 +308,10 @@ class ShipForm extends Component {
           />
         </div>
         <Button toggle active={active} onClick={this.handleOnclick}>
-          Confirm Address {active ? <i className="check icon"></i> : ""}
+          Confirm Address &nbsp; {active ? <i className="check icon"></i> : ""}
+        </Button>
+        <Button color="red" onClick={this.handleReset}>
+          Reset Form
         </Button>
       </form>
     );

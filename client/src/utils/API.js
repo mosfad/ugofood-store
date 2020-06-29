@@ -46,6 +46,10 @@ export const getCurrentOrder = (userId) => {
   return axios.get(`/api/users/order/current/${userId}`);
 };
 
+export const deleteCurrentOrder = (userId, orderId) => {
+  return axios.delete(`/api/users/order/current/${userId}/${orderId}`);
+};
+
 export const addNewOrder = (userId, orderData) => {
   return axios.post(`/api/users/order/${userId}`, orderData);
 };

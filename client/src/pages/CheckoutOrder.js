@@ -10,6 +10,7 @@ import {
   fetchOrder,
   addOrder,
   updateOrderStatus,
+  deleteOrder,
 } from "../actions";
 import ShipForm from "../components/ShipForm";
 import Agreement from "../components/Agreement";
@@ -80,6 +81,10 @@ class CheckoutOrder extends Component {
     this.props.fetchOrder(user);
   };
 
+  onDeleteOrder = (user, payload) => {
+    this.props.deleteOrder(user, payload);
+  };
+
   render() {
     console.log(this.props.cart.items);
     return (
@@ -90,7 +95,9 @@ class CheckoutOrder extends Component {
           total={this.getOrderTotal()}
           cartItems={this.props.cart.items}
           userId={this.props.userId[0]}
-          onAddOrder={this.props.addOrder}
+          orderInfo={this.props.order}
+          onAddOrder={this.onAddOrder}
+          onDeleteOrder={this.onDeleteOrder}
         />
 
         <Elements stripe={promise}>
@@ -98,8 +105,8 @@ class CheckoutOrder extends Component {
             cartItems={this.props.cart.items}
             orderInfo={this.props.order}
             userId={this.props.userId[0]}
-            onFetchOrder={this.props.onFetchOrder}
-            onUpdateOrder={this.props.updateOrderStatus}
+            onFetchOrder={this.onFetchOrder}
+            onUpdateOrder={this.onUpdateOrder}
           />
         </Elements>
         <br />
@@ -124,4 +131,5 @@ export default connect(mapStateToProps, {
   fetchOrder,
   addOrder,
   updateOrderStatus,
+  deleteOrder,
 })(CheckoutOrder);

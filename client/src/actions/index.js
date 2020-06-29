@@ -17,6 +17,7 @@ import {
   FETCH_CURRENT_ORDER,
   ADD_ORDER,
   UPDATE_ORDER,
+  DELETE_CURRENT_ORDER,
 } from "./types";
 import history from "../utils/history";
 import {
@@ -33,6 +34,7 @@ import {
   getCurrentOrder,
   addNewOrder,
   updateOrder,
+  deleteCurrentOrder,
 } from "../utils/API";
 
 // export const signIn = (formValues = {}, token = "") => {
@@ -149,6 +151,12 @@ export const addOrder = (userId, orderData) => async (dispatch) => {
   // add a new order
   const response = await addNewOrder(userId, orderData);
   dispatch({ type: ADD_ORDER, payload: response.data });
+};
+
+export const deleteOrder = (userId, orderId) => async (dispatch) => {
+  // delete current order
+  const response = await deleteCurrentOrder(userId, orderId);
+  dispatch({ type: DELETE_CURRENT_ORDER, payload: response.data });
 };
 // export const getProductReviews = () => {
 //   //get product reviews from user's db

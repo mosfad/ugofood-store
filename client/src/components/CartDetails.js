@@ -41,7 +41,7 @@ class CartDetails extends Component {
           <div className="product-container">
             <a className="product-name">{this.props.item.productId.name}</a>
             <div className="product-price">
-              {this.props.item.productId.price * this.props.item.quantity}
+              ${this.props.item.productId.price * this.props.item.quantity}
             </div>
           </div>
 

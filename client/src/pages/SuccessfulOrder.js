@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Modal } from "semantic-ui-react";
 import { connect } from "react-redux";
+import moment from "moment";
 import { Link } from "react-router-dom";
 import ItemList from "../components/ItemList";
 import history from "../utils/history";
+import "../style.css";
 
 class SuccessfulOrder extends Component {
   // componentDidMount() {
@@ -38,6 +40,14 @@ class SuccessfulOrder extends Component {
   //       }
   //     }
   //   };
+
+  calculateDeliveryDate = (daysToShip = 5) => {
+    const { completedOrderAt } = this.props.order.items[0];
+    return moment
+      .utc(completedOrderAt)
+      .add(daysToShip, "d")
+      .format("ddd, MMM DD, YYYY");
+  };
   render() {
     if (this.props.order.items.length === 0) {
       return <div></div>;
@@ -49,28 +59,56 @@ class SuccessfulOrder extends Component {
       cardDetails,
       products,
       total,
-      completedOrderAt,
     } = this.props.order.items[0];
     console.log(this.props.order.items[0]);
     //use <ItemList userId={userId} {itemInfo={orderInfo}.../>
     return (
       <div className="ui container">
-        <div className="ui success huge message">
+        {/* <div className="ui success huge message">
           <i className="close icon"></i>
           <div className="header">Thanks! Your payment was successful.</div>
           <p>Please view order details below.</p>
+        </div> */}
+        <div className="ui segment order-message">
+          <i className="clipboard check icon order"></i>
+          <p className="order-header">Thanks! Your payment was successful.</p>
+          <p className="order-subheader">
+            Please view your order details below
+          </p>
         </div>
-        <ItemList userId={userId} itemInfo={products} />
-        <div className="ui divider">
-          <div className="ui two column grid">
-            <div className="column">Name:</div>
-            <div className="column">{`${billingDetails.firstName} ${billingDetails.lastName}`}</div>
-            <div className="column">Address:</div>
-            <div className="column">{`${billingDetails.address} ${billingDetails.address2}, ${billingDetails.city}, ${billingDetails.state}-${billingDetails.zipCode}`}</div>
-            <div className="column">Payment Method:</div>
-            <div className="column">{cardDetails}</div>
-            <div className="column">Delivery Date:</div>
-            <div className="column"></div>
+        <br />
+        <h2>Order Summary</h2>
+        <div class="ui divider"></div>
+        <div className="order-summary">
+          <ItemList userId={userId} itemInfo={products} />
+          <div className="ui divider divider-total"></div>
+          <div className="ui successorder-total">
+            Total({products.length} items):&nbsp;&nbsp; ${total}
+          </div>
+          <div className="ui divider"></div>
+        </div>
+
+        <br />
+        <h2>Billing Details</h2>
+        <div className="ui divider"></div>
+        <div className="billing-section">
+          <div className="ui grid">
+            <div className="three wide column category-success">Name:</div>
+            <div className="thirteen wide column value-success">{`${billingDetails.firstName} ${billingDetails.lastName}`}</div>
+            <div className="three wide column category-success">Address:</div>
+            <div className="thirteen wide column value-success">{`${billingDetails.address} ${billingDetails.address2}, ${billingDetails.city}, ${billingDetails.state}-${billingDetails.zipCode}`}</div>
+            <div className="three wide column category-success">
+              Payment Method:
+            </div>
+            <div className="thirteen wide column value-success">
+              {cardDetails}
+            </div>
+            <div className="three wide column category-success">
+              Delivery Date:
+            </div>
+            <div className="thirteen wide column value-success">
+              {this.calculateDeliveryDate()}
+            </div>
           </div>
         </div>
       </div>

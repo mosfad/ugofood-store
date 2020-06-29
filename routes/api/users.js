@@ -93,7 +93,7 @@ router.route("/order/update/:userid").post(usersController.updateOrder);
 // @desc   Delete current user after reload(and also inside orders list)
 // @access Public
 router
-  .route("/order/current/:userid")
+  .route("/order/current/:userid/:itemid")
   .delete(usersController.deleteCurrentOrder);
 
 //************ ONLY ADMIN SHOULD ACCESS THIS ROUTE*************** */

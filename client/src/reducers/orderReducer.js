@@ -1,5 +1,10 @@
 import _ from "lodash";
-import { FETCH_CURRENT_ORDER, ADD_ORDER, UPDATE_ORDER } from "../actions/types";
+import {
+  FETCH_CURRENT_ORDER,
+  ADD_ORDER,
+  UPDATE_ORDER,
+  DELETE_CURRENT_ORDER,
+} from "../actions/types";
 
 const INITIAL_STATE = {
   items: [],
@@ -31,7 +36,13 @@ export default (state = INITIAL_STATE, action) => {
           }),
         ],
       };
-
+    case DELETE_CURRENT_ORDER:
+      return {
+        ...state,
+        items: [
+          ...state.items.filter((item) => item._id !== action.payload[0]._id),
+        ],
+      };
     default:
       return state;
   }

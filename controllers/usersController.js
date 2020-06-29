@@ -417,7 +417,26 @@ module.exports = {
   },
 
   //delete current order
-  deleteCurrentOrder: (req, res) => {},
+  deleteCurrentOrder: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $pull: {
+          orders: { _id: req.params.itemid },
+        },
+      }
+    )
+      .then((dbUser) => {
+        // filter array to return deleted order
+        const deletedOrder = dbUser.orders.filter(
+          (item) => item._id.toString() === req.params.itemid
+        );
+        // return deleted order.
+        res.json(deletedOrder);
+        //res.json(dbUser);
+      })
+      .catch((err) => console.log(err));
+  },
 
   //add new order the customer's `orders` list.
   addNewOrder: (req, res) => {
@@ -511,6 +530,7 @@ module.exports = {
       .catch((err) => console.log(err));
   },
 
+  emptyIncompleteOrders: (req, res) => {},
   update: (req, res) => {
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then((dbModel) => res.json(dbModel))
