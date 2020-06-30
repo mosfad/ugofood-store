@@ -12,6 +12,7 @@ import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
   ADD_PRODUCT_REVIEW,
+  FETCH_PRODUCT_BEING_REVIEWED,
   UPDATE_CART_ITEM_QTY,
   RESET_CART_QTY_STATUS,
   FETCH_CURRENT_ORDER,
@@ -100,10 +101,16 @@ export const fetchProducts = () => async (dispatch) => {
   dispatch({ type: FETCH_PRODUCTS, payload: response.data });
 };
 
-export const addProductReview = (productId, formValues) => async (dispatch) => {
+export const addProductReview = (userId, productId, formValues) => async (
+  dispatch
+) => {
   // post product review to the user's db
-  const response = await reviewProduct(productId, formValues);
+  const response = await reviewProduct(userId, productId, formValues);
   dispatch({ type: ADD_PRODUCT_REVIEW, payload: response.data });
+};
+
+export const fetchProductReviewed = (productDetails) => {
+  return { type: FETCH_PRODUCT_BEING_REVIEWED, payload: productDetails };
 };
 
 export const fetchCart = (userId) => async (dispatch) => {

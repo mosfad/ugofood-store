@@ -10,8 +10,9 @@ const userSchema = new Schema({
   /*isVerified: { type: Boolean, default: false },*/
   isOverLimit: { type: Boolean, default: false },
   requestedProducts: [{ type: Schema.Types.ObjectId, ref: "Product" }],
-  samplesRequested: [
+  productReviews: [
     {
+      _id: false,
       productId: { type: Schema.Types.ObjectId, ref: "Product" },
       review: { type: String },
       headline: { type: String },

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser, fetchProducts, autoSignIn } from "../actions";
+import { fetchUser, fetchProducts, fetchCart, autoSignIn } from "../actions";
 import Products from "../components/ProductDetail";
 import ProductList from "../components/ProductList";
 import LoginModal from "../components/LoginModal";
@@ -23,8 +23,10 @@ class Home extends Component {
             Object.keys(this.props.user).length === 1 &&
             !this.props.isSignedIn
           ) {
-            this.props.autoSignIn(token);
+            await this.props.autoSignIn(token);
           }
+          const userId = Object.keys(this.props.users)[0];
+          this.props.fetchCart(userId);
         } catch (err) {
           console.log(err);
           console.log("User must manually sign in, since token is invalid");
@@ -96,5 +98,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   fetchUser,
   fetchProducts,
+  fetchCart,
   autoSignIn,
 })(Home);

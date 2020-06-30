@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Rating } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToCart, updateCartQty } from "../actions";
+import { addToCart, fetchProductReviewed } from "../actions";
 import "./productStyles.css";
 class ProductDetail extends Component {
   // trialInfo = [{
@@ -22,7 +22,7 @@ class ProductDetail extends Component {
   //     description: "Tasty goat meat cooked in a spicy and tasty sauce",
   //   },
   // ];
-  handleSampeRequest = (e) => {
+  handleProductRequest = (e) => {
     //e.preventDefault() is preventing Link from executing normal
     //behavior.
     const { value, name } = e.target;
@@ -62,9 +62,18 @@ class ProductDetail extends Component {
 
   handleFeedbackRequest = (e) => {
     //
-    const { value, name } = e.target;
-    if (!this.props.isSignedIn && name === "feedback") {
+    //const { value, name } = e.target;
+    const { name, description, url, _id } = this.props.product;
+    if (!this.props.isSignedIn) {
       alert("Please sign-in or sign-up to give a review. Thanks!");
+    } else {
+      const feedbackProductDetails = {
+        name,
+        description,
+        url,
+        _id,
+      };
+      this.props.fetchProductReviewed(feedbackProductDetails);
     }
   };
 
@@ -119,7 +128,7 @@ class ProductDetail extends Component {
               to={cartUrl}
               name="add-to-cart"
               productid={_id}
-              onClick={this.handleSampeRequest}
+              onClick={this.handleProductRequest}
               className="ui button teal"
             >
               Get Sample
@@ -154,4 +163,6 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { addToCart })(ProductDetail);
+export default connect(mapStateToProps, { addToCart, fetchProductReviewed })(
+  ProductDetail
+);

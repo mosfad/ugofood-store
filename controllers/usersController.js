@@ -284,23 +284,38 @@ module.exports = {
 
   //add reviews from users who have tried the samples.??????????????????
   addReview: (req, res) => {
-    if (!req.user) {
-      return res.json({ failure: "User not logged in" });
-    }
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    const newEntry = {
+      productId: req.params.productid,
+      review: req.body.review,
+      headline: req.body.headline,
+      ratings: req.body.rating,
+    };
+
     db.User.findOneAndUpdate(
-      { _id: req.user._id },
+      { _id: req.params.userid },
       {
+        // $push: { THIS IS WRONG! READ MORE ON THIS!
+        //   "productReviews.$.productId": req.params.productid,
+        //   "productReviews.$.review": req.body.review,
+        //   "productReviews.$.headline": req.body.headline,
+        //   "productReviews.$.ratings": req.body.rating,
+        // },
         $push: {
-          "sampleRequested.$.productId": req.params.id,
-          "sampleRequested.$.headline": req.body.headline,
-          "sampleRequested.$.review": req.body.review,
-          "sampleRequested.$.ratings": req.body.ratings,
+          productReviews: newEntry,
         },
       },
       { new: true }
     )
       .then((dbUser) => {
-        res.json(dbUser);
+        //filter array to return succesfully added item
+        const reviewedProduct = dbUser.productReviews.filter(
+          (item, index) => item.productId.toString() === req.params.productid
+        );
+        res.json(reviewedProduct);
+        //res.json(dbUser);
       })
       .catch((err) => res.status(422).json(err));
   },

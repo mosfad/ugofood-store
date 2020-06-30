@@ -42,9 +42,9 @@ router.route("/remove/:id").delete(usersController.deleteUser);
 // @route  Post api/users/addreview/:productid
 // @desc   Add review from signed-in user.
 // @access Public
-router.route("/addreview/:productid").post(usersController.addReview);
+router.route("/addreview/:userid/:productid").post(usersController.addReview);
 
-// @route  Get api/users/addreview/:productid
+// @route  Get api/users/requestproduct/:productid
 // @desc   Sample request from signed-in user.
 // @access Public
 router.route("/requestproduct/:productid").get(usersController.requestSample);

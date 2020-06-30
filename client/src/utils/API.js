@@ -22,8 +22,8 @@ export const getProducts = () => {
   return axios.get("/api/products");
 };
 
-export const reviewProduct = (productId, formData) => {
-  return axios.post(`/api/products/${productId}`, formData);
+export const reviewProduct = (userId, productId, formData) => {
+  return axios.post(`/api/users/addreview/${userId}/${productId}`, formData);
 };
 
 export const getCartItems = (userId) => {

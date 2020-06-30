@@ -88,6 +88,10 @@ div.ui.container.feedbackmessage {
   margin-bottom: 5rem;
 }
 
+div.ui.container.feedbackProduct,
+div.ui.container.divider.feedback {
+  width: 50%;
+}
 /* div.warn-message.signup-link {
   text-align: center !important;
 } */

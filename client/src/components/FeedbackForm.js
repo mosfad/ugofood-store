@@ -8,10 +8,19 @@ import * as Yup from "yup";
 //import reducers from "../reducers";
 //import { createstore } from "redux";
 //import history from "../utils/history";
-import { addProductReview } from "../actions";
+//addProductReview(userId, productId, formValues)
+//import { addProductReview } from "../actions";
+import PropTypes from "prop-types";
 import "./forms.css";
 
 class FeedbackForm extends Component {
+  static propTypes = {
+    onAddReview: PropTypes.func,
+  };
+  // componentDidUpdate(prevProps) {
+  //   if (this.prevProps.review.productId !== this.props.review)
+  // }
+
   render() {
     const {
       values,
@@ -25,10 +34,13 @@ class FeedbackForm extends Component {
       handleClick,
       isSubmitting,
       resetForm,
+      feedbackProductId,
+      userId,
+      onAddReview,
       setFieldValue,
     } = this.props;
-    console.log(this.props);
-    console.log(window.location.pathname.slice(10));
+    //console.log(this.props);
+    //console.log(window.location.pathname.slice(10));
     return (
       <form className="ui form feedback" onSubmit={handleSubmit}>
         <div className="field feedback" name="rating">
@@ -91,27 +103,43 @@ const formikEnhancer = withFormik({
     review: Yup.string().required("Please give a review. Thanks!"),
   }),
 
-  mapPropsToValues: (props) => ({
-    id: window.location.pathname.slice(10),
-    headline: "",
-    review: "",
-    rating: 0,
-  }),
-
+  mapPropsToValues: (props) => {
+    console.log(props.feedbackProductId);
+    return {
+      //id: window.location.pathname.slice(10),
+      userId: props.userId,
+      productId: props.feedbackProductId,
+      headline: "",
+      review: "",
+      rating: 0,
+    };
+  },
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
-    props.addProductReview(props.id, values);
+    console.log(values.productId);
+    console.log(values);
+    const { headline, rating, review, userId, productId } = values;
+    props.onAddReview(userId, productId, {
+      headline,
+      rating,
+      review,
+    });
     setSubmitting(false);
     resetForm();
+
+    // setTimeout(() => {
+    //   props.onAddReview(userId, productId, { headline, rating, review });
+    //   setSubmitting(false);
+    //   resetForm();
+    // }, 2000);
+    // setTimeout(() => {
+    //   console.log(response);
+    // }, 3000);
+    // console.log(response);
+    // if (response.data.productId === productId) {
+    //   alert("Thanks! Your review was successfully sent.");
   },
 
   displayName: "FeedbackForm",
 })(FeedbackForm);
 
-const mapStateToProps = (state, ownProps) => {
-  console.log(state);
-  return {
-    review: state.user.review,
-  };
-};
-
-export default connect(mapStateToProps, { addProductReview })(formikEnhancer);
+export default formikEnhancer;
