@@ -115,8 +115,8 @@ const formikEnhancer = withFormik({
     };
   },
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
-    console.log(values.productId);
-    console.log(values);
+    //console.log(values.productId);
+    //console.log(values);
     const { headline, rating, review, userId, productId } = values;
     props.onAddReview(userId, productId, {
       headline,
