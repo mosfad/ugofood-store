@@ -1,7 +1,8 @@
 /* .cart-price {
   margin-left: 40% !important;
 } */
-.product-container {
+.product-container,
+.item-container {
   display: flex;
   justify-content: space-between;
 }
@@ -10,6 +11,17 @@ a.product-name,
 div.product-price {
   font-size: 20px !important;
   font-weight: bold !important;
+}
+
+a.header.item-name,
+div.item-price {
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+
+div.item-description,
+div.item-qty {
+  font-size: 16px !important;
 }
 
 .delete-product {

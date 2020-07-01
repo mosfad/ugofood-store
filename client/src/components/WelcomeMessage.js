@@ -1,12 +1,18 @@
 import React from "react";
-import "../style.css";
+import { Message } from "semantic-ui-react";
 
-const WelcomeMessage = () => {
-  return (
-    <div className="ui register-message">
-      Create a new account and enjoy free samples.
-    </div>
-  );
-};
+const list = [
+  "You can securely order free samples",
+  "We only ask that you leave a review",
+];
+
+const WelcomeMessage = () => (
+  <Message
+    size="big"
+    header="Welcome to our online food store"
+    icon="shopping bag"
+    list={list}
+  />
+);
 
 export default WelcomeMessage;

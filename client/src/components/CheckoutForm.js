@@ -1,26 +1,56 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
+import PropTypes from "prop-types";
+import history from "../utils/history";
 
-const CheckoutForm = () => {
+const CheckoutForm = (props) => {
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState("");
+  const [cardDetails, setCardDetails] = useState("");
 
   const stripe = useStripe();
   const elements = useElements();
 
   useEffect(() => {
     (async () => {
+      console.log(props);
       const response = await axios.post("/api/payment_intents", {
-        items: [{ id: "jollof rice" }],
+        //calculate payment in the server. Only get cart items.
+        // items: props.cartItems,
+        items: props.cartItems.map((item, index) => {
+          return {
+            id: item.productId._id,
+            name: item.productId.name,
+            quantity: item.quantity,
+          };
+        }),
       });
       console.log(response);
       setClientSecret(response.data.clientSecret);
     })();
-  }, []);
+  }, [props.cartItems.length]);
+
+  useEffect(() => {
+    (async () => {
+      // update status of completed order.
+      if (succeeded) {
+        const { _id } = props.orderInfo.items[0];
+        const orderData = {
+          id: _id,
+          status: "completed",
+          completedOrderAt: Date.now(),
+          cardDetails,
+        };
+        await props.onUpdateOrder(props.userId, orderData);
+        // success modal should be activated here!
+        history.push(`/successorder/${props.userId}`);
+      }
+    })();
+  }, [succeeded]);
 
   const cardElementOptions = {
     style: {
@@ -50,17 +80,38 @@ const CheckoutForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(props.orderInfo);
+    const {
+      firstName,
+      lastName,
+      address,
+      address2,
+      city,
+      state,
+      country,
+      zipCode,
+    } = props.orderInfo.items[0].billingDetails;
+    let countryCode = "";
+    if (country === "United States") {
+      //`United States` causes an error in stripe.
+      countryCode = "US";
+    }
     const billingDetails = {
-      name: e.target.name.value,
-      //   email: ev.target.email.value,
-      //   address: {
-      //     city: ev.target.city.value,
-      //     line1: ev.target.address.value,
-      //     state: ev.target.state.value,
-      //     postal_code: ev.target.zip.value,
+      name: `${firstName} ${lastName}`,
+      address: {
+        city,
+        country: countryCode,
+        line1: address,
+        line2: address2 || null,
+        state,
+        postal_code: zipCode,
+      },
+      //   email: "jane.doe@example.com",
+      //   name: "Jane Doe",
+      //   phone: null
     };
 
+    console.log(billingDetails);
     setProcessing(true);
 
     const cardElement = elements.getElement(CardElement);
@@ -86,6 +137,8 @@ const CheckoutForm = () => {
     } else {
       setError(null);
       setProcessing(false);
+      const { brand, last4 } = paymentMethodReq.paymentMethod.card;
+      setCardDetails(`${brand.toUpperCase()}***${last4}`);
       setSucceeded(true);
     }
   };
@@ -112,16 +165,23 @@ const CheckoutForm = () => {
           {error}
         </div>
       )}
+
       {/*Show a success message upon completion */}
-      <p className={succeeded ? "result-message" : "result-message hidden"}>
+      {/* <p className={succeeded ? "result-message" : "result-message hidden"}>
         Payment succeeded, see the result in your
         <a href={`https://dashboard.stripe.com/test/paments`}>
           {""}
           Stripe dashboard.
         </a>{" "}
         Refresh the page to pay again.
-      </p>
+      </p> */}
     </form>
   );
 };
+
+CheckoutForm.propTypes = {
+  onUpdateOrder: PropTypes.func,
+  onFetchOrder: PropTypes.func,
+};
+
 export default CheckoutForm;

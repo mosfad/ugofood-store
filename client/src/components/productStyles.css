@@ -14,7 +14,19 @@
   justify-self: center !important;
 }
 
-div.extra.product-btn {
+.ui.button.teal {
+  margin-right: 2rem;
+}
+
+.description.product {
+  margin-bottom: 1rem;
+}
+
+.extra.ratings {
+  margin-top: 1rem;
+}
+
+/*=========== div.extra.product-btn {
   margin-top: 5px !important;
   margin-bottom: 5px !important;
-}
+} */

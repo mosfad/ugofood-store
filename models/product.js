@@ -6,7 +6,7 @@ const productSchema = new Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   url: { type: String, required: true, default: "" },
-  reviews: [Number],
+  ratings: { type: Number, default: 0 },
 });
 
 const Product = mongoose.model("Product", productSchema);

@@ -8,6 +8,7 @@ require("dotenv").config();
 const db = require("../models");
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
+const { RSA_NO_PADDING } = require("constants");
 
 module.exports = {
   findAll: (req, res) => {
@@ -254,7 +255,7 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
-  //request sample
+  //request sample??????????????????????????????????????????
   requestSample: (req, res) => {
     //
     if (!req.user) {
@@ -267,20 +268,284 @@ module.exports = {
     )
       .then((dbUser) => {
         //update `isOverLimit` if user has maxed out sample requests.
-        if (dbUser.samplesRequested.length > 11) {
-          db.User.findOneAndUpdate({ _id: dbUser._id }, { isOverLimit: true })
-            .then((dbUser) =>
-              res.json({
-                Success: "Update was successful, but sample limit reached",
-              })
-            )
-            .catch((err) => res.status(422).json(err));
-        }
+        // if (dbUser.samplesRequested.length > 11) {
+        //   db.User.findOneAndUpdate({ _id: dbUser._id }, { isOverLimit: true })
+        //     .then((dbUser) =>
+        //       res.json({
+        //         Success: "Update was successful, but sample limit reached",
+        //       })
+        //     )
+        //     .catch((err) => res.status(422).json(err));
+        // }
         res.json({ Success: "Update was successful" });
       })
       .catch((err) => res.status(422).json(err));
   },
 
+  //add reviews from users who have tried the samples.??????????????????
+  addReview: (req, res) => {
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    const newEntry = {
+      productId: req.params.productid,
+      review: req.body.review,
+      headline: req.body.headline,
+      ratings: req.body.rating,
+    };
+
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        // $push: { THIS IS WRONG! READ MORE ON THIS!
+        //   "productReviews.$.productId": req.params.productid,
+        //   "productReviews.$.review": req.body.review,
+        //   "productReviews.$.headline": req.body.headline,
+        //   "productReviews.$.ratings": req.body.rating,
+        // },
+        $push: {
+          productReviews: newEntry,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        //filter array to return succesfully added item
+        const reviewedProduct = dbUser.productReviews.filter(
+          (item, index) => item.productId.toString() === req.params.productid
+        );
+        res.json(reviewedProduct);
+        //res.json(dbUser);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //get cart info
+  getCartInfo: (req, res) => {
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    db.User.findOne({ _id: req.params.userid })
+      .populate("cart.productId")
+      .then((dbModel) => {
+        res.json(dbModel.cart);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //add item to the cart
+  incrementCart: (req, res) => {
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    //console.log(req.params.userid);
+    const newEntry = {
+      productId: req.body.id,
+      // name: req.body.name,
+      // description: req.body.description,
+      // url: req.body.url,
+      quantity: req.body.quantity,
+      status: req.body.status,
+    };
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $push: {
+          cart: newEntry,
+        },
+      },
+      { new: true }
+    )
+      .populate("cart.productId")
+      .then((dbUser) => {
+        //filter array to return succesfully added item
+        const cartItem = dbUser.cart.filter(
+          (item, index) => item.productId._id.toString() === req.body.id
+        );
+        res.json(cartItem);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //remove item from the cart(including multiple entries)
+  decrementCart: (req, res) => {
+    // if (!req.user) {
+    //   return res.json({ failure: "User not logged in" });
+    // }
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $pull: {
+          cart: { productId: req.params.itemid },
+        },
+      }
+    )
+      .populate("cart.productId")
+      .then((dbUser) => {
+        //console.log(dbUser);
+        //filter array to return succesfully deleted item
+        const cartItem = dbUser.cart.filter(
+          (item, index) => item.productId._id.toString() === req.params.itemid
+        );
+        //console.log(cartItem);
+        res.json(cartItem);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //update cart item(e.g quantity)
+  updateCartItem: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid, "cart.productId": req.body.id },
+      {
+        $set: {
+          "cart.$.quantity": req.body.quantity,
+        },
+      },
+      { new: true }
+    )
+      .populate("cart.productId")
+      .then((dbUser) => {
+        //console.log(dbUser);
+        //filter array to return succesfully updated item
+        const cartItem = dbUser.cart.filter(
+          (item, index) => item.productId._id.toString() === req.body.id
+        );
+        //console.log(cartItem);
+        res.json(cartItem);
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //get customer's orders.
+  getOrders: (req, res) => {
+    db.User.findOne({ _id: req.params.userid })
+      .then((dbUser) => res.json(dbUser.orders))
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //get current order id
+  getCurrentOrder: (req, res) => {
+    db.User.findOne({ _id: req.params.userid })
+      .then((dbUser) => res.json(dbUser.currentOrder))
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //delete current order
+  deleteCurrentOrder: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $pull: {
+          orders: { _id: req.params.itemid },
+        },
+      }
+    )
+      .then((dbUser) => {
+        // filter array to return deleted order
+        const deletedOrder = dbUser.orders.filter(
+          (item) => item._id.toString() === req.params.itemid
+        );
+        // return deleted order.
+        res.json(deletedOrder);
+        //res.json(dbUser);
+      })
+      .catch((err) => console.log(err));
+  },
+
+  //add new order the customer's `orders` list.
+  addNewOrder: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $push: {
+          orders: req.body,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        //filter array to return succesfully added item ???????????
+        //Todo: should use _id here!!!!
+        //      and update currentOrder
+        //LAST ORDER IN THE ARRAY === CURRENT ORDER!!!
+        /*const orderItem = dbUser.orders.filter(
+          (item, index) => item.products.name === req.body.products.name
+        );*/
+        const ordersLength = dbUser.orders.length - 1;
+        const newOrder = dbUser.orders[ordersLength];
+        db.User.findOneAndUpdate(
+          { _id: req.params.userid },
+          {
+            currentOrder: newOrder._id,
+          },
+          { new: true }
+        ).then((dbCurrent) => {
+          //console.log(dbCurrent)
+          res.json([newOrder]);
+        });
+      })
+      .catch((err) => res.status(422).json(err));
+  },
+
+  //update status, card details and completion date of an order.
+  updateOrder: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid, "orders._id": req.body.id },
+      {
+        $set: {
+          "orders.$.status": req.body.status,
+          "orders.$.completedOrderAt": req.body.completedOrderAt,
+          "orders.$.cardDetails": req.body.cardDetails,
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => {
+        //filter array to return succesfully updated item
+        // const orderItem = dbUser.orders.filter(
+        //   (item, index) => item._id.toString() === req.body.id
+        // );
+        //Todo: Empty cart on completed order.
+        db.User.findOneAndUpdate(
+          { _id: req.params.userid },
+          {
+            $set: {
+              cart: [],
+            },
+            currentOrder: null,
+          },
+          { new: true }
+        ).then((dbLatest) => {
+          //filter array to update status
+          //clear cart for completed order
+          const orderItem = dbLatest.orders.filter(
+            (item) => item._id.toString() === req.body.id
+          );
+          res.json(orderItem);
+        });
+        //console.log(orderItem);
+        //res.json(orderItem);
+      })
+      .catch((err) => res.status(422).json());
+  },
+
+  //empty cart on completed order???
+  emptyOrders: (req, res) => {
+    db.User.findOneAndUpdate(
+      { _id: req.params.userid },
+      {
+        $set: {
+          orders: [],
+        },
+      },
+      { new: true }
+    )
+      .then((dbUser) => res.json(dbUser))
+      .catch((err) => console.log(err));
+  },
+
+  emptyIncompleteOrders: (req, res) => {},
   update: (req, res) => {
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then((dbModel) => res.json(dbModel))
@@ -293,3 +558,18 @@ module.exports = {
       .catch((err) => res.status(422).json);
   },
 };
+
+// $push: {
+//   "cart.$.productId": req.body.id,
+//   "cart.$.name": req.body.name,
+//   "cart.$.description": req.body.description,
+//   "cart.$.url": req.body.url,
+//   "cart.$.quantity": req.body.quantity,
+//   "cart.$.status": req.body.status,
+// }
+
+// $pull: {
+//   "cart.$.productId": req.body.id,
+//   "cart.$.quantity": req.body.quantity,
+//   "cart.$.status": req.body.status,
+// },

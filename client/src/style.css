@@ -21,6 +21,10 @@ body {
   /* padding: 15.6px 19.2px; */
 }
 
+#modal-btn-text:first-child:hover {
+  color: #ffffff;
+}
+
 a.item.a-header.active:hover {
   /* border-bottom: solid white !important; */
   /* margin-bottom: 1px !important; */
@@ -60,10 +64,80 @@ a.item.a-header {
   font-weight: bold;
 }
 
-button.ui.button.shoppingcart-button {
-  margin-right: 5%;
+div.ui.successorder-total {
+  font-size: 18px;
+  font-weight: bold;
+  clear: both;
+  text-align: right;
 }
 
-.ui.container.sign-up {
+/* div.divider.divider-total {
+  float: right;
+} */
+
+a.ui.button.shoppingcart-button {
+  margin-right: 3rem;
+}
+
+div.ui.container.sign-up,
+div.ui.container.feedback {
+  width: 50% !important;
+}
+
+div.ui.container.feedbackmessage {
+  margin-bottom: 5rem;
+}
+
+div.ui.container.feedbackProduct,
+div.ui.container.divider.feedback {
   width: 50%;
+}
+/* div.warn-message.signup-link {
+  text-align: center !important;
+} */
+
+div.three.wide.column.category-success {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+div.thirteen.wide.column.value-success {
+  font-size: 18px;
+}
+
+/* #name-category,
+#payment-category {
+  background-color: #bad3e9;
+}
+
+#name-value,
+#payment-value {
+  background-color: #dbdee1;
+} */
+.ui.modal > .actions {
+  text-align: left;
+}
+div.ui.segment.order-message {
+  background-color: #f8fff8;
+  color: #014301;
+  height: 125px;
+}
+p.order-header {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+p.order-subheader {
+  font-size: 20px;
+}
+
+i.clipboard.check.icon.order {
+  font-size: xx-large;
+  float: right;
+}
+
+@media screen and (max-width: 680px) {
+  div.ui.container.sign-up {
+    width: 95% !important;
+  }
 }

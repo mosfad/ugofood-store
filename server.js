@@ -30,7 +30,7 @@ app.get("*", (req, res) => {
 });
 
 // Connect to the Mongo DB
-mongoose.connect(db, { useNewUrlParser: true });
+mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false });
 
 const dbMongo = mongoose.connection;
 dbMongo.on("error", console.error.bind(console, "connection error: "));

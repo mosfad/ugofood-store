@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser, autoSignIn } from "../actions";
+import { fetchUser, fetchProducts, fetchCart, autoSignIn } from "../actions";
 import Products from "../components/ProductDetail";
+import ProductList from "../components/ProductList";
 import LoginModal from "../components/LoginModal";
+import WelcomeMessage from "../components/WelcomeMessage";
 import { object } from "yup";
 
 class Home extends Component {
   componentDidMount() {
     (async () => {
       const token = localStorage.getItem("userToken");
-
+      await this.props.fetchProducts();
       if (token) {
         console.log(token);
         console.log(this.props);
@@ -21,8 +23,10 @@ class Home extends Component {
             Object.keys(this.props.user).length === 1 &&
             !this.props.isSignedIn
           ) {
-            this.props.autoSignIn(token);
+            await this.props.autoSignIn(token);
           }
+          const userId = Object.keys(this.props.users)[0];
+          this.props.fetchCart(userId);
         } catch (err) {
           console.log(err);
           console.log("User must manually sign in, since token is invalid");
@@ -54,6 +58,8 @@ class Home extends Component {
     ) {
       //const token = localStorage.getItem("userToken");
       if (this.props.token) {
+        //UPDATE TOKEN SINCE LOGINMODAL IS CAUSING UPDATE WARNINGS.
+        localStorage.setItem("userToken", this.props.token);
         console.log(this.props.token);
         this.props.fetchUser(this.props.token);
       }
@@ -65,22 +71,33 @@ class Home extends Component {
     if (Object.keys(this.props.user).length !== 0) {
       console.log(this.props.user);
     }
-
+    if (Object.keys(this.props.products).length === 0) {
+      return <div></div>;
+    }
+    console.log(this.props);
     return (
       <div className="ui container">
-        <h1>Homepage</h1>
-        <Products />
+        <WelcomeMessage />
+        {/* <Products /> */}
+        <ProductList products={this.props.products} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     isSignedIn: state.auth.isSignedIn,
     token: state.auth.userToken,
     user: state.user,
+    products: state.product,
   };
 };
 
-export default connect(mapStateToProps, { fetchUser, autoSignIn })(Home);
+export default connect(mapStateToProps, {
+  fetchUser,
+  fetchProducts,
+  fetchCart,
+  autoSignIn,
+})(Home);
