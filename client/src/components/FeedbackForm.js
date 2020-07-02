@@ -2,14 +2,8 @@ import React, { Component } from "react";
 import { Rating } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
-//import { Link } from "react-router-dom";
 import { withFormik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-//import reducers from "../reducers";
-//import { createstore } from "redux";
-//import history from "../utils/history";
-//addProductReview(userId, productId, formValues)
-//import { addProductReview } from "../actions";
 import PropTypes from "prop-types";
 import "./forms.css";
 
@@ -17,9 +11,6 @@ class FeedbackForm extends Component {
   static propTypes = {
     onAddReview: PropTypes.func,
   };
-  // componentDidUpdate(prevProps) {
-  //   if (this.prevProps.review.productId !== this.props.review)
-  // }
 
   render() {
     const {
@@ -30,8 +21,6 @@ class FeedbackForm extends Component {
       handleChange,
       handleBlur,
       handleSubmit,
-      handleReset,
-      handleClick,
       isSubmitting,
       resetForm,
       feedbackProductId,
@@ -104,9 +93,8 @@ const formikEnhancer = withFormik({
   }),
 
   mapPropsToValues: (props) => {
-    console.log(props.feedbackProductId);
+    // console.log(props.feedbackProductId);
     return {
-      //id: window.location.pathname.slice(10),
       userId: props.userId,
       productId: props.feedbackProductId,
       headline: "",
@@ -115,8 +103,6 @@ const formikEnhancer = withFormik({
     };
   },
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
-    //console.log(values.productId);
-    //console.log(values);
     const { headline, rating, review, userId, productId } = values;
     props.onAddReview(userId, productId, {
       headline,
@@ -125,18 +111,6 @@ const formikEnhancer = withFormik({
     });
     setSubmitting(false);
     resetForm();
-
-    // setTimeout(() => {
-    //   props.onAddReview(userId, productId, { headline, rating, review });
-    //   setSubmitting(false);
-    //   resetForm();
-    // }, 2000);
-    // setTimeout(() => {
-    //   console.log(response);
-    // }, 3000);
-    // console.log(response);
-    // if (response.data.productId === productId) {
-    //   alert("Thanks! Your review was successfully sent.");
   },
 
   displayName: "FeedbackForm",

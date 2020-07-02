@@ -66,7 +66,6 @@ class ShoppingCart extends Component {
     for (let eachItem of this.props.cart.items) {
       sum += eachItem.productId.price * eachItem.quantity;
     }
-    console.log(sum);
     return sum;
   };
 
@@ -78,19 +77,12 @@ class ShoppingCart extends Component {
     this.props.removeFromCart(user, payload);
   };
 
-  // state = { cartInfo: [] };
-  // handleShoppingCart = (cartInfo) => {
-  //   this.setState((state) => {
-  //     return { cartInfo: state.cartInfo.push(cartInfo) };
-  //   });
-  // };
-
   render() {
     if (!this.props.cart) {
       return <div></div>;
     }
     const cartInfo = this.props.cart.items;
-    console.log(cartInfo);
+    // console.log(cartInfo);
     return (
       <div>
         <h1 className="ui container" id="shoppingcart-header">

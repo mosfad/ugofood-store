@@ -13,7 +13,7 @@ class Feedback extends Component {
       if (token) {
         try {
           await this.props.fetchUser(token);
-          console.log(this.props.user);
+          // console.log(this.props.user);
           //if user was successfully fetched from server, auto-sign the user.
           if (
             Object.keys(this.props.user).length === 1 &&
@@ -30,13 +30,8 @@ class Feedback extends Component {
   }
 
   onAddReview = async (userId, productId, reviewForm) => {
-    const response = await this.props.addProductReview(
-      userId,
-      productId,
-      reviewForm
-    );
-    console.log();
-    console.log(this.props.user.review);
+    await this.props.addProductReview(userId, productId, reviewForm);
+    // console.log(this.props.user.review);
     const storeReview = this.props.user.review;
     const targetReview = storeReview[storeReview.length - 1];
     if (
@@ -48,26 +43,6 @@ class Feedback extends Component {
       alert("Thanks! You have successfully sent a review!");
     }
   };
-
-  // componentDidUpdate(prevProps, prevState) {
-  //     console.log(prevProps);
-  //     console.log(this.props);
-  //     //user manually signed in, so fetch the user.
-  //     if (
-  //       this.props.isSignedIn &&
-  //       !prevProps.isSignedIn &&
-  //       Object.keys(this.props.user).length === 0
-  //     ) {
-  //       //const token = localStorage.getItem("userToken");
-  //       if (this.props.token) {
-  //         //UPDATE TOKEN SINCE LOGINMODAL IS CAUSING UPDATE WARNINGS.
-  //         localStorage.setItem("userToken", this.props.token);
-  //         console.log(this.props.token);
-  //         this.props.fetchUser(this.props.token);
-  //       }
-  //     }
-  //     //user manually signed off, so remove user.
-  //   }
 
   render() {
     if (!this.props.user.feedbackProduct) {
@@ -102,7 +77,7 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return {
     isSignedIn: state.auth.isSignedIn,
     token: state.auth.userToken,

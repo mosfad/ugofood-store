@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Menu, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { signOut } from "../actions";
+import { signOut, signIn, fetchUser, openModal, closeModal } from "../actions";
 import LoginModal from "./LoginModal";
 import LogoutContainer from "./LogoutContainer";
+import history from "../utils/history";
 
 class Header extends Component {
   state = { activeItem: "home", setModal: false };
@@ -46,11 +47,27 @@ class Header extends Component {
       }
     );
 
+  onSignin = async (userData) => {
+    await this.props.signIn(userData);
+    // store item in local storage.
+    if (this.props.token) {
+      localStorage.setItem("userToken", this.props.token);
+      // fetch user with token
+      const token = localStorage.getItem("userToken");
+      await this.props.fetchUser(token);
+      const { user, userId } = this.props;
+      // alert signedin user.
+      alert(`Welcome ${user[userId].firstName}!`);
+      // navigate to the home page.
+      history.push("/");
+    }
+  };
+
   render() {
     const { activeItem } = this.state;
     const { isSignedIn } = this.props;
     let id = this.props.userId || 1;
-    console.log(window.location.pathname);
+    // console.log(window.location.pathname);
 
     return (
       <Segment inverted>
@@ -83,7 +100,7 @@ class Header extends Component {
                 }
                 onClick={this.handleItemClick}
               >
-                <LoginModal />
+                <LoginModal onSignin={this.onSignin} />
               </Menu.Item>
             )}
             <Menu.Item
@@ -120,15 +137,22 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
+  //console.log(ownProps);
   return {
     isSignedIn: state.auth.isSignedIn,
+    token: state.auth.userToken,
+    modalOpen: state.modal.modalOpen,
     userId: Object.keys(state.user)[0],
+    user: state.user,
   };
 };
 
 export default connect(mapStateToProps, {
   signOut,
+  signIn,
+  fetchUser,
+  openModal,
+  closeModal,
 })(Header);
 
 // import React, { Component } from "react";

@@ -57,7 +57,7 @@ export const signIn = (formValues) => async (dispatch) => {
 
   dispatch({ type: SIGN_IN, payload: response.data });
 
-  history.push("/");
+  //history.push("/");
 };
 
 export const autoSignIn = (token) => {
@@ -76,7 +76,6 @@ export const signOut = () => async (dispatch) => {
 export const signUp = (formValues) => async (dispatch) => {
   const response = await register(formValues);
   dispatch({ type: SIGN_UP, payload: response.data });
-  history.push("/");
 };
 
 export const fetchUser = (authToken) => async (dispatch) => {

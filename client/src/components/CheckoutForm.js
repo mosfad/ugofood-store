@@ -17,7 +17,7 @@ const CheckoutForm = (props) => {
 
   useEffect(() => {
     (async () => {
-      console.log(props);
+      // console.log(props);
       const response = await axios.post("/api/payment_intents", {
         //calculate payment in the server. Only get cart items.
         // items: props.cartItems,
@@ -29,7 +29,7 @@ const CheckoutForm = (props) => {
           };
         }),
       });
-      console.log(response);
+      // console.log(response);
       setClientSecret(response.data.clientSecret);
     })();
   }, [props.cartItems.length]);
@@ -80,7 +80,7 @@ const CheckoutForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(props.orderInfo);
+    // console.log(props.orderInfo);
     const {
       firstName,
       lastName,
@@ -111,7 +111,7 @@ const CheckoutForm = (props) => {
       //   phone: null
     };
 
-    console.log(billingDetails);
+    // console.log(billingDetails);
     setProcessing(true);
 
     const cardElement = elements.getElement(CardElement);
@@ -122,13 +122,13 @@ const CheckoutForm = (props) => {
       card: cardElement,
       billing_details: billingDetails,
     });
-    console.log(paymentMethodReq);
+    // console.log(paymentMethodReq);
 
     //confirm the card payment;`..paymentMethod.id`????
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: paymentMethodReq.paymentMethod.id,
     });
-    console.log(payload);
+    // console.log(payload);
 
     //
     if (payload.error) {

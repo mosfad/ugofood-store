@@ -10,7 +10,6 @@ class LogoutContainer extends Component {
   //      this.props.signOut();
   //   }
   handleClick = () => {
-    console.log("what's going on with logout????");
     (async () => {
       await this.props.signOut();
       this.props.unfetchUser();
