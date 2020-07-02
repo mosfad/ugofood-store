@@ -14,7 +14,7 @@ class CartDetails extends Component {
     const { name, value } = event.target;
     // console.log(`${name} = ${value}`);
     //update db with correct qty
-    console.log(this.props);
+    // console.log(this.props);
     const productData = { id: this.props.item.productId._id, quantity: value };
     await this.props.onChangeCartQty(this.props.userId, productData);
     //window.location.reload(false);

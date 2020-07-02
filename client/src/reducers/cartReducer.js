@@ -26,8 +26,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         items: state.items.filter((item) => {
-          console.log(item);
-          console.log(action.payload);
+          // console.log(item);
+          // console.log(action.payload);
           return item.productId._id !== action.payload[0].productId._id;
         }),
       };

@@ -38,20 +38,6 @@ import {
   deleteCurrentOrder,
 } from "../utils/API";
 
-// export const signIn = (formValues = {}, token = "") => {
-//   if (token !== "") {
-//     return { type: SIGN_IN, payload: { success: true, token: token } };
-//   } else {
-//     return async (dispatch) => {
-//       const response = await logIn(formValues);
-
-//       dispatch({ type: SIGN_IN, payload: response.data });
-//     };
-//   }
-
-//   //history.push("/");
-// };
-
 export const signIn = (formValues) => async (dispatch) => {
   const response = await logIn(formValues);
 
@@ -136,7 +122,7 @@ export const resetCartQtyStatus = () => {
 
 export const removeFromCart = (userId, itemId) => async (dispatch) => {
   // remove product from cart(in db) from the shoppingcart page
-  console.log(itemId);
+  // console.log(itemId);
   const response = await decrementCart(userId, itemId);
   dispatch({ type: REMOVE_FROM_CART, payload: response.data });
 };
