@@ -8,39 +8,6 @@ import history from "../utils/history";
 import "../style.css";
 
 class SuccessfulOrder extends Component {
-  // componentDidMount() {
-  //     //sign in authd user in order to get cart info.
-  //     (async () => {
-  //       await this.authenticateUser();
-  //       if (this.props.isSignedIn && this.props.userId.length > 0) {
-  //         this.props.fetchCart(this.props.userId[0]);
-  //       }
-  //       //add a new order when customer proceeds to checkout.
-  //       //this.props.addOrder()
-  //     })();
-  //   }
-
-  //   authenticateUser = async () => {
-  //     // retrieve token in local storage
-  //     const token = localStorage.getItem("userToken");
-  //     // attempt to fetch user with valid token.
-  //     if (token && this.props) {
-  //       // get user info from server
-  //       try {
-  //         await this.props.fetchUser(token);
-  //         // auto-sign in user successfully fetched from server
-  //         console.log(this.props.userId);
-  //         console.log(typeof this.props.userId);
-  //         if (this.props.userId.length > 0 && !this.props.isSignedIn) {
-  //           this.props.autoSignIn(token);
-  //         }
-  //       } catch (err) {
-  //         console.log(err);
-  //         console.log("User must manually sign in");
-  //       }
-  //     }
-  //   };
-
   calculateDeliveryDate = (daysToShip = 5) => {
     const { completedOrderAt } = this.props.order.items[0];
     return moment
@@ -60,8 +27,7 @@ class SuccessfulOrder extends Component {
       products,
       total,
     } = this.props.order.items[0];
-    console.log(this.props.order.items[0]);
-    //use <ItemList userId={userId} {itemInfo={orderInfo}.../>
+    // console.log(this.props.order.items[0]);
     return (
       <div className="ui container">
         {/* <div className="ui success huge message">
@@ -77,13 +43,13 @@ class SuccessfulOrder extends Component {
           </p>
         </div>
         <br />
-        <h2 class="ui header">
-          <div class="content">
-            <i class="clipboard list icon"></i>
+        <h2 className="ui header">
+          <div className="content">
+            <i className="clipboard list icon"></i>
             Order Summary
           </div>
         </h2>
-        <div class="ui divider"></div>
+        <div className="ui divider"></div>
         <div className="order-summary">
           <ItemList userId={userId} itemInfo={products} />
           <div className="ui divider divider-total"></div>
@@ -94,9 +60,9 @@ class SuccessfulOrder extends Component {
         </div>
 
         <br />
-        <h2 class="ui header">
-          <div class="content">
-            <i class="money bill alternate icon"></i>
+        <h2 className="ui header">
+          <div className="content">
+            <i className="money bill alternate icon"></i>
             Billing Details
           </div>
         </h2>

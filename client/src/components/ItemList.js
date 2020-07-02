@@ -5,16 +5,8 @@ const ItemList = (props) => {
   //fetch products from database or homepage.
   const renderList = () => {
     return props.itemInfo.map((item, index) => {
-      //itemInfo SHOULD COME FROM SuccessfulOrder.js!!!
-      console.log(item);
       return (
-        <ItemDetails
-          key={`item${index}`}
-          item={item}
-          userId={props.userId}
-          //   onChangeCartQty={props.onChangeCartQty}
-          //   onDeleteCartItem={props.onDeleteCartItem}
-        />
+        <ItemDetails key={`item${index}`} item={item} userId={props.userId} />
       );
     });
   };

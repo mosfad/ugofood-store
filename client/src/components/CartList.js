@@ -5,7 +5,6 @@ const CartList = (props) => {
   //fetch products from database or homepage.
   const renderCartList = () => {
     return props.cartInfo.map((item, index) => {
-      console.log(item);
       return (
         <CartDetails
           key={`${index}item.id`}

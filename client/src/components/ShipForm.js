@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Message, Button } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 import { withFormik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PropTypes from "prop-types";

@@ -47,8 +47,8 @@ class CheckoutOrder extends Component {
       try {
         await this.props.fetchUser(token);
         // auto-sign in user successfully fetched from server
-        console.log(this.props.userId);
-        console.log(typeof this.props.userId);
+        // console.log(this.props.userId);
+        // console.log(typeof this.props.userId);
         if (this.props.userId.length > 0 && !this.props.isSignedIn) {
           this.props.autoSignIn(token);
         }
@@ -65,7 +65,6 @@ class CheckoutOrder extends Component {
     for (let eachItem of this.props.cart.items) {
       sum += eachItem.productId.price * eachItem.quantity;
     }
-    console.log(sum);
     return sum;
   };
 
@@ -86,7 +85,7 @@ class CheckoutOrder extends Component {
   };
 
   render() {
-    console.log(this.props.cart.items);
+    //console.log(this.props.cart.items);
     return (
       <div className="ui container sign-up">
         <h2>Checkout Order</h2>

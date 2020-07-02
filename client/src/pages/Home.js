@@ -13,11 +13,11 @@ class Home extends Component {
       const token = localStorage.getItem("userToken");
       await this.props.fetchProducts();
       if (token) {
-        console.log(token);
-        console.log(this.props);
+        // console.log(token);
+        // console.log(this.props);
         try {
           await this.props.fetchUser(token);
-          console.log(this.props.user);
+          // console.log(this.props.user);
           //if user was successfully fetched from server, auto-sign the user.
           if (
             Object.keys(this.props.user).length === 1 &&
@@ -25,7 +25,7 @@ class Home extends Component {
           ) {
             await this.props.autoSignIn(token);
           }
-          const userId = Object.keys(this.props.users)[0];
+          const userId = Object.keys(this.props.user)[0];
           this.props.fetchCart(userId);
         } catch (err) {
           console.log(err);
@@ -33,34 +33,18 @@ class Home extends Component {
         }
       }
     })();
-    // const token = localStorage.getItem("userToken");
-
-    // if (token) {
-    //   console.log(token);
-    //   console.log(this.props);
-    //   this.props.fetchUser(token);
-    //   console.log(this.props.user);
-    //   //if user was successfully fetched from server, auto-sign the user.
-    //   if (Object.keys(this.props.user).length === 1 && !this.props.isSignedIn) {
-    //     this.props.autoSignIn(token);
-    //   }
-    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps);
-    console.log(this.props);
     //user manually signed in, so fetch the user.
     if (
       this.props.isSignedIn &&
       !prevProps.isSignedIn &&
       Object.keys(this.props.user).length === 0
     ) {
-      //const token = localStorage.getItem("userToken");
       if (this.props.token) {
         //UPDATE TOKEN SINCE LOGINMODAL IS CAUSING UPDATE WARNINGS.
         localStorage.setItem("userToken", this.props.token);
-        console.log(this.props.token);
         this.props.fetchUser(this.props.token);
       }
     }
@@ -69,12 +53,12 @@ class Home extends Component {
 
   render() {
     if (Object.keys(this.props.user).length !== 0) {
-      console.log(this.props.user);
+      //console.log(this.props.user);
     }
     if (Object.keys(this.props.products).length === 0) {
       return <div></div>;
     }
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div className="ui container">
         <WelcomeMessage />
@@ -86,7 +70,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return {
     isSignedIn: state.auth.isSignedIn,
     token: state.auth.userToken,
