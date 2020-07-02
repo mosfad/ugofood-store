@@ -5,23 +5,6 @@ import { Link } from "react-router-dom";
 import { addToCart, fetchProductReviewed } from "../actions";
 import "./productStyles.css";
 class ProductDetail extends Component {
-  // trialInfo = [{
-
-  //     id: 1000,
-  //     name: "Jollof Rice",
-  //     url: "https://picsum.photos/200/200?grayscale",
-  //     price: "$12.00",
-  //     description:
-  //       "Yummy Jollof rice made with chicken and fried plantains is so nutritious and delicious.",
-  //   },
-  //   {
-  //     id: 1001,
-  //     name: "Esiewu",
-  //     url: "https://picsum.photos/200/200?grayscale",
-  //     price: "$10.00",
-  //     description: "Tasty goat meat cooked in a spicy and tasty sauce",
-  //   },
-  // ];
   handleProductRequest = (e) => {
     //e.preventDefault() is preventing Link from executing normal
     //behavior.
@@ -40,7 +23,7 @@ class ProductDetail extends Component {
       const arrWithProduct = this.props.cart.items.filter(
         (item) => item.productId._id === productValues.id
       );
-      console.log(arrWithProduct);
+      // console.log(arrWithProduct);
 
       if (arrWithProduct.length === 0) {
         // add product to the cart; it's not inside the cart
@@ -53,15 +36,10 @@ class ProductDetail extends Component {
           `${arrWithProduct[0].productId.name} is already in the cart. You can change its quantity there.`
         );
       }
-
-      // otherwise, add product to cart
-
-      //this.props.addToCart(userId, productValues);
     }
   };
 
   handleFeedbackRequest = (e) => {
-    //
     //const { value, name } = e.target;
     const { name, description, url, _id } = this.props.product;
     if (!this.props.isSignedIn) {
@@ -76,37 +54,6 @@ class ProductDetail extends Component {
       this.props.fetchProductReviewed(feedbackProductDetails);
     }
   };
-
-  // handleClick = (e) => {
-  //   //e.preventDefault() is preventing Link from executing normal
-  //   //behavior.
-  //   //e.preventDefault();
-  //   const { value, name } = e.target;
-
-  //   if (!this.props.isSignedIn) {
-  //     alert("Please sign-in or sign-up to order a sample.");
-  //   } else {
-  //     // add to sample to authd user's cart.
-  //     const productValues = {
-  //       id: this.props.product._id,
-  //       quantity: 1,
-  //       status: "active",
-  //     };
-  //     // check whether product is already in the cart
-  //     if (this.props.cart.items.length > 0) {
-  //       const arrWithProduct = this.props.cart.items.filter(
-  //         (item) => item.productId === productValues.id
-  //       );
-  //       // increment product qty if already in cart
-  //       if (arrWithProduct.length !== 0) {
-  //       } else {
-  //         // otherwise, add product to cart
-  //         const userId = Object.keys(this.props.userId)[0];
-  //         this.props.addToCart(userId, productValues);
-  //       }
-  //     }
-  //   }
-  // };
 
   render() {
     if (!this.props.product) {
