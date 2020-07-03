@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import ShoppingCart from "./pages/ShoppingCart";
 import Feedback from "./pages/Feedback";
 import SuccessfulOrder from "./pages/SuccessfulOrder";
+import Footer from "./components/Footer";
 
 class App extends Component {
   render() {
@@ -32,6 +33,7 @@ class App extends Component {
               <Route path="/cart/:id" exact component={ShoppingCart} />
               <Route path="/feedback/:productid" exact component={Feedback} />
             </Switch>
+            <Footer />
           </div>
         </Router>
       </div>
