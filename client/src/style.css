@@ -136,6 +136,13 @@ i.clipboard.check.icon.order {
   float: right;
 }
 
+div.ui.inverted.segment.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+}
+
 @media screen and (max-width: 680px) {
   div.ui.container.sign-up {
     width: 95% !important;
