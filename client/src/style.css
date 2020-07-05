@@ -1,7 +1,26 @@
-body {
-  /* background-color: lightblue; */
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
 }
 
+.document-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex: 1 0 auto;
+  margin-bottom: 30px;
+}
+
+.footer-container {
+  /*margin-top: auto; if you use this property, 
+  delete flex properties here and in .content-container*/
+  flex-shrink: 0;
+}
 /* .ui.menu.header-home {
   background-color: red;
   min-height: 70px;
@@ -14,6 +33,7 @@ body {
 } */
 
 #modal-btn-text {
+  display: inline-block;
   color: #d5c9c9;
   /*font-size: 1.2rem;
   font-weight: 600; */
@@ -140,8 +160,19 @@ div.ui.inverted.segment.footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70px;
+  min-height: 70px;
 }
+
+/* body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main {
+  flex: 1 0 auto;
+  min-height: auto;
+} */
 
 @media screen and (max-width: 680px) {
   div.ui.container.sign-up {

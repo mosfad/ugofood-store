@@ -9,4 +9,6 @@ module.exports = {
   adminSecret: process.env.SECRET_EMAIL,
   stripePublish: process.env.STRIPE_PUBLISHABLE_KEY,
   stripeSecret: process.env.STRIPE_SECRET_KEY,
+  mailgunAPIKey: process.env.MAILGUN_API_KEY,
+  mailgunDomain: process.env.MAILGUN_DOMAIN,
 };

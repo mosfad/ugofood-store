@@ -3,12 +3,13 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const nodemailer = require("nodemailer");
+const mg = require("nodemailer-mailgun-transport");
 const crypto = require("crypto");
 require("dotenv").config();
 const db = require("../models");
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
-const { RSA_NO_PADDING } = require("constants");
+//const { RSA_NO_PADDING } = require("constants");
 
 module.exports = {
   findAll: (req, res) => {
@@ -144,7 +145,7 @@ module.exports = {
     //Todo:
     //1) Generate token; create token
     //2) Create and store token in db
-    //3) email token to user.
+    //3) email token to user.???
     //4) Consider verification later.
 
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -175,50 +176,7 @@ module.exports = {
             db.Token.create({ _userId: dbUser._id, token: tokenDecimal })
               .then((dbToken) => {
                 console.log(dbToken);
-                //email the token here.
-                //create reusable transport object using the default SMTP transport
-
-                let transporter = nodemailer.createTransport({
-                  service: "gmail",
-                  port: 587,
-                  secure: false,
-                  auth: {
-                    user: process.env.ADMIN_EMAIL,
-                    pass: process.env.ADMIN_PASS,
-                  },
-                  tls: {
-                    rejectUnauthorized: false,
-                  },
-                });
-
-                // verify connection configuration
-                transporter.verify(function (error, success) {
-                  if (error) {
-                    console.log(error);
-                  } else {
-                    console.log("Server is ready to take our messages");
-                  }
-                });
-
-                //const trialEmail = "example.com";
-                //send mail with defined transport object
-                let info = transporter.sendMail(
-                  {
-                    from: `"Dupe Fadina " <${process.env.ADMIN_EMAIL}>`, //sender address
-                    to: `${dbUser.email}`, //list of receivers
-                    subject: "Hello",
-                    text: `Please enter this code to confirm and receive your sample: ${dbToken.token}`,
-                    html: `<b>Please enter this code to confirm and receive your sample: ${dbToken.token}</b>`,
-                  },
-                  (err, info) => {
-                    if (err) {
-                      console.log("Mail was unsuccessfully sent");
-                      return console.log(err);
-                    } else {
-                      return console.log(info);
-                    }
-                  }
-                );
+                //email the token here.????
               })
               .catch((err) => res.status(422).json(err));
 
@@ -502,11 +460,7 @@ module.exports = {
       { new: true }
     )
       .then((dbUser) => {
-        //filter array to return succesfully updated item
-        // const orderItem = dbUser.orders.filter(
-        //   (item, index) => item._id.toString() === req.body.id
-        // );
-        //Todo: Empty cart on completed order.
+        // Empty cart on completed order.
         db.User.findOneAndUpdate(
           { _id: req.params.userid },
           {
@@ -517,11 +471,42 @@ module.exports = {
           },
           { new: true }
         ).then((dbLatest) => {
-          //filter array to update status
-          //clear cart for completed order
+          // filter array to update status
           const orderItem = dbLatest.orders.filter(
             (item) => item._id.toString() === req.body.id
           );
+          console.log(orderItem);
+          // Todo: Send success order email to the customer
+          // Mailgun credentials
+          const auth = {
+            auth: {
+              api_key: keys.mailgunAPIKey,
+              domain: keys.mailgunDomain,
+            },
+          };
+
+          // create transport object with mail gun service.
+          const nodemailerMailgun = nodemailer.createTransport(mg(auth));
+
+          // send mail with defined transport object
+          nodemailerMailgun.sendMail(
+            {
+              from: `"Dupe Fadina " <${keys.adminEmail}>`, //sender address
+              to: `${dbUser.email}`, //list of receivers
+              subject: "Hello",
+              text: `Thanks! Order # ${orderItem[0]._id} was received`,
+              html: `<b>Thanks! Order # ${orderItem[0]._id} was received`,
+            },
+            (err, info) => {
+              if (err) {
+                console.log("Mail was unsuccessfully sent");
+                return console.log(err);
+              } else {
+                return console.log(info);
+              }
+            }
+          );
+
           res.json(orderItem);
         });
         //console.log(orderItem);
