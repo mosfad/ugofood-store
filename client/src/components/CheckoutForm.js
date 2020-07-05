@@ -46,7 +46,9 @@ const CheckoutForm = (props) => {
           cardDetails,
         };
         await props.onUpdateOrder(props.userId, orderData);
-        // success modal should be activated here!
+        // send success email to the shopper.
+
+        // display successpage!
         history.push(`/successorder/${props.userId}`);
       }
     })();
